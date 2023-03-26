@@ -14,7 +14,7 @@ function child(model_name, columns, table_struct) {
     if (children.indexOf(columns[i]["name"]) != -1) {
       table_struct.relations.children = {
         type: "hasMany",
-        model: model_name,
+        model: Studio("file.DotName", model_name),
         key: columns[i]["name"],
         foreign: "id",
         query: {},
@@ -40,7 +40,7 @@ function parent(model_name, columns, table_struct) {
     if (parents.indexOf(columns[i]["name"]) != -1) {
       table_struct.relations.parent = {
         type: "hasOne",
-        model: model_name,
+        model: Studio("file.DotName", model_name),
         key: "id",
         foreign: columns[i]["name"],
         query: {},
@@ -53,6 +53,10 @@ function parent(model_name, columns, table_struct) {
 
 function other(all_table_struct) {
   for (var i in all_table_struct) {
+    console.log(
+      `process table Relation:${all_table_struct[i]["table"]["name"]}`
+    );
+
     var temp = all_table_struct[i]["columns"];
     all_table_struct = Studio(
       "hasone.hasOne",
@@ -67,6 +71,7 @@ function other(all_table_struct) {
         all_table_struct
       );
     }
+    //console.log("debugger:===>done", all_table_struct[i]["table"]["name"]);
   }
   return all_table_struct;
 }
@@ -76,26 +81,26 @@ function translate(keywords) {
   if (keywords == "id" || keywords == "ID") {
     return "id";
   }
-  var keywords = keywords.split("_");
+  // var keywords = keywords.split("_");
   //console.log(keywords);
-  var url = "https://brain.yaoapps.com/api/keyword/column";
-  let response = Process(
-    "xiang.network.PostJSON",
-    url,
-    {
-      keyword: keywords,
-    },
-    {}
-  );
+  // var url = "https://brain.yaoapps.com/api/keyword/column";
+  // let response = Process(
+  //   "xiang.network.PostJSON",
+  //   url,
+  //   {
+  //     keyword: keywords,
+  //   },
+  //   {}
+  // );
   var res = keywords;
-  if (response.status == 200) {
-    if (response.data.data) {
-      var res = "";
-      for (var i in response.data.data) {
-        var res = res + response.data.data[i]["label"];
-      }
-    }
-  }
+  // if (response.status == 200) {
+  //   if (response.data.data) {
+  //     var res = "";
+  //     for (var i in response.data.data) {
+  //       var res = res + response.data.data[i]["label"];
+  //     }
+  //   }
+  // }
   return res;
 }
 
@@ -105,23 +110,24 @@ function translate(keywords) {
  * @returns
  */
 function BatchTranslate(keywords) {
-  var url = "https://brain.yaoapps.com/api/keyword/batch_column";
-  let response = Process(
-    "xiang.network.PostJSON",
-    url,
-    {
-      keyword: keywords,
-    },
-    {}
-  );
-  var res = keywords;
-  if (response.status == 200) {
-    if (response.data.data) {
-      // console.log(response.data.data);
-      return response.data.data;
-    }
-  }
-  return res;
+  return keywords;
+  // var url = "https://brain.yaoapps.com/api/keyword/batch_column";
+  // let response = Process(
+  //   "xiang.network.PostJSON",
+  //   url,
+  //   {
+  //     keyword: keywords,
+  //   },
+  //   {}
+  // );
+  // var res = keywords;
+  // if (response.status == 200) {
+  //   if (response.data.data) {
+  //     // console.log(response.data.data);
+  //     return response.data.data;
+  //   }
+  // }
+  // return res;
 }
 /**
  * Model dsl全部翻译翻译
@@ -129,22 +135,23 @@ function BatchTranslate(keywords) {
  * @returns
  */
 function BatchModel(keywords) {
-  var url = "https://brain.yaoapps.com/api/keyword/batch_model";
-  let response = Process(
-    "xiang.network.PostJSON",
-    url,
-    {
-      keyword: keywords,
-    },
-    {}
-  );
+  return keywords;
+  // var url = "https://brain.yaoapps.com/api/keyword/batch_model";
+  // let response = Process(
+  //   "xiang.network.PostJSON",
+  //   url,
+  //   {
+  //     keyword: keywords,
+  //   },
+  //   {}
+  // );
 
-  var res = keywords;
-  if (response.status == 200) {
-    if (response.data.data) {
-      // console.log(response.data.data);
-      return response.data.data;
-    }
-  }
-  return res;
+  // var res = keywords;
+  // if (response.status == 200) {
+  //   if (response.data.data) {
+  //     // console.log(response.data.data);
+  //     return response.data.data;
+  //   }
+  // }
+  // return res;
 }

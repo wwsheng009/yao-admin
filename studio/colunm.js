@@ -61,14 +61,17 @@ function filter() {
   return ["name", "title", "_sn"];
 }
 
+//create table from model
 function toTable(model_dsl) {
+  let table_dot_name = Studio("file.DotName", model_dsl.table.name);
+
   const columns = model_dsl.columns || [];
   var tableTemplate = {
     name: model_dsl.name || "表格",
     action: {
       bind: {
-        model: model_dsl.table.name,
-        option: { withs: {} },
+        model: table_dot_name,
+        option: { withs: {}, option: { form: table_dot_name } },
       },
     },
     layout: {
@@ -81,12 +84,15 @@ function toTable(model_dsl) {
             title: "添加",
             icon: "icon-plus",
             width: 3,
-            action: {
-              "Common.openModal": {
-                width: 640,
-                Form: { type: "edit", model: model_dsl.table.name },
+            action: [
+              {
+                name: "OpenModal",
+                type: "Common.openModal",
+                payload: {
+                  Form: { type: "edit", model: table_dot_name },
+                },
               },
-            },
+            ],
           },
         ],
       },
@@ -98,31 +104,55 @@ function toTable(model_dsl) {
             {
               title: "查看",
               icon: "icon-eye",
-              action: {
-                "Common.openModal": {
-                  width: 640,
-                  Form: { type: "view", model: model_dsl.table.name },
+              action: [
+                {
+                  payload: {
+                    Form: {
+                      model: table_dot_name,
+                      type: "view",
+                    },
+                  },
+                  name: "OpenModal",
+                  type: "Common.openModal",
                 },
-              },
+              ],
             },
             {
               title: "编辑",
               icon: "icon-edit-2",
-              action: {
-                "Common.openModal": {
-                  Form: { type: "edit", model: model_dsl.table.name },
+              action: [
+                {
+                  name: "OpenModal",
+                  type: "Common.openModal",
+                  payload: {
+                    Form: {
+                      type: "edit",
+                      model: table_dot_name,
+                    },
+                  },
                 },
-              },
+              ],
             },
             {
               title: "删除",
               icon: "icon-trash-2",
-              action: { "Table.delete": {} },
-              style: "danger",
-              confirm: {
-                title: "提示",
-                desc: "确认删除，删除后数据无法恢复？",
-              },
+              action: [
+                {
+                  name: "Confirm",
+                  type: "Common.confirm",
+                  payload: {
+                    title: "确认删除",
+                    content: "删除后不可撤销！",
+                  },
+                },
+                {
+                  name: "Delete",
+                  type: "Table.delete",
+                  payload: {
+                    model: table_dot_name,
+                  },
+                },
+              ],
             },
           ],
         },
@@ -135,6 +165,7 @@ function toTable(model_dsl) {
   };
   columns.forEach((column) => {
     var col = castTableColumn(column, model_dsl);
+    // console.log("col:", col);
     if (col) {
       // col.layout.filter.columns.forEach((fc) => {});
       col.layout.table.columns.forEach((tc) => {
@@ -168,23 +199,27 @@ function toTable(model_dsl) {
 function castTableColumn(column, model_dsl) {
   column = column || {};
   const props = column.props || {};
-  const title = column.label;
+  const title = column.label || column.name;
   const name = column.name;
 
   // 不展示隐藏列
   var hidden = Hidden(1);
   if (hidden.indexOf(name) != -1) {
+    console.log("castTableColumn: hidden");
     return false;
   }
   var types = getType();
 
   const bind = `${name}`;
   if (!name) {
+    console.log("castTableColumn: missing name");
     // log.Error("castTableColumn: missing name");
     return false;
   }
 
   if (!title) {
+    console.log("castTableColumn: missing title");
+
     //log.Error("castTableColumn: missing title");
     return false;
   }
@@ -296,12 +331,88 @@ function Enum(option) {
 }
 
 function toForm(model_dsl) {
+  let table_dot_name = Studio("file.DotName", model_dsl.table.name);
+
+  const actions = [
+    {
+      title: "重新生成代码",
+      icon: "icon-layers",
+      showWhenAdd: true,
+      showWhenView: true,
+      action: [
+        {
+          name: "StudioModel",
+          type: "Studio.model",
+          payload: { method: "CreateOne", args: [table_dot_name] },
+        },
+      ],
+    },
+    {
+      title: "返回",
+      icon: "icon-arrow-left",
+      showWhenAdd: true,
+      showWhenView: true,
+      action: [
+        {
+          name: "CloseModal",
+          type: "Common.closeModal",
+          payload: {},
+        },
+      ],
+    },
+    {
+      title: "保存",
+      icon: "icon-check",
+      style: "primary",
+      showWhenAdd: true,
+      action: [
+        {
+          name: "Submit",
+          type: "Form.submit",
+          payload: {},
+        },
+        {
+          name: "Back",
+          type: "Common.closeModal",
+          payload: {},
+        },
+      ],
+    },
+    {
+      icon: "icon-trash-2",
+      style: "danger",
+      title: "Delete",
+      action: [
+        {
+          name: "Confirm",
+          type: "Common.confirm",
+          payload: {
+            title: "提示",
+            content: "确认删除，删除后数据无法恢复？",
+          },
+        },
+        {
+          name: "Delete",
+          payload: {
+            model: table_dot_name,
+          },
+          type: "Form.delete",
+        },
+        {
+          name: "Back",
+          type: "Common.closeModal",
+          payload: {},
+        },
+      ],
+    },
+  ];
+
   const columns = model_dsl.columns || [];
   var tableTemplate = {
     name: model_dsl.name || "表单",
     action: {
       bind: {
-        model: model_dsl.table.name,
+        model: table_dot_name,
         option: { withs: {} },
       },
     },
@@ -309,29 +420,8 @@ function toForm(model_dsl) {
       primary: "id",
       operation: {
         preset: { back: {}, save: { back: true } },
-        actions: [
-          {
-            title: "重新生成代码",
-            icon: "icon-layers",
-            action: {
-              "Studio.model": {
-                method: "CreateOne",
-                args: [model_dsl.table.name],
-              },
-            },
-          },
-          {
-            title: "删除",
-            icon: "icon-trash-2",
-            action: { "Form.delete": { pathname: "/x/Table/"+model_dsl.table.name } },
-            style: "danger",
-            confirm: {
-              title: "提示",
-              desc: "确认删除，删除后数据无法恢复？",
-            },
-          },
-        ],
       },
+      actions,
       form: {
         props: {},
         sections: [
@@ -346,11 +436,12 @@ function toForm(model_dsl) {
     },
   };
   /**
-   *   var res = {
+   *var res = {
     layout: [],
     fields: {},
   };
    */
+
   columns.forEach((column) => {
     var col = castFormColumn(column, model_dsl);
     if (col) {
@@ -366,17 +457,17 @@ function toForm(model_dsl) {
         delete ft.component.withs;
         tableTemplate.fields.form[ft.name] = ft.component;
       });
-
       // col.fields.filter.forEach((ff) => {});
     }
   });
+
   tableTemplate = Studio("selector.Table", tableTemplate, model_dsl);
   return tableTemplate;
 }
 function castFormColumn(column, model_dsl) {
   var types = getType();
   column = column || {};
-  const title = column.label;
+  const title = column.label || column.name;
   const name = column.name;
 
   const bind = `${name}`;
@@ -408,6 +499,7 @@ function castFormColumn(column, model_dsl) {
       props: {},
     },
   };
+
   if (column["type"] == "json") {
     var component = Studio("file.FormFile", column, false, model_dsl);
     if (!component) {
@@ -431,8 +523,11 @@ function castFormColumn(column, model_dsl) {
     }
   }
   var width = 8;
+
   component = Studio("selector.EditSelect", column, model_dsl, component);
+
   component = Studio("file.FormFile", column, component, model_dsl);
+
   if (component["is_image"]) {
     var width = 24;
   }

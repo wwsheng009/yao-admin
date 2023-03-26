@@ -4,6 +4,7 @@ function Create(menu_arr, type) {
   Studio("move.Move", "charts", "dashboard.chart.json");
   var dsl = Dsl(menu_arr, type);
   var dsl = JSON.stringify(dsl);
+  console.log(`create dashboard:/charts/dashboard.chart.json"`);
   fs.WriteFile("/charts/" + "dashboard.chart.json", dsl);
 }
 function Dsl(menu_arr, type) {

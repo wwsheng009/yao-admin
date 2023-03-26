@@ -16,13 +16,15 @@ function hasOne(table_name, all_table) {
 function hasOne_id(table_name, all_table) {
   // 先判断hasOne
   var foreign_id = table_name + "_id";
+  const model_name = Studio("file.DotName", table_name);
+
   for (var i in all_table) {
     var temp_column = all_table[i]["columns"];
     for (var j in temp_column) {
       if (temp_column[j]["name"] == foreign_id) {
         all_table[i]["relations"][table_name] = {
           type: "hasOne",
-          model: table_name,
+          model: model_name,
           key: "id",
           foreign: foreign_id,
           query: {},
@@ -35,13 +37,15 @@ function hasOne_id(table_name, all_table) {
 function hasOneID(table_name, all_table) {
   // 先判断hasOne
   var foreign_id = table_name + "ID";
+  const model_name = Studio("file.DotName", table_name);
+
   for (var i in all_table) {
     var temp_column = all_table[i]["columns"];
     for (var j in temp_column) {
       if (temp_column[j]["name"] == foreign_id) {
         all_table[i]["relations"][table_name] = {
           type: "hasOne",
-          model: table_name,
+          model: model_name,
           key: "id",
           foreign: foreign_id,
           query: {},
@@ -54,13 +58,15 @@ function hasOneID(table_name, all_table) {
 function hasOneId(table_name, all_table) {
   // 先判断hasOne
   var foreign_id = table_name + "Id";
+  const model_name = Studio("file.DotName", table_name);
+
   for (var i in all_table) {
     var temp_column = all_table[i]["columns"];
     for (var j in temp_column) {
       if (temp_column[j]["name"] == foreign_id) {
         all_table[i]["relations"][table_name] = {
           type: "hasOne",
-          model: table_name,
+          model: model_name,
           key: "id",
           foreign: foreign_id,
           query: {},
@@ -79,7 +85,10 @@ function hasOneId(table_name, all_table) {
  */
 function PrefixHasOne_id(table_name, all_table) {
   var prefix = Studio("schema.TablePrefix");
+
   if (prefix.length) {
+    const model_name = Studio("file.DotName", table_name);
+
     // 获取表前缀
     var target = Studio("schema.ReplacePrefix", prefix, table_name);
     var foreign_id = target + "_id";
@@ -90,7 +99,7 @@ function PrefixHasOne_id(table_name, all_table) {
         if (temp_column[j]["name"] == foreign_id) {
           all_table[i]["relations"][table_name] = {
             type: "hasOne",
-            model: table_name,
+            model: model_name,
             key: "id",
             foreign: foreign_id,
             query: {},
@@ -114,6 +123,7 @@ function PrefixhasOneID(table_name, all_table) {
     // 获取表前缀
     var target = Studio("schema.ReplacePrefix", prefix, table_name);
     var foreign_id = target + "ID";
+    const model_name = Studio("file.DotName", table_name);
 
     for (var i in all_table) {
       var temp_column = all_table[i]["columns"];
@@ -121,7 +131,7 @@ function PrefixhasOneID(table_name, all_table) {
         if (temp_column[j]["name"] == foreign_id) {
           all_table[i]["relations"][table_name] = {
             type: "hasOne",
-            model: table_name,
+            model: model_name,
             key: "id",
             foreign: foreign_id,
             query: {},
@@ -145,6 +155,7 @@ function PrefixhasOneId(table_name, all_table) {
     // 获取表前缀
     var target = Studio("schema.ReplacePrefix", prefix, table_name);
     var foreign_id = target + "Id";
+    const model_name = Studio("file.DotName", table_name);
 
     for (var i in all_table) {
       var temp_column = all_table[i]["columns"];
@@ -152,7 +163,7 @@ function PrefixhasOneId(table_name, all_table) {
         if (temp_column[j]["name"] == foreign_id) {
           all_table[i]["relations"][table_name] = {
             type: "hasOne",
-            model: table_name,
+            model: model_name,
             key: "id",
             foreign: foreign_id,
             query: {},

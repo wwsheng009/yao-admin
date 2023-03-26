@@ -13,7 +13,7 @@ function Create(model_dsl) {
   });
 
   for (var i in model_dsl) {
-    var name = model_dsl[i]["table"]["name"];
+    var name = Studio("file.DotName", model_dsl[i]["table"]["name"]);
 
     var item = {
       name: model_dsl[i].name,
@@ -44,17 +44,36 @@ function Create(model_dsl) {
       insert.push(item);
     }
   }
-  Studio("move.Mkdir", "flows");
+  // Studio("move.Mkdir", "flows");
   Studio("move.Mkdir", "flows/app");
   var fs = new FS("dsl");
 
   var dsl = {
     name: "APP Menu",
     nodes: [],
-    output: insert,
+    output: {
+      items: insert,
+      setting: [
+        {
+          icon: "icon-settings",
+          id: 999999,
+          name: "设置",
+          path: "/setting",
+          children: [
+            {
+              id: 10002,
+              name: "系统设置",
+              path: "/setting",
+            },
+          ],
+        },
+      ],
+    },
   };
 
   var dsl = JSON.stringify(dsl);
+  console.log(`create menu:/flows/app/menu.flow.json`);
+
   fs.WriteFile("/flows/app/menu.flow.json", dsl);
 
   // 创建看板

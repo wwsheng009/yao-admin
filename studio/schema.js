@@ -18,7 +18,7 @@ function GetTableName() {
 /**
  * 分析关联关系处理器
  * @param {*} type
- * yao run scripts.schema.Relation
+ * yao studio run schema.Relation
  */
 function Relation() {
   var all_table = GetTableName();
@@ -37,7 +37,7 @@ function Relation() {
     if (guards.indexOf(all_table[i]) != -1) {
       continue;
     }
-
+    console.log(`process table Relation:${all_table[i]}`);
     var col = GetTable(all_table[i]);
     //col.columns = Studio("relation.BatchTranslate", col.columns);
     // console.log(col.columns);
@@ -48,7 +48,11 @@ function Relation() {
       if (col.columns[j]["name"] == "id" || col.columns[j]["name"] === "ID") {
         id_flag = true;
       }
-      // col.columns[j]["label"] = FieldHandle(col.columns[j]["label"]);
+      if (col.columns[j]["label"]) {
+        col.columns[j]["label"] = FieldHandle(col.columns[j]["label"]);
+      } else {
+        col.columns[j]["label"] = col.columns[j]["name"];
+      }
       if (col.columns[j]["type"] == "dateTime") {
         col.columns[j]["type"] = "datetime";
       }
@@ -76,6 +80,7 @@ function Relation() {
     col.decription = col.name;
     col.table = {};
     col.table.name = all_table[i];
+    // console.log("col.table.name", col.table.name);
     col.table.comment = col.name;
     col.relations = {};
     var parent = Studio("relation.parent", all_table[i], col.columns, col);
@@ -85,14 +90,16 @@ function Relation() {
   }
 
   table_arr = Studio("relation.other", table_arr);
+  // console.log("debugger:===>relation.BatchModel");
 
-  table_arr = Studio("relation.BatchModel", table_arr);
+  // table_arr = Studio("relation.BatchModel", table_arr);
+  // console.log("debugger:===>relation.BatchModel down");
 
   return table_arr;
 }
 
 function FieldHandle(label) {
-  if (label.length >= 8) {
+  if (label && label.length >= 8) {
     var label = label.split(";")[0];
     var label = label.split("；")[0];
     var label = label.split("，")[0];

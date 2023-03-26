@@ -5,7 +5,7 @@ function select(relation_name, relation) {
   if (!res) {
     var res = Other(column);
   }
-  CreateScripts(relation_name, res, relation);
+  //CreateScripts(relation_name, res, relation);
   return res;
 }
 

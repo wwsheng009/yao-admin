@@ -4,11 +4,13 @@
 function Move(dir, name) {
   const fs = new FS("dsl");
   var base_dir = ".trash";
+
   // 判断文件夹是否存在.不存在就创建
   Mkdir(base_dir);
   var new_dir = parseInt(Date.now() / 1000);
   // models的文件移动到
   var target_name = dir + "/" + name;
+
   // 如果表已经存在,则
   if (Exists(dir, name)) {
     Mkdir(base_dir + "/" + new_dir);
@@ -24,7 +26,7 @@ function Mkdir(name) {
   const fs = new FS("dsl");
   var res = fs.Exists(name);
   if (res !== true) {
-    fs.Mkdir(name);
+    fs.MkdirAll(name);
   }
 }
 
