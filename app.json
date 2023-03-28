@@ -11,7 +11,7 @@
     ]
   },
   "setup": "studio.model.Create",
-  "adminRoot": "yao",
+  "adminRoot": "admin",
   "optional": {
     "hideNotification": true,
     "hideSetting": false

@@ -19,6 +19,7 @@ function ImagesEdit(value, type, name, model_name) {
       if (dsl["columns"][i]["type"] == "json") {
         return value[name];
       } else {
+        console.log("ImagesEdit", JSON.stringify(value[name]));
         return JSON.stringify(value[name]);
       }
     }

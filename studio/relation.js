@@ -1,3 +1,4 @@
+// import { Process, Studio } from "yao-node-client";
 const parents = ["parent", "parent_id", "pid"];
 const children = ["children", "children_id", "child", "child_id"];
 /**
@@ -6,25 +7,20 @@ const children = ["children", "children_id", "child", "child_id"];
  * @param {*} columns
  * @param {*} table_struct
  */
-function child(model_name, columns, table_struct) {
-  for (var i in columns) {
-    if (columns[i]["type"] != "integer") {
-      continue;
+function child(modelName, columns, tableStruct) {
+    const dotName = Studio("file.DotName", modelName);
+    const childColumns = columns.filter((column) => column.type === "integer" && children.includes(column.name));
+    if (childColumns.length > 0) {
+        tableStruct.relations.children = {
+            type: "hasMany",
+            model: dotName,
+            key: childColumns[0].name,
+            foreign: "id",
+            query: {},
+        };
     }
-    if (children.indexOf(columns[i]["name"]) != -1) {
-      table_struct.relations.children = {
-        type: "hasMany",
-        model: Studio("file.DotName", model_name),
-        key: columns[i]["name"],
-        foreign: "id",
-        query: {},
-      };
-      return table_struct;
-    }
-  }
-  return table_struct;
+    return tableStruct;
 }
-
 /**
  * 分析子集
  * @param {*} model_name
@@ -33,101 +29,71 @@ function child(model_name, columns, table_struct) {
  * @returns
  */
 function parent(model_name, columns, table_struct) {
-  for (var i in columns) {
-    if (columns[i]["type"] != "integer") {
-      continue;
+    const dotName = Studio("file.DotName", model_name);
+    const parentColumn = columns.find((column) => column.type === "integer" && parents.includes(column.name));
+    if (parentColumn) {
+        table_struct.relations.parent = {
+            type: "hasOne",
+            model: dotName,
+            key: "id",
+            foreign: parentColumn.name,
+            query: {},
+        };
     }
-    if (parents.indexOf(columns[i]["name"]) != -1) {
-      table_struct.relations.parent = {
-        type: "hasOne",
-        model: Studio("file.DotName", model_name),
-        key: "id",
-        foreign: columns[i]["name"],
-        query: {},
-      };
-      return table_struct;
-    }
-  }
-  return table_struct;
+    return table_struct;
 }
-
 function other(all_table_struct) {
-  for (var i in all_table_struct) {
-    console.log(
-      `process table Relation:${all_table_struct[i]["table"]["name"]}`
-    );
-
-    var temp = all_table_struct[i]["columns"];
-    all_table_struct = Studio(
-      "hasone.hasOne",
-      all_table_struct[i]["table"]["name"],
-      all_table_struct
-    );
-    for (var j in temp) {
-      all_table_struct = Studio(
-        "hasmany.hasMany",
-        all_table_struct[i]["table"]["name"],
-        temp[j].name,
-        all_table_struct
-      );
+    for (const table of all_table_struct) {
+        const columns = table.columns;
+        all_table_struct = hasOne(table.table.name, all_table_struct);
+        for (const column of columns) {
+            all_table_struct = hasMany(table.table.name, column.name, all_table_struct);
+        }
     }
-    //console.log("debugger:===>done", all_table_struct[i]["table"]["name"]);
-  }
-  return all_table_struct;
+    return all_table_struct;
 }
-
-// yao studio run relation.translate icon
-function translate(keywords) {
-  if (keywords == "id" || keywords == "ID") {
-    return "id";
-  }
-  // var keywords = keywords.split("_");
-  //console.log(keywords);
-  // var url = "https://brain.yaoapps.com/api/keyword/column";
-  // let response = Process(
-  //   "xiang.network.PostJSON",
-  //   url,
-  //   {
-  //     keyword: keywords,
-  //   },
-  //   {}
-  // );
-  var res = keywords;
-  // if (response.status == 200) {
-  //   if (response.data.data) {
-  //     var res = "";
-  //     for (var i in response.data.data) {
-  //       var res = res + response.data.data[i]["label"];
-  //     }
-  //   }
-  // }
-  return res;
+// yao studio run relation.translate member_id
+function translate(keywordsIn) {
+    if (keywordsIn.includes("_id")) {
+        console.log(`id_colume:${keywordsIn}`);
+    }
+    if (keywordsIn == "id" || keywordsIn == "ID") {
+        return "id";
+    }
+    let keywords = keywordsIn.split("_");
+    let url = "https://brain.yaoapps.com/api/keyword/column";
+    let response = Process("xiang.network.PostJSON", url, {
+        keyword: keywords,
+    }, {});
+    let res = keywordsIn;
+    if (response.status == 200) {
+        if (response.data.data) {
+            res = "";
+            for (let i in response.data.data) {
+                res = res + response.data.data[i]["label"];
+            }
+        }
+    }
+    return res;
 }
-
 /**
  * 批量翻译
  * @param {*} keywords
  * @returns
  */
 function BatchTranslate(keywords) {
-  return keywords;
-  // var url = "https://brain.yaoapps.com/api/keyword/batch_column";
-  // let response = Process(
-  //   "xiang.network.PostJSON",
-  //   url,
-  //   {
-  //     keyword: keywords,
-  //   },
-  //   {}
-  // );
-  // var res = keywords;
-  // if (response.status == 200) {
-  //   if (response.data.data) {
-  //     // console.log(response.data.data);
-  //     return response.data.data;
-  //   }
-  // }
-  // return res;
+    // return keywords;
+    let url = "https://brain.yaoapps.com/api/keyword/batch_column";
+    let response = Process("xiang.network.PostJSON", url, {
+        keyword: keywords,
+    }, {});
+    if (response.status == 200) {
+        if (response.data.data) {
+            // console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+    return keywords;
 }
 /**
  * Model dsl全部翻译翻译
@@ -135,23 +101,62 @@ function BatchTranslate(keywords) {
  * @returns
  */
 function BatchModel(keywords) {
-  return keywords;
-  // var url = "https://brain.yaoapps.com/api/keyword/batch_model";
-  // let response = Process(
-  //   "xiang.network.PostJSON",
-  //   url,
-  //   {
-  //     keyword: keywords,
-  //   },
-  //   {}
-  // );
-
-  // var res = keywords;
-  // if (response.status == 200) {
-  //   if (response.data.data) {
-  //     // console.log(response.data.data);
-  //     return response.data.data;
-  //   }
-  // }
-  // return res;
+    let url = "https://brain.yaoapps.com/api/keyword/batch_model";
+    let response = Process("xiang.network.PostJSON", url, {
+        keyword: keywords,
+    }, {});
+    if (response.status == 200) {
+        if (response.data.data) {
+            // console.log(response.data.data);
+            return response.data.data;
+        }
+    }
+    return keywords;
+}
+function hasOne(table_name, all_table) {
+    const foreignIds = [`${table_name}_id`, `${table_name}ID`, `${table_name}Id`];
+    const prefix = Studio("schema.TablePrefix");
+    if (prefix.length) {
+        foreignIds.push(`${Studio("schema.ReplacePrefix", prefix, table_name)}_id`);
+        foreignIds.push(`${Studio("schema.ReplacePrefix", prefix, table_name)}ID`);
+        foreignIds.push(`${Studio("schema.ReplacePrefix", prefix, table_name)}Id`);
+    }
+    const dotName = Studio("file.DotName", table_name);
+    return all_table.map((table) => {
+        table.columns.forEach((column) => {
+            if (foreignIds.includes(column.name)) {
+                table.relations[table_name] = {
+                    type: "hasOne",
+                    model: dotName,
+                    key: "id",
+                    foreign: column.name,
+                    query: {},
+                };
+            }
+        });
+        return table;
+    });
+}
+function hasMany(tableName, fieldName, allTables) {
+    const relationSuffixes = ["_id", "_ID", "_Id"];
+    const tablePrefixes = Studio("schema.TablePrefix");
+    const dotName = Studio("file.DotName", tableName);
+    for (const suffix of relationSuffixes) {
+        for (const table of allTables) {
+            if (fieldName.endsWith(suffix)) {
+                const target = fieldName.replace(suffix, "");
+                if (target === table.table.name ||
+                    tablePrefixes.some((prefix) => `${prefix}_${target}` === table.table.name)) {
+                    table.relations[tableName] = {
+                        type: "hasMany",
+                        model: dotName,
+                        key: fieldName,
+                        foreign: "id",
+                        query: {},
+                    };
+                }
+            }
+        }
+    }
+    return allTables;
 }
