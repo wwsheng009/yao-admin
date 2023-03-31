@@ -28,6 +28,22 @@
           "width": 6
         },
         {
+          "name": "sys.domain记录数",
+          "width": 6
+        },
+        {
+          "name": "sys.element记录数",
+          "width": 6
+        },
+        {
+          "name": "sys.table.field记录数",
+          "width": 6
+        },
+        {
+          "name": "sys.table.name记录数",
+          "width": 6
+        },
+        {
           "name": "yao.demo.pet记录数",
           "width": 6
         }
@@ -58,6 +74,46 @@
       "cms.help记录数": {
         "bind": "cms_help",
         "link": "/x/Table/cms.help",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "sys.domain记录数": {
+        "bind": "sys_domain",
+        "link": "/x/Table/sys.domain",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "sys.element记录数": {
+        "bind": "sys_element",
+        "link": "/x/Table/sys.element",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "sys.table.field记录数": {
+        "bind": "sys_table_field",
+        "link": "/x/Table/sys.table.field",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "sys.table.name记录数": {
+        "bind": "sys_table_name",
+        "link": "/x/Table/sys.table.name",
         "view": {
           "type": "Number",
           "props": {

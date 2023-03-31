@@ -1,0 +1,42 @@
+{
+  "name": "::Model",
+  "table": { "name": "sys_model", "comment": "业务模型" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "表名"
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "unique": true
+    },
+    {
+      "label": "备注",
+      "name": "comment",
+      "type": "string",
+      "length": 200,
+      "comment": "对应数据表中字段注释"
+    },
+
+    {
+      "label": "描述",
+      "name": "description",
+      "type": "text",
+      "comment": "介绍"
+    }
+  ],
+  "relations": {
+    "fields": {
+      "type": "hasMany",
+      "model": "sys.model.field",
+      "key": "mode_id",
+      "foreign": "id"
+    }
+  },
+  "option": {}
+}

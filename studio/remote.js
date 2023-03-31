@@ -25,12 +25,8 @@ function Speculation(columns) {
     return false;
 }
 function GetTarget(target, columns) {
-    for (const column of columns) {
-        if (column.name.includes(target)) {
-            return column.name;
-        }
-    }
-    return false;
+    const columnNames = columns.map((col) => col.name);
+    return columnNames.find((name) => name.includes(target)) ?? false;
 }
 /**
  * 没有其他的话,就找个string类型的
@@ -38,12 +34,8 @@ function GetTarget(target, columns) {
  * @returns
  */
 function Other(columns) {
-    for (const i in columns) {
-        if (columns[i].type == "string") {
-            return columns[i].name;
-        }
-    }
-    return "id";
+    const stringColumn = columns.find((col) => col.type === "string");
+    return stringColumn?.name ?? "id";
 }
 /**
  * 生成查询的js脚本

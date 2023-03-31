@@ -1,0 +1,362 @@
+{
+  "fields": {
+    "filter": {
+      "字段所属的表": {
+        "bind": "where.domain_id.in",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "sys.domain",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        }
+      },
+      "name": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入name"
+          }
+        }
+      },
+      "字段标题": {
+        "bind": "where.title.match",
+        "edit": {
+          "props": {
+            "placeholder": "请输入字段标题"
+          },
+          "type": "Input",
+          "compute": "Trim"
+        }
+      }
+    },
+    "table": {
+      "字段所属的表": {
+        "bind": "domain_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "value": "id",
+                  "model": "sys.domain",
+                  "label": "name"
+                }
+              }
+            }
+          },
+          "type": "Select"
+        }
+      },
+      "name": {
+        "bind": "name",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "name",
+          "props": {}
+        }
+      },
+      "字段介绍": {
+        "bind": "description",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "description",
+          "props": {}
+        }
+      },
+      "字段注释": {
+        "bind": "comment",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "comment",
+          "props": {},
+          "type": "TextArea"
+        }
+      },
+      "字段位数(含小数位)": {
+        "bind": "precision",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "precision",
+          "props": {}
+        }
+      },
+      "字段小数位位数": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "scale"
+        },
+        "bind": "scale"
+      },
+      "字段加密存储方式": {
+        "bind": "crypt",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "crypt",
+          "props": {}
+        }
+      },
+      "标识": {
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {}
+        }
+      },
+      "字段标题": {
+        "bind": "title",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "title",
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "字段长度": {
+        "bind": "length",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "length"
+        }
+      },
+      "字段是否可以为空": {
+        "edit": {
+          "bind": "nullable",
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "nullable",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "string|number|float|字段默认值": {
+        "bind": "default",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "bind": "default",
+          "props": {},
+          "type": "Input"
+        }
+      }
+    }
+  },
+  "name": "要素_详细信息",
+  "action": {
+    "bind": {
+      "model": "sys.element",
+      "option": {
+        "withs": {
+          "sys_domain": {}
+        },
+        "option": {
+          "form": "sys.element"
+        }
+      }
+    }
+  },
+  "layout": {
+    "table": {
+      "columns": [
+        {
+          "name": "字段所属的表",
+          "width": 250
+        },
+        {
+          "name": "name",
+          "width": 200
+        },
+        {
+          "width": 200,
+          "name": "字段标题"
+        },
+        {
+          "name": "字段介绍",
+          "width": 200
+        },
+        {
+          "name": "字段注释",
+          "width": 200
+        },
+        {
+          "name": "字段长度",
+          "width": 200
+        },
+        {
+          "name": "字段位数(含小数位)",
+          "width": 250
+        },
+        {
+          "name": "字段小数位位数",
+          "width": 250
+        },
+        {
+          "name": "字段是否可以为空",
+          "width": 250
+        },
+        {
+          "name": "string|number|float|字段默认值",
+          "width": 250
+        },
+        {
+          "width": 250,
+          "name": "字段加密存储方式"
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "sys.element",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "title": "编辑",
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "sys.element"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "content": "删除后不可撤销！",
+                  "title": "确认删除"
+                }
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "sys.element"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "字段所属的表",
+          "width": 4
+        },
+        {
+          "name": "name",
+          "width": 4
+        },
+        {
+          "name": "字段标题",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3,
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "model": "sys.element",
+                  "type": "edit"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

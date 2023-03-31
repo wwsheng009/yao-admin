@@ -1,6 +1,6 @@
 {
-  "name": "::Field",
-  "table": { "name": "sys_table_field", "comment": "字段列表" },
+  "name": "::Model Field",
+  "table": { "name": "sys_model_field", "comment": "模型字段列表" },
   "columns": [
     {
       "name": "id",
@@ -9,10 +9,24 @@
       "comment": "表名"
     },
     {
-      "name": "table_id",
+      "name": "model_id",
       "type": "integer",
-      "label": "表ID",
-      "comment": "字段所属的表",
+      "label": "模型标识",
+      "comment": "字段所属的模型",
+      "nullable": false
+    },
+    {
+      "name": "domain_id",
+      "type": "integer",
+      "label": "域",
+      "comment": "域ID",
+      "nullable": true
+    },
+    {
+      "name": "element_id",
+      "type": "integer",
+      "label": "数据元素",
+      "comment": "数据元素ID",
       "nullable": true
     },
     {
@@ -59,8 +73,7 @@
     {
       "label": "备注",
       "name": "comment",
-      "type": "string",
-      "length": 200,
+      "type": "text",
       "comment": "字段注释，对应数据表中字段注释"
     },
     {
@@ -82,7 +95,7 @@
       "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
     },
     {
-      "label": "空值",
+      "label": "是否空值",
       "name": "nullable",
       "type": "boolean",
       "default": false,
@@ -143,12 +156,18 @@
     }
   ],
   "relations": {
-    "table": {
+    "model": {
       "type": "hasOne",
-      "model": "sys.table",
+      "model": "sys.model",
       "key": "id",
-      "foreign": "table_id"
+      "foreign": "model_id"
+    },
+    "domain": {
+      "type": "hasOne",
+      "model": "sys.domain",
+      "key": "id",
+      "foreign": "domain_id"
     }
   },
-  "option": { "timestamps": true, "soft_deletes": true }
+  "option": {}
 }

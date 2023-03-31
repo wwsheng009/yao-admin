@@ -1,0 +1,69 @@
+{
+  "name": "::Table Action",
+  "table": { "name": "sys_table_action", "comment": "表格动作" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "表名"
+    },
+    {
+      "name": "table_id",
+      "type": "integer",
+      "label": "所属表格",
+      "comment": "字段所属的表格",
+      "nullable": false
+    },
+    {
+      "label": "标题",
+      "name": "title",
+      "type": "string",
+      "length": 80,
+      "comment": "标题"
+    },
+    {
+      "label": "图标",
+      "name": "icon",
+      "type": "string",
+      "length": 80,
+      "comment": "图标"
+    },
+    {
+      "label": "样式",
+      "name": "style",
+      "type": "string",
+      "length": 80,
+      "comment": "按钮样式"
+    },
+    {
+      "label": "修改时显示",
+      "name": "showWhenAdd",
+      "type": "boolean",
+      "default": true,
+      "comment": "表单修改数据时显示"
+    },
+    {
+      "label": "查看时显示",
+      "name": "showWhenView",
+      "type": "boolean",
+      "default": true,
+      "comment": "表单修改数据时显示"
+    },
+    {
+      "label": "操作",
+      "name": "action",
+      "type": "json",
+      "comment": "Action列表"
+    }
+  ],
+  "relations": {
+    "form": {
+      "type": "hasOne",
+      "model": "sys.form",
+      "key": "id",
+      "foreign": "form_id"
+    }
+  },
+  "option": {}
+}

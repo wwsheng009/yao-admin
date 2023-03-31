@@ -54,12 +54,13 @@ function other(all_table_struct) {
 }
 // yao studio run relation.translate member_id
 function translate(keywordsIn) {
-    if (keywordsIn.includes("_id")) {
-        console.log(`id_colume:${keywordsIn}`);
+    let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
+    if (!useTranslate) {
+        return keywordsIn;
     }
-    if (keywordsIn == "id" || keywordsIn == "ID") {
-        return "id";
-    }
+    // if (/_id/i.test(keywordsIn)) {
+    //   console.log(`id_colume:${keywordsIn}`);
+    // }
     let keywords = keywordsIn.split("_");
     let url = "https://brain.yaoapps.com/api/keyword/column";
     let response = Process("xiang.network.PostJSON", url, {
@@ -82,6 +83,10 @@ function translate(keywordsIn) {
  * @returns
  */
 function BatchTranslate(keywords) {
+    let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
+    if (!useTranslate) {
+        return keywords;
+    }
     // return keywords;
     let url = "https://brain.yaoapps.com/api/keyword/batch_column";
     let response = Process("xiang.network.PostJSON", url, {
@@ -101,9 +106,24 @@ function BatchTranslate(keywords) {
  * @returns
  */
 function BatchModel(keywords) {
+    let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
+    if (!useTranslate) {
+        return keywords;
+    }
+    const models = keywords;
+    models.forEach((model) => {
+        model.columns.forEach((col) => {
+            col.label = Studio("relation.translate", col.label); //col.label.replace(/_id$/i, "");
+            // col.name = col.name.replace(/_id$/i, "");
+        });
+        model.comment = Studio("relation.translate", model.name);
+        model.table.comment = model.table.name;
+        model.table.name = Studio("relation.translate", model.table.name);
+    });
+    return models;
     let url = "https://brain.yaoapps.com/api/keyword/batch_model";
     let response = Process("xiang.network.PostJSON", url, {
-        keyword: keywords,
+        keyword: models,
     }, {});
     if (response.status == 200) {
         if (response.data.data) {

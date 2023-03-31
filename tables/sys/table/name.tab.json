@@ -1,0 +1,202 @@
+{
+  "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "name",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "sys.table.name"
+                }
+              }
+            }
+          ],
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "name",
+          "width": 200
+        },
+        {
+          "name": "表",
+          "width": 200
+        },
+        {
+          "name": "表介绍",
+          "width": 200
+        },
+        {
+          "width": 200,
+          "name": "user"
+        }
+      ],
+      "operation": {
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "sys.table.name",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "title": "编辑",
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "sys.table.name"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "content": "删除后不可撤销！",
+                  "title": "确认删除"
+                }
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "sys.table.name"
+                }
+              }
+            ]
+          }
+        ],
+        "fold": false
+      }
+    }
+  },
+  "fields": {
+    "filter": {
+      "name": {
+        "bind": "where.name.match",
+        "edit": {
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入name"
+          },
+          "type": "Input"
+        }
+      }
+    },
+    "table": {
+      "表名": {
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {}
+        },
+        "bind": "id",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "name": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "name"
+        },
+        "bind": "name"
+      },
+      "表": {
+        "bind": "comment",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "bind": "comment",
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "表介绍": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "TextArea",
+          "bind": "description",
+          "props": {}
+        },
+        "bind": "description"
+      },
+      "user": {
+        "bind": "user",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "user"
+        }
+      }
+    }
+  },
+  "name": "桌子名称",
+  "action": {
+    "bind": {
+      "model": "sys.table.name",
+      "option": {
+        "withs": {},
+        "option": {
+          "form": "sys.table.name"
+        }
+      }
+    }
+  }
+}

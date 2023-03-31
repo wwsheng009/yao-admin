@@ -1,18 +1,28 @@
 {
-  "description": "Domain",
-  "name": "::Domain",
+  "description": "数据元素",
+  "name": "::Data Element",
   "option": {},
   "table": {
-    "name": "sys_domain",
-    "comment": "领域"
+    "name": "sys_element",
+    "comment": "数据元素"
   },
   "columns": [
     {
+      "precision": 20,
       "primary": true,
       "type": "ID",
       "comment": "标识",
       "label": "标识",
       "name": "id"
+    },
+    {
+      "default": 0,
+      "label": "字段所属的表",
+      "name": "domain_id",
+      "nullable": true,
+      "precision": 10,
+      "type": "integer",
+      "comment": "字段所属的表"
     },
     {
       "label": "name",
@@ -22,45 +32,45 @@
       "unique": true
     },
     {
+      "name": "title",
+      "type": "string",
       "comment": "字段标题",
       "label": "字段标题",
-      "length": 80,
-      "name": "title",
-      "type": "string"
+      "length": 80
     },
     {
-      "length": 400,
       "name": "description",
       "type": "string",
       "comment": "字段介绍",
-      "label": "字段介绍"
+      "label": "字段介绍",
+      "length": 400
     },
     {
+      "name": "comment",
       "type": "text",
       "comment": "字段注释",
-      "label": "字段注释",
-      "name": "comment"
+      "label": "字段注释"
     },
     {
-      "comment": "字段长度，对string等类型字段有效",
+      "comment": "字段长度，对 `string` 等类型字段有效",
       "label": "字段长度",
       "name": "length",
       "precision": 10,
       "type": "integer"
     },
     {
+      "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效",
+      "label": "字段位数(含小数位)",
       "name": "precision",
       "precision": 10,
-      "type": "integer",
-      "comment": "字段位数(含小数位)，对float、decimal等类型字段有效",
-      "label": "字段位数(含小数位)"
+      "type": "integer"
     },
     {
-      "type": "integer",
-      "comment": "字段小数位位数，对float、decimal等类型字段有效",
       "label": "字段小数位位数",
       "name": "scale",
-      "precision": 10
+      "precision": 10,
+      "type": "integer",
+      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
     },
     {
       "type": "tinyInteger",
@@ -71,31 +81,40 @@
       "precision": 3
     },
     {
-      "comment": "字段许可值，对enum类型字段有效",
       "label": "字段许可值",
       "name": "option",
-      "type": "json"
+      "type": "json",
+      "comment": "字段许可值，对 `enum` 类型字段有效"
     },
     {
+      "name": "default",
       "type": "string",
       "comment": "string|number|float|字段默认值",
-      "label": "string|number|float|字段默认值",
-      "length": 200,
-      "name": "default"
-    },
-    {
-      "name": "crypt",
-      "type": "string",
-      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
-      "label": "字段加密存储方式",
+      "label": "字段默认值",
       "length": 200
     },
     {
-      "label": "字段校验规则",
-      "name": "validations",
+      "type": "string",
+      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
+      "label": "字段加密存储方式",
+      "length": 200,
+      "name": "crypt"
+    },
+    {
       "type": "json",
-      "comment": "字段校验规则"
+      "comment": "字段校验规则",
+      "label": "字段校验规则",
+      "name": "validations"
     }
   ],
-  "relations": {}
+
+  "relations": {
+    "sys_domain": {
+      "type": "hasOne",
+      "foreign": "domain_id",
+      "key": "id",
+      "model": "sys.domain",
+      "query": {}
+    }
+  }
 }

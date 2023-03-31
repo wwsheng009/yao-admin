@@ -1,0 +1,126 @@
+{
+  "name": "::Table Field",
+  "table": { "name": "sys_table_field", "comment": "表格字段列表" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "表名"
+    },
+    {
+      "name": "table_id",
+      "type": "integer",
+      "label": "表格标识",
+      "comment": "字段所属的表格",
+      "nullable": false
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "unique": true,
+      "nullable": false,
+      "comment": "字段名称"
+    },
+    {
+      "label": "绑定字段",
+      "name": "bind",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "绑定的模型字段"
+    },
+    {
+      "label": "编辑类型",
+      "name": "edit_type",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "编辑控件类型"
+    },
+    {
+      "label": "编辑属性",
+      "name": "edit_props",
+      "type": "json",
+      "comment": "编辑控件属性"
+    },
+    {
+      "label": "查看类型",
+      "name": "view_type",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "查看控件类型"
+    },
+    {
+      "label": "查看属性",
+      "name": "view_props",
+      "type": "json",
+      "comment": "查看控件属性"
+    },
+    {
+      "label": "描述",
+      "name": "description",
+      "type": "string",
+      "length": 400,
+      "comment": "字段介绍"
+    },
+    {
+      "label": "显示长度",
+      "name": "width",
+      "type": "integer",
+      "comment": "字段显示长度"
+    },
+    {
+      "label": "是否必输",
+      "name": "required",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否是否必输"
+    },
+    {
+      "label": "选项",
+      "name": "option",
+      "type": "json",
+      "comment": "字段许可值"
+    },
+    {
+      "label": "默认值",
+      "name": "default",
+      "type": "string",
+      "comment": "字段默认值"
+    },
+    {
+      "label": "启用",
+      "name": "enable",
+      "type": "boolean",
+      "default": true,
+      "comment": "启用"
+    },
+    {
+      "label": "是否显示",
+      "name": "is_dispaly",
+      "type": "boolean",
+      "default": true,
+      "comment": "是否显示"
+    },
+    {
+      "label": "是否编辑",
+      "name": "is_edit",
+      "type": "boolean",
+      "default": true,
+      "comment": "是否编辑"
+    }
+  ],
+  "relations": {
+    "table": {
+      "type": "hasOne",
+      "model": "sys.table",
+      "key": "id",
+      "foreign": "table_id"
+    }
+  },
+  "option": {}
+}

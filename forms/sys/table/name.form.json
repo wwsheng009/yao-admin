@@ -1,0 +1,157 @@
+{
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {}
+      },
+      "model": "sys.table.name"
+    }
+  },
+  "layout": {
+    "actions": [
+      {
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "sys.table.name"
+              ]
+            },
+            "name": "StudioModel",
+            "type": "Studio.model"
+          },
+          {
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
+          }
+        ],
+        "title": "重新生成代码"
+      },
+      {
+        "action": [
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "CloseModal"
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true
+      },
+      {
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "payload": {},
+            "name": "Submit",
+            "type": "Form.submit"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "title": "保存"
+      },
+      {
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
+          },
+          {
+            "payload": {
+              "model": "sys.table.name"
+            },
+            "type": "Form.delete",
+            "name": "Delete"
+          },
+          {
+            "payload": {},
+            "name": "Back",
+            "type": "Common.closeModal"
+          }
+        ],
+        "icon": "icon-trash-2"
+      }
+    ],
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "name",
+              "width": 8
+            },
+            {
+              "name": "表",
+              "width": 8
+            },
+            {
+              "name": "表介绍",
+              "width": 8
+            },
+            {
+              "name": "user",
+              "width": 8
+            }
+          ]
+        }
+      ],
+      "props": {}
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "user": {
+        "bind": "user",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "name": {
+        "edit": {
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "name"
+      },
+      "表": {
+        "bind": "comment",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "表介绍": {
+        "bind": "description",
+        "edit": {
+          "type": "TextArea",
+          "props": {}
+        }
+      }
+    }
+  },
+  "name": "桌子名称"
+}

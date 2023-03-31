@@ -7,7 +7,7 @@ function Move(dir, name) {
     const base_dir = ".trash";
     // 判断文件夹是否存在.不存在就创建
     Mkdir(base_dir);
-    const new_dir = String(Date.now() / 1000);
+    const new_dir = Math.floor(Date.now() / 1000);
     // models的文件移动到
     const target_name = dir + "/" + name;
     // 如果表已经存在,则

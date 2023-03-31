@@ -175,7 +175,6 @@ function toTable(model_dsl) {
     };
     columns.forEach((column) => {
         let col = castTableColumn(column, model_dsl);
-        // console.log("col:", col);
         if (col) {
             // col.layout.filter.columns.forEach((fc) => {});
             col.layout.table.columns.forEach((tc) => {
@@ -203,7 +202,7 @@ function toTable(model_dsl) {
 }
 function castTableColumn(column, model_dsl) {
     // const props = column.props || {};
-    const title = column.label || column.name;
+    let title = column.label || column.name;
     const name = column.name;
     // 不展示隐藏列
     let hidden = Hidden(true);
@@ -217,6 +216,11 @@ function castTableColumn(column, model_dsl) {
         log.Error("castTableColumn: missing name");
         return false;
     }
+    // let newTitle = title;
+    // if (/_id$/i.test(newTitle)) {
+    //   title = newTitle.replace(/_id$/i, "");
+    // }
+    // title = Studio("relation.translate", title);
     if (!title) {
         // console.log("castTableColumn: missing title");
         log.Error("castTableColumn: missing title");

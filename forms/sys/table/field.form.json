@@ -1,0 +1,355 @@
+{
+  "name": "桌子领域",
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {
+          "sys_domain": {},
+          "sys_element": {}
+        }
+      },
+      "model": "sys.table.field"
+    }
+  },
+  "layout": {
+    "form": {
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 8,
+              "name": "字段所属的表"
+            },
+            {
+              "width": 8,
+              "name": "域ID"
+            },
+            {
+              "name": "数据元素ID",
+              "width": 8
+            },
+            {
+              "name": "字段显示名称",
+              "width": 8
+            },
+            {
+              "name": "数据库表的字段名",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "字段类型"
+            },
+            {
+              "width": 8,
+              "name": "字段标题"
+            },
+            {
+              "name": "字段介绍",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "字段注释"
+            },
+            {
+              "width": 8,
+              "name": "字段长度"
+            },
+            {
+              "width": 8,
+              "name": "字段位数(含小数位)"
+            },
+            {
+              "width": 8,
+              "name": "字段小数位位数"
+            },
+            {
+              "width": 8,
+              "name": "字段是否可以为空"
+            },
+            {
+              "width": 8,
+              "name": "string|number|float|字段默认值"
+            },
+            {
+              "name": "字段加密存储方式",
+              "width": 8
+            },
+            {
+              "name": "字段是否为索引",
+              "width": 8
+            },
+            {
+              "name": "字段是否为唯一索引",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "字段是否为主键"
+            },
+            {
+              "name": "user",
+              "width": 8
+            }
+          ]
+        }
+      ],
+      "props": {}
+    },
+    "primary": "id",
+    "actions": [
+      {
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "StudioModel",
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "sys.table.field"
+              ]
+            }
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            }
+          }
+        ],
+        "title": "重新生成代码"
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "CloseModal"
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left"
+      },
+      {
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ],
+        "title": "保存"
+      },
+      {
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            },
+            "name": "Confirm"
+          },
+          {
+            "type": "Form.delete",
+            "name": "Delete",
+            "payload": {
+              "model": "sys.table.field"
+            }
+          },
+          {
+            "payload": {},
+            "name": "Back",
+            "type": "Common.closeModal"
+          }
+        ],
+        "icon": "icon-trash-2"
+      }
+    ]
+  },
+  "fields": {
+    "form": {
+      "字段是否为唯一索引": {
+        "bind": "unique",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "user": {
+        "bind": "user",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "字段是否为主键": {
+        "edit": {
+          "type": "Input",
+          "props": {}
+        },
+        "bind": "primary"
+      },
+      "数据库表的字段名": {
+        "bind": "name",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "字段显示名称": {
+        "bind": "label",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "字段标题": {
+        "bind": "title",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "数据元素ID": {
+        "bind": "element_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "model": "sys.element",
+                  "label": "name",
+                  "value": "id"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            }
+          },
+          "type": "Select"
+        }
+      },
+      "字段位数(含小数位)": {
+        "bind": "precision",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "字段小数位位数": {
+        "bind": "scale",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "字段是否为索引": {
+        "edit": {
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "index"
+      },
+      "string|number|float|字段默认值": {
+        "edit": {
+          "type": "Input",
+          "props": {}
+        },
+        "bind": "default"
+      },
+      "字段注释": {
+        "edit": {
+          "props": {},
+          "type": "TextArea"
+        },
+        "bind": "comment"
+      },
+      "字段是否可以为空": {
+        "edit": {
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "nullable"
+      },
+      "字段介绍": {
+        "bind": "description",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "字段加密存储方式": {
+        "bind": "crypt",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "字段所属的表": {
+        "bind": "table_id",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "字段类型": {
+        "edit": {
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "type"
+      },
+      "域ID": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "sys.domain"
+                }
+              }
+            }
+          }
+        },
+        "bind": "domain_id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "字段长度": {
+        "bind": "length",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      }
+    }
+  }
+}

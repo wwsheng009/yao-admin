@@ -26,33 +26,26 @@ function GetTableName() {
  * yao studio run schema.Relation
  */
 function Relation() {
-    let all_table = GetTableName();
-    let table_num = all_table.length;
-    if (table_num > 80) {
+    const tableNameList = GetTableName();
+    // 不需要的表格白名单
+    const guards = ["xiang_menu", "xiang_user", "xiang_workflow", "pet"];
+    const prefixList = TablePrefix(tableNameList);
+    if (tableNameList.length > 80) {
         log.Error("Data tables cannot exceed 80!");
         throw new Exception("Data tables cannot exceed 80!", 500);
     }
-    let table_arr = [];
-    // 不需要的表格白名单
-    let guards = ["xiang_menu", "xiang_user", "xiang_workflow", "pet"];
-    let prefix = TablePrefix(all_table);
-    for (let i = 0; i < all_table.length; i++) {
-        //   const element = all_table[index];
-        // }
-        // for (let i in all_table) {
-        if (guards.indexOf(all_table[i]) != -1) {
+    let tableList = [];
+    for (const tableName of tableNameList) {
+        // const tableName = tableNameList[i];
+        if (guards.includes(tableName)) {
             continue;
         }
-        //console.log(`process table Relation:${all_table[i]}`);
-        const table = GetTable(all_table[i]);
-        // col.columns = Studio("relation.BatchTranslate", col.columns);
-        // console.log(col.columns);
-        // return;
-        let id_flag = false;
+        const table = GetTable(tableName);
+        let hasId = false;
         for (const column of table.columns) {
             const name = column.name.toLowerCase();
             if (name === "id") {
-                id_flag = true;
+                hasId = true;
             }
             column.label = column.label ? FieldHandle(column.label) : column.name;
             switch (column.type.toUpperCase()) {
@@ -66,33 +59,32 @@ function Relation() {
                     column.type = "tinyInteger";
                     break;
                 default:
-                    // do nothing
                     break;
             }
         }
         // 如果没有id的表就不要显示了
-        if (!id_flag) {
-            all_table.splice(i, 1);
+        if (!hasId) {
             continue;
         }
         // 去除表前缀
-        let trans = ReplacePrefix(prefix, all_table[i]);
-        table.name = Studio("relation.translate", trans);
-        table.decription = table.name;
-        table.table = {};
-        table.table.name = all_table[i];
-        // console.log("col.table.name", col.table.name);
-        table.table.comment = table.name;
+        let name = ReplacePrefix(prefixList, tableName);
+        // name = Studio("relation.translate", name);
+        table.name = name;
+        table.description = name;
+        table.comment = name;
+        table.table = {
+            name: tableName,
+            comment: name,
+        };
         table.relations = {};
-        let parent = Studio("relation.parent", all_table[i], table.columns, table);
-        parent = Studio("relation.child", all_table[i], table.columns, parent);
-        table_arr.push(parent);
+        let parent = Studio("relation.parent", tableName, table.columns, table);
+        parent = Studio("relation.child", tableName, table.columns, parent);
+        tableList.push(parent);
     }
-    table_arr = Studio("relation.other", table_arr);
-    // console.log("debugger:===>relation.BatchModel");
-    table_arr = Studio("relation.BatchModel", table_arr);
-    // console.log("debugger:===>relation.BatchModel down");
-    return table_arr;
+    tableList = Studio("relation.other", tableList);
+    //翻译字段
+    tableList = Studio("relation.BatchModel", tableList);
+    return tableList;
 }
 function FieldHandle(labelin) {
     if (labelin && labelin.length >= 8) {
@@ -102,6 +94,7 @@ function FieldHandle(labelin) {
     return labelin;
 }
 //yao studio run schema.TablePrefix
+//数据表前缀列表
 function TablePrefix(allTableNames) {
     const prefixes = new Set();
     for (const tableName of allTableNames || GetTableName()) {
@@ -115,10 +108,8 @@ function TablePrefix(allTableNames) {
 }
 // 把表前缀替换掉
 function ReplacePrefix(prefix, target) {
-    if (prefix.length) {
-        for (let i in prefix) {
-            target = target.replace(prefix[i] + "_", "");
-        }
+    for (const p of prefix) {
+        target = target.replace(`${p}_`, "");
     }
     return target;
 }

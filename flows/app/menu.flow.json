@@ -15,7 +15,7 @@
       {
         "name": "帮助_类型",
         "path": "/x/Table/cms.help",
-        "icon": "icon-hard-drive",
+        "icon": "icon-edit-3",
         "rank": 1,
         "status": "enabled",
         "visible_menu": 0,
@@ -25,15 +25,63 @@
         "children": []
       },
       {
+        "name": "领域",
+        "path": "/x/Table/sys.domain",
+        "icon": "icon-download",
+        "rank": 2,
+        "status": "enabled",
+        "visible_menu": 0,
+        "model": "sys_domain",
+        "blocks": 0,
+        "id": 20,
+        "children": []
+      },
+      {
+        "name": "要素_详细信息",
+        "path": "/x/Table/sys.element",
+        "icon": "icon-italic",
+        "rank": 3,
+        "status": "enabled",
+        "visible_menu": 0,
+        "model": "sys_element",
+        "blocks": 0,
+        "id": 30,
+        "children": []
+      },
+      {
+        "name": "桌子领域",
+        "path": "/x/Table/sys.table.field",
+        "icon": "icon-italic",
+        "rank": 4,
+        "status": "enabled",
+        "visible_menu": 0,
+        "model": "sys_table_field",
+        "blocks": 0,
+        "id": 40,
+        "children": []
+      },
+      {
+        "name": "桌子名称",
+        "path": "/x/Table/sys.table.name",
+        "icon": "icon-rotate-ccw",
+        "rank": 5,
+        "status": "enabled",
+        "visible_menu": 0,
+        "model": "sys_table_name",
+        "blocks": 0,
+        "id": 50,
+        "children": []
+      },
+      {
         "name": "演示宠物",
         "path": "/x/Table/yao.demo.pet",
-        "icon": "icon-git-pull-request",
-        "rank": 2,
+        "icon": "icon-play",
+        "rank": 6,
         "status": "enabled",
         "visible_menu": 0,
         "model": "yao_demo_pet",
         "blocks": 0,
-        "id": 20,
+        "id": 60,
         "children": []
       }
     ],
