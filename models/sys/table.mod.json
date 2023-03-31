@@ -1,0 +1,35 @@
+{
+  "name": "::Table",
+  "table": { "name": "sys_table_name", "comment": "模型列表" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "表名"
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "unique": true
+    },
+    {
+      "label": "用户",
+      "name": "user",
+      "type": "string",
+      "length": 80,
+      "unique": true
+    }
+  ],
+  "relations": {
+    "fields": {
+      "type": "hasMany",
+      "model": "sys.field",
+      "key": "table_id",
+      "foreign": "id"
+    }
+  },
+  "option": { "timestamps": true, "soft_deletes": true }
+}

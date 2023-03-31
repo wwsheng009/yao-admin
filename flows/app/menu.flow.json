@@ -1,0 +1,56 @@
+{
+  "name": "APP Menu",
+  "nodes": [],
+  "output": {
+    "items": [
+      {
+        "blocks": 0,
+        "icon": "icon-activity",
+        "id": 1,
+        "name": "数据模型",
+        "parent": null,
+        "path": "/x/Chart/dashboard",
+        "visible_menu": 0
+      },
+      {
+        "name": "帮助_类型",
+        "path": "/x/Table/cms.help",
+        "icon": "icon-hard-drive",
+        "rank": 1,
+        "status": "enabled",
+        "visible_menu": 0,
+        "model": "cms_help",
+        "blocks": 0,
+        "id": 10,
+        "children": []
+      },
+      {
+        "name": "演示宠物",
+        "path": "/x/Table/yao.demo.pet",
+        "icon": "icon-git-pull-request",
+        "rank": 2,
+        "status": "enabled",
+        "visible_menu": 0,
+        "model": "yao_demo_pet",
+        "blocks": 0,
+        "id": 20,
+        "children": []
+      }
+    ],
+    "setting": [
+      {
+        "icon": "icon-settings",
+        "id": 999999,
+        "name": "设置",
+        "path": "/setting",
+        "children": [
+          {
+            "id": 10002,
+            "name": "系统设置",
+            "path": "/setting"
+          }
+        ]
+      }
+    ]
+  }
+}

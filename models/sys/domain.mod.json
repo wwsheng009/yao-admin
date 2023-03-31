@@ -1,0 +1,21 @@
+{
+  "name": "::Domain",
+  "table": { "name": "sys_domain", "comment": "域定义" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "标识"
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "unique": true
+    }
+  ],
+  "relations": {},
+  "option": { "timestamps": true, "soft_deletes": true }
+}

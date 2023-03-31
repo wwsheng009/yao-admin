@@ -1,0 +1,16 @@
+{
+  "name": "Test Select",
+  "nodes": [
+    {
+      "name": "data",
+      "engine": "default",
+      "query": {
+        "debug": true,
+        "select": ["id", "name"],
+        "wheres": [{ ":id": "id", "op": "eq", "value": "?:$in.0" }],
+        "from": "yao_demo_pet"
+      }
+    }
+  ],
+  "output": "{{$res.data}}"
+}

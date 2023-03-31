@@ -1,0 +1,257 @@
+{
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {},
+        "option": {
+          "form": "cms.help"
+        }
+      },
+      "model": "cms.help"
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "title",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3,
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "cms.help"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "table": {
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "cms.help",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "cms.help"
+                  }
+                }
+              }
+            ],
+            "title": "编辑",
+            "icon": "icon-edit-2"
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                }
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "cms.help"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "columns": [
+        {
+          "name": "category_id",
+          "width": 250
+        },
+        {
+          "name": "icon",
+          "width": 200
+        },
+        {
+          "name": "title",
+          "width": 200
+        },
+        {
+          "name": "show_status",
+          "width": 250
+        },
+        {
+          "name": "create_time",
+          "width": 250
+        },
+        {
+          "name": "read_count",
+          "width": 250
+        },
+        {
+          "name": "content",
+          "width": 250
+        }
+      ]
+    }
+  },
+  "fields": {
+    "filter": {
+      "title": {
+        "bind": "where.title.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入title"
+          }
+        }
+      }
+    },
+    "table": {
+      "create_time": {
+        "bind": "create_time",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "DatePicker",
+          "bind": "create_time"
+        }
+      },
+      "read_count": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "read_count"
+        },
+        "bind": "read_count"
+      },
+      "content": {
+        "edit": {
+          "type": "TextArea",
+          "bind": "content",
+          "props": {}
+        },
+        "bind": "content",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "id": {
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "id"
+        },
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "category_id": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "category_id"
+        },
+        "bind": "category_id"
+      },
+      "icon": {
+        "bind": "icon",
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        },
+        "edit": {
+          "compute": "Upload",
+          "props": {
+            "filetype": "image",
+            "disabled": true,
+            "$api": {
+              "process": "fs.system.Upload"
+            }
+          },
+          "type": "Upload"
+        }
+      },
+      "title": {
+        "edit": {
+          "bind": "title",
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "title",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "show_status": {
+        "bind": "show_status",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "show_status"
+        }
+      }
+    }
+  },
+  "name": "帮助_类型"
+}

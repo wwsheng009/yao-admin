@@ -1,0 +1,291 @@
+{
+  "name": "演示宠物",
+  "action": {
+    "bind": {
+      "model": "yao.demo.pet",
+      "option": {
+        "withs": {}
+      }
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "actions": [
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "yao.demo.pet"
+              ]
+            },
+            "name": "StudioModel"
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            }
+          }
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers"
+      },
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {},
+            "name": "CloseModal",
+            "type": "Common.closeModal"
+          }
+        ]
+      },
+      {
+        "action": [
+          {
+            "payload": {},
+            "name": "Submit",
+            "type": "Form.submit"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true
+      },
+      {
+        "title": "Delete",
+        "action": [
+          {
+            "type": "Common.confirm",
+            "payload": {
+              "content": "确认删除，删除后数据无法恢复？",
+              "title": "提示"
+            },
+            "name": "Confirm"
+          },
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "yao.demo.pet"
+            },
+            "type": "Form.delete"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "icon": "icon-trash-2",
+        "style": "danger"
+      }
+    ],
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 8,
+              "name": "name"
+            },
+            {
+              "name": "type",
+              "width": 8
+            },
+            {
+              "name": "status",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "mode"
+            },
+            {
+              "name": "online",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "curing_status"
+            },
+            {
+              "name": "stay",
+              "width": 8
+            },
+            {
+              "name": "cost",
+              "width": 8
+            },
+            {
+              "name": "images",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "form": {
+      "type": {
+        "bind": "type",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "value": "cat",
+                "label": "::cat"
+              },
+              {
+                "value": "dog",
+                "label": "::dog"
+              },
+              {
+                "label": "::others",
+                "value": "others"
+              }
+            ],
+            "placeholder": "请选择type"
+          }
+        }
+      },
+      "mode": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择mode",
+            "options": [
+              {
+                "value": "enabled",
+                "label": "::enabled"
+              },
+              {
+                "label": "::disabled",
+                "value": "disabled"
+              }
+            ]
+          }
+        },
+        "bind": "mode"
+      },
+      "curing_status": {
+        "bind": "curing_status",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择curing_status",
+            "options": [
+              {
+                "label": "::0",
+                "value": "0"
+              },
+              {
+                "label": "::1",
+                "value": "1"
+              },
+              {
+                "label": "::2",
+                "value": "2"
+              }
+            ]
+          }
+        }
+      },
+      "images": {
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "$api": {
+              "process": "fs.system.Upload"
+            },
+            "filetype": "image"
+          },
+          "type": "Upload",
+          "compute": {
+            "args": [
+              "$C(row)",
+              "$C(type)",
+              "images",
+              "yao_demo_pet"
+            ],
+            "process": "scripts.file.image.ImagesEdit"
+          }
+        },
+        "bind": "images"
+      },
+      "cost": {
+        "bind": "cost",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "name": {
+        "bind": "name",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      },
+      "online": {
+        "bind": "online",
+        "edit": {
+          "props": {},
+          "type": "Input"
+        }
+      },
+      "status": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "label": "::checked",
+                "value": "checked"
+              },
+              {
+                "value": "curing",
+                "label": "::curing"
+              },
+              {
+                "label": "::cured",
+                "value": "cured"
+              }
+            ],
+            "placeholder": "请选择status"
+          }
+        },
+        "bind": "status"
+      },
+      "stay": {
+        "bind": "stay",
+        "edit": {
+          "type": "Input",
+          "props": {}
+        }
+      }
+    }
+  }
+}

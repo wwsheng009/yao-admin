@@ -1,0 +1,401 @@
+{
+  "name": "演示宠物",
+  "action": {
+    "bind": {
+      "model": "yao.demo.pet",
+      "option": {
+        "withs": {},
+        "option": {
+          "form": "yao.demo.pet"
+        }
+      }
+    }
+  },
+  "layout": {
+    "table": {
+      "columns": [
+        {
+          "width": 200,
+          "name": "name"
+        },
+        {
+          "name": "type",
+          "width": 200
+        },
+        {
+          "name": "status",
+          "width": 250
+        },
+        {
+          "name": "mode",
+          "width": 200
+        },
+        {
+          "name": "online",
+          "width": 250
+        },
+        {
+          "name": "curing_status",
+          "width": 250
+        },
+        {
+          "name": "stay",
+          "width": 200
+        },
+        {
+          "name": "cost",
+          "width": 200
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "yao.demo.pet",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "yao.demo.pet"
+                  }
+                }
+              }
+            ],
+            "title": "编辑",
+            "icon": "icon-edit-2"
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                },
+                "name": "Confirm"
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "yao.demo.pet"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "name",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3,
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "yao.demo.pet"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "filter": {
+      "name": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入name"
+          }
+        }
+      }
+    },
+    "table": {
+      "stay": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "stay"
+        },
+        "bind": "stay"
+      },
+      "cost": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "cost",
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "cost"
+      },
+      "images": {
+        "edit": {
+          "compute": "Upload",
+          "props": {
+            "disabled": true,
+            "$api": {
+              "process": "fs.system.Upload"
+            },
+            "filetype": "image"
+          },
+          "type": "Upload"
+        },
+        "bind": "images",
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        }
+      },
+      "name": {
+        "bind": "name",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "name"
+        }
+      },
+      "type": {
+        "bind": "type",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择type",
+            "options": [
+              {
+                "value": "cat",
+                "label": "::cat"
+              },
+              {
+                "label": "::dog",
+                "value": "dog"
+              },
+              {
+                "label": "::others",
+                "value": "others"
+              }
+            ]
+          }
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "options": [
+              {
+                "label": "::cat",
+                "value": "cat"
+              },
+              {
+                "label": "::dog",
+                "value": "dog"
+              },
+              {
+                "value": "others",
+                "label": "::others"
+              }
+            ],
+            "placeholder": "请选择type"
+          }
+        }
+      },
+      "status": {
+        "bind": "status",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "value": "checked",
+                "label": "::checked"
+              },
+              {
+                "label": "::curing",
+                "value": "curing"
+              },
+              {
+                "label": "::cured",
+                "value": "cured"
+              }
+            ],
+            "placeholder": "请选择status"
+          },
+          "type": "Select"
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "placeholder": "请选择status",
+            "options": [
+              {
+                "value": "checked",
+                "label": "::checked"
+              },
+              {
+                "label": "::curing",
+                "value": "curing"
+              },
+              {
+                "value": "cured",
+                "label": "::cured"
+              }
+            ]
+          }
+        }
+      },
+      "mode": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "label": "::enabled",
+                "value": "enabled"
+              },
+              {
+                "value": "disabled",
+                "label": "::disabled"
+              }
+            ],
+            "placeholder": "请选择mode"
+          }
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "placeholder": "请选择mode",
+            "options": [
+              {
+                "label": "::enabled",
+                "value": "enabled"
+              },
+              {
+                "value": "disabled",
+                "label": "::disabled"
+              }
+            ]
+          }
+        },
+        "bind": "mode"
+      },
+      "online": {
+        "edit": {
+          "props": {},
+          "type": "Input",
+          "bind": "online"
+        },
+        "bind": "online",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "curing_status": {
+        "view": {
+          "props": {
+            "placeholder": "请选择curing_status",
+            "options": [
+              {
+                "value": "0",
+                "label": "::0"
+              },
+              {
+                "label": "::1",
+                "value": "1"
+              },
+              {
+                "label": "::2",
+                "value": "2"
+              }
+            ]
+          },
+          "type": "Tag"
+        },
+        "bind": "curing_status",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "options": [
+              {
+                "value": "0",
+                "label": "::0"
+              },
+              {
+                "value": "1",
+                "label": "::1"
+              },
+              {
+                "value": "2",
+                "label": "::2"
+              }
+            ],
+            "placeholder": "请选择curing_status"
+          }
+        }
+      },
+      "id": {
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {}
+        }
+      }
+    }
+  }
+}

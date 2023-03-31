@@ -1,0 +1,80 @@
+{
+  "name": "数据图表",
+  "action": {
+    "data": {
+      "process": "scripts.dashboard.Data",
+      "default": [
+        "2023-03-27"
+      ]
+    }
+  },
+  "layout": {
+    "operation": {
+      "actions": []
+    },
+    "filter": {},
+    "chart": {
+      "columns": [
+        {
+          "name": "表格数量",
+          "width": 12
+        },
+        {
+          "name": "模型数量",
+          "width": 12
+        },
+        {
+          "name": "cms.help记录数",
+          "width": 6
+        },
+        {
+          "name": "yao.demo.pet记录数",
+          "width": 6
+        }
+      ]
+    }
+  },
+  "fields": {
+    "filter": {},
+    "chart": {
+      "表格数量": {
+        "bind": "table_count",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "个"
+          }
+        }
+      },
+      "模型数量": {
+        "bind": "model_count",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "个"
+          }
+        }
+      },
+      "cms.help记录数": {
+        "bind": "cms_help",
+        "link": "/x/Table/cms.help",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "yao.demo.pet记录数": {
+        "bind": "yao_demo_pet",
+        "link": "/x/Table/yao.demo.pet",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      }
+    }
+  }
+}

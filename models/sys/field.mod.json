@@ -1,0 +1,154 @@
+{
+  "name": "::Field",
+  "table": { "name": "sys_table_field", "comment": "字段列表" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "表名"
+    },
+    {
+      "name": "table_id",
+      "type": "integer",
+      "label": "表ID",
+      "comment": "字段所属的表",
+      "nullable": true
+    },
+    {
+      "label": "标签",
+      "name": "label",
+      "type": "string",
+      "length": 80,
+      "unique": true,
+      "nullable": false,
+      "comment": "字段显示名称，用于在管理表单，开发平台等成场景下呈现"
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "unique": true,
+      "comment": "数据库表的字段名"
+    },
+    {
+      "label": "类型",
+      "name": "type",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "字段类型"
+    },
+    {
+      "label": "标题",
+      "name": "title",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "字段标题，可用于开发平台中呈现"
+    },
+    {
+      "label": "描述",
+      "name": "description",
+      "type": "string",
+      "length": 400,
+      "comment": "字段介绍，可用于开发平台中呈现"
+    },
+    {
+      "label": "备注",
+      "name": "comment",
+      "type": "string",
+      "length": 200,
+      "comment": "字段注释，对应数据表中字段注释"
+    },
+    {
+      "label": "长度",
+      "name": "length",
+      "type": "integer",
+      "comment": "字段长度，对 `string` 等类型字段有效"
+    },
+    {
+      "label": "位数(含小数位)",
+      "name": "precision",
+      "type": "integer",
+      "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效"
+    },
+    {
+      "label": "小数位",
+      "name": "scale",
+      "type": "integer",
+      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
+    },
+    {
+      "label": "空值",
+      "name": "nullable",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否可以为空，默认为 false"
+    },
+    {
+      "label": "选项",
+      "name": "option",
+      "type": "json",
+      "comment": "字段许可值，对 `enum` 类型字段有效"
+    },
+    {
+      "label": "默认值",
+      "name": "default",
+      "type": "string",
+      "comment": "string|number|float|字段默认值"
+    },
+    {
+      "label": "加密方式",
+      "name": "crypt",
+      "type": "string",
+      "option": ["", "PASSWORD", "AES"],
+      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
+    },
+    {
+      "label": "字段校验规则",
+      "name": "validations",
+      "type": "json",
+      "comment": "字段校验规则"
+    },
+    {
+      "label": "索引",
+      "name": "index",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否为索引，默认为 false"
+    },
+    {
+      "label": "唯一索引",
+      "name": "unique",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否为唯一索引，默认为 false , 如为 true 无需同时将 `index` 设置为 true"
+    },
+    {
+      "label": "主键",
+      "name": "primary",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否为主键，每张表至多一个主键字段。默认为 false"
+    },
+    {
+      "label": "用户",
+      "name": "user",
+      "type": "string",
+      "length": 80,
+      "unique": true
+    }
+  ],
+  "relations": {
+    "table": {
+      "type": "hasOne",
+      "model": "sys.table",
+      "key": "id",
+      "foreign": "table_id"
+    }
+  },
+  "option": { "timestamps": true, "soft_deletes": true }
+}
