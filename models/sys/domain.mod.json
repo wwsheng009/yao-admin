@@ -4,7 +4,7 @@
   "option": {},
   "table": {
     "name": "sys_domain",
-    "comment": "领域"
+    "comment": "域"
   },
   "columns": [
     {
@@ -19,31 +19,33 @@
       "length": 80,
       "name": "name",
       "type": "string",
-      "unique": true
+      "unique": true,
+      "nullable": false
     },
     {
       "comment": "字段标题",
-      "label": "字段标题",
+      "label": "标题",
       "length": 80,
       "name": "title",
-      "type": "string"
+      "type": "string",
+      "nullable": false
     },
     {
       "length": 400,
       "name": "description",
       "type": "string",
       "comment": "字段介绍",
-      "label": "字段介绍"
+      "label": "介绍"
     },
     {
       "type": "text",
       "comment": "字段注释",
-      "label": "字段注释",
+      "label": "注释",
       "name": "comment"
     },
     {
       "comment": "字段长度，对string等类型字段有效",
-      "label": "字段长度",
+      "label": "长度",
       "name": "length",
       "precision": 10,
       "type": "integer"
@@ -53,22 +55,21 @@
       "precision": 10,
       "type": "integer",
       "comment": "字段位数(含小数位)，对float、decimal等类型字段有效",
-      "label": "字段位数(含小数位)"
+      "label": "位数"
     },
     {
       "type": "integer",
       "comment": "字段小数位位数，对float、decimal等类型字段有效",
-      "label": "字段小数位位数",
+      "label": "小数位位数",
       "name": "scale",
       "precision": 10
     },
     {
-      "type": "tinyInteger",
+      "type": "boolean",
+      "default": false,
       "comment": "字段是否可以为空，默认为 false",
-      "default": 0,
-      "label": "字段是否可以为空",
-      "name": "nullable",
-      "precision": 3
+      "label": "是否为空",
+      "name": "nullable"
     },
     {
       "comment": "字段许可值，对enum类型字段有效",
@@ -78,20 +79,19 @@
     },
     {
       "type": "string",
-      "comment": "string|number|float|字段默认值",
-      "label": "string|number|float|字段默认值",
-      "length": 200,
+      "comment": "字段默认值",
+      "label": "默认值",
       "name": "default"
     },
     {
       "name": "crypt",
-      "type": "string",
+      "type": "enum",
+      "option": ["", "PASSWORD", "AES"],
       "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
-      "label": "字段加密存储方式",
-      "length": 200
+      "label": "加密方式"
     },
     {
-      "label": "字段校验规则",
+      "label": "校验规则",
       "name": "validations",
       "type": "json",
       "comment": "字段校验规则"

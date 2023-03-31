@@ -55,7 +55,7 @@ function other(all_table_struct) {
 // yao studio run relation.translate member_id
 function translate(keywordsIn) {
     let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
-    if (!useTranslate) {
+    if (useTranslate !== "TRUE") {
         return keywordsIn;
     }
     // if (/_id/i.test(keywordsIn)) {
@@ -84,7 +84,7 @@ function translate(keywordsIn) {
  */
 function BatchTranslate(keywords) {
     let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
-    if (!useTranslate) {
+    if (useTranslate !== "TRUE") {
         return keywords;
     }
     // return keywords;
@@ -107,7 +107,7 @@ function BatchTranslate(keywords) {
  */
 function BatchModel(keywords) {
     let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
-    if (!useTranslate) {
+    if (useTranslate !== "TRUE") {
         return keywords;
     }
     const models = keywords;

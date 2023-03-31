@@ -1,40 +1,23 @@
 {
-  "name": "::Table",
+  "name": "::Form",
   "action": {
     "bind": {
-      "model": "sys.table",
+      "model": "sys.form",
       "option": {
         "withs": {
-          "form": {},
-          "model": {}
+          "model": {},
+          "table": {}
         },
         "option": {
-          "form": "sys.table"
+          "form": "sys.form"
         }
       }
     }
   },
   "layout": {
     "filter": {
-      "columns": [
-        {
-          "name": "名称",
-          "width": 4
-        },
-        {
-          "name": "表单",
-          "width": 4
-        },
-        {
-          "name": "模型",
-          "width": 4
-        }
-      ],
       "actions": [
         {
-          "title": "添加",
-          "icon": "icon-plus",
-          "width": 3,
           "action": [
             {
               "name": "OpenModal",
@@ -42,11 +25,28 @@
               "payload": {
                 "Form": {
                   "type": "edit",
-                  "model": "sys.table"
+                  "model": "sys.form"
                 }
               }
             }
-          ]
+          ],
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3
+        }
+      ],
+      "columns": [
+        {
+          "name": "名称",
+          "width": 4
+        },
+        {
+          "name": "关联模型",
+          "width": 4
+        },
+        {
+          "name": "关联表格",
+          "width": 4
         }
       ]
     },
@@ -57,15 +57,23 @@
           "width": 160
         },
         {
-          "name": "表单",
+          "name": "主键",
           "width": 160
         },
         {
-          "name": "模型",
+          "name": "关联模型",
+          "width": 160
+        },
+        {
+          "name": "关联表格",
           "width": 160
         },
         {
           "name": "备注",
+          "width": 160
+        },
+        {
+          "name": "绑定选项",
           "width": 160
         },
         {
@@ -77,22 +85,23 @@
         "fold": false,
         "actions": [
           {
+            "title": "查看",
             "icon": "icon-eye",
             "action": [
               {
                 "payload": {
                   "Form": {
-                    "model": "sys.table",
+                    "model": "sys.form",
                     "type": "view"
                   }
                 },
                 "name": "OpenModal",
                 "type": "Common.openModal"
               }
-            ],
-            "title": "查看"
+            ]
           },
           {
+            "title": "编辑",
             "icon": "icon-edit-2",
             "action": [
               {
@@ -101,12 +110,11 @@
                 "payload": {
                   "Form": {
                     "type": "edit",
-                    "model": "sys.table"
+                    "model": "sys.form"
                   }
                 }
               }
-            ],
-            "title": "编辑"
+            ]
           },
           {
             "title": "删除",
@@ -116,16 +124,16 @@
                 "name": "Confirm",
                 "type": "Common.confirm",
                 "payload": {
-                  "title": "确认删除",
-                  "content": "删除后不可撤销！"
+                  "content": "删除后不可撤销！",
+                  "title": "确认删除"
                 }
               },
               {
-                "name": "Delete",
-                "type": "Table.delete",
                 "payload": {
-                  "model": "sys.table"
-                }
+                  "model": "sys.form"
+                },
+                "name": "Delete",
+                "type": "Table.delete"
               }
             ]
           }
@@ -143,32 +151,125 @@
       "名称": {
         "bind": "where.name.match",
         "edit": {
+          "type": "Input",
           "compute": "Trim",
           "props": {
             "placeholder": "请输入名称"
-          },
-          "type": "Input"
+          }
         }
       },
-      "表单": {
-        "bind": "where.form_id.in",
+      "关联模型": {
+        "bind": "where.model_id.in",
         "edit": {
+          "type": "Select",
           "props": {
             "xProps": {
               "$remote": {
                 "process": "yao.component.SelectOptions",
                 "query": {
+                  "model": "sys.model",
                   "label": "name",
-                  "value": "id",
-                  "model": "sys.form"
+                  "value": "id"
                 }
               }
             }
-          },
-          "type": "Select"
+          }
         }
       },
-      "模型": {
+      "关联表格": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "sys.table",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "bind": "where.table_id.in"
+      }
+    },
+    "table": {
+      "ID": {
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "id",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "标识"
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "名称": {
+        "edit": {
+          "bind": "name",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "name",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "主键": {
+        "bind": "primary",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "primary",
+          "props": {
+            "itemProps": {
+              "tooltip": "显示主键"
+            },
+            "defaultValue": "id"
+          },
+          "type": "Input"
+        }
+      },
+      "关联模型": {
+        "view": {
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "sys.model",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
         "edit": {
           "type": "Select",
           "props": {
@@ -179,26 +280,6 @@
                   "value": "id",
                   "model": "sys.model",
                   "label": "name"
-                }
-              }
-            }
-          }
-        },
-        "bind": "where.model_id.in"
-      }
-    },
-    "table": {
-      "模型": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "sys.model"
                 }
               }
             },
@@ -208,11 +289,14 @@
                   "required": true
                 }
               ],
-              "tooltip": "表关联的模型"
+              "tooltip": "表单关联的模型"
             }
           }
         },
-        "bind": "model_id",
+        "bind": "model_id"
+      },
+      "关联表格": {
+        "bind": "table_id",
         "view": {
           "props": {
             "xProps": {
@@ -220,16 +304,78 @@
                 "process": "yao.component.SelectOptions",
                 "query": {
                   "value": "id",
-                  "model": "sys.model",
+                  "model": "sys.table",
                   "label": "name"
                 }
               }
             }
           },
           "type": "Tag"
+        },
+        "edit": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "sys.table"
+                }
+              }
+            },
+            "itemProps": {
+              "tooltip": "表单关联的表格"
+            }
+          },
+          "type": "Select"
         }
       },
       "备注": {
+        "edit": {
+          "bind": "comment",
+          "props": {
+            "itemProps": {
+              "tooltip": "表注释",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "comment",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "绑定选项": {
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "tooltip": "绑定模型选项",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "props": {},
+          "type": "Tooltip"
+        },
+        "bind": "bind_option"
+      },
+      "描述": {
+        "bind": "description",
         "view": {
           "props": {},
           "type": "Text"
@@ -242,115 +388,11 @@
                   "required": true
                 }
               ],
-              "tooltip": "表注释"
-            }
-          },
-          "type": "Input",
-          "bind": "comment"
-        },
-        "bind": "comment"
-      },
-      "描述": {
-        "bind": "description",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "type": "TextArea",
-          "bind": "description",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
               "tooltip": "介绍"
             }
-          }
-        }
-      },
-      "ID": {
-        "bind": "id",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "type": "Input",
-          "bind": "id",
-          "props": {
-            "itemProps": {
-              "tooltip": "表名",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          }
-        }
-      },
-      "名称": {
-        "bind": "name",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
           },
-          "type": "Input",
-          "bind": "name"
-        }
-      },
-      "表单": {
-        "bind": "form_id",
-        "view": {
-          "props": {
-            "xProps": {
-              "$remote": {
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "sys.form"
-                },
-                "process": "yao.component.SelectOptions"
-              }
-            }
-          },
-          "type": "Tag"
-        },
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "表关联的表单"
-            },
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "sys.form"
-                }
-              }
-            }
-          },
-          "type": "Select"
+          "type": "TextArea",
+          "bind": "description"
         }
       }
     }

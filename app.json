@@ -6,14 +6,13 @@
   "version": "0.10.3",
   "menu": {
     "process": "flows.app.menu",
-    "args": [
-      "demo"
-    ]
+    "args": ["demo"]
   },
   "setup": "studio.model.Create",
   "adminRoot": "admin",
   "optional": {
     "hideNotification": true,
-    "hideSetting": false
+    "hideSetting": false,
+    "remoteCache": false
   }
 }

@@ -99,7 +99,7 @@
       "name": "nullable",
       "type": "boolean",
       "default": false,
-      "comment": "字段是否可以为空，默认为 false"
+      "comment": "是否空值，默认为 false"
     },
     {
       "label": "选项",

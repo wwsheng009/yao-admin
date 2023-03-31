@@ -62,14 +62,14 @@ function Dsl(menu_arr, type) {
         script.model_count = script.table_count;
         temp.forEach((col) => {
             if (col.id != 1) {
-                const dotName = Studio("file.DotName", col.model);
+                const dotName = Studio("file.DotName", col.extra);
                 const title = `${col.name}记录数`;
                 // if (col.name != col.model) {
                 //   title = col.name + "(" + dotName + ")" + "记录数";
                 // }
-                script[col.model] = GetCount(col.model);
+                script[col.extra] = GetCount(col.extra);
                 chart[title] = {
-                    bind: col.model,
+                    bind: col.extra,
                     link: "/x/Table/" + dotName,
                     view: { type: "Number", props: { unit: "条" } },
                 };
@@ -82,14 +82,14 @@ function Dsl(menu_arr, type) {
         script.model_count = script.table_count;
         menu_arr.forEach((col) => {
             if (col.id != 1) {
-                const dotName = Studio("file.DotName", col.model);
+                const dotName = Studio("file.DotName", col.extra);
                 const title = dotName + "记录数";
                 // if (col.name != col.model) {
                 //   title = col.name + "(" + dotName + ")" + "记录数";
                 // }
-                script[col.model] = GetCount(col.model);
+                script[col.extra] = GetCount(col.extra);
                 chart[title] = {
-                    bind: col.model,
+                    bind: col.extra,
                     link: "/x/Table/" + dotName,
                     view: { type: "Number", props: { unit: "条" } },
                 };

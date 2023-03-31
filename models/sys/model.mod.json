@@ -34,7 +34,7 @@
     "fields": {
       "type": "hasMany",
       "model": "sys.model.field",
-      "key": "mode_id",
+      "key": "model_id",
       "foreign": "id"
     }
   },

@@ -1,0 +1,285 @@
+{
+  "action": {
+    "bind": {
+      "model": "sys.table.action",
+      "option": {
+        "withs": {}
+      }
+    }
+  },
+  "layout": {
+    "actions": [
+      {
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "StudioModel",
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "sys.table.action"
+              ]
+            }
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            }
+          }
+        ],
+        "title": "重新生成代码"
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {},
+            "name": "CloseModal",
+            "type": "Common.closeModal"
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left"
+      },
+      {
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ],
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary"
+      },
+      {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "type": "Common.confirm",
+            "payload": {
+              "content": "确认删除，删除后数据无法恢复？",
+              "title": "提示"
+            },
+            "name": "Confirm"
+          },
+          {
+            "type": "Form.delete",
+            "name": "Delete",
+            "payload": {
+              "model": "sys.table.action"
+            }
+          },
+          {
+            "payload": {},
+            "name": "Back",
+            "type": "Common.closeModal"
+          }
+        ]
+      }
+    ],
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 8,
+              "name": "所属表格"
+            },
+            {
+              "name": "标题",
+              "width": 8
+            },
+            {
+              "name": "图标",
+              "width": 24
+            },
+            {
+              "name": "样式",
+              "width": 8
+            },
+            {
+              "name": "修改时显示",
+              "width": 8
+            },
+            {
+              "name": "查看时显示",
+              "width": 8
+            },
+            {
+              "name": "操作",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    },
+    "primary": "id"
+  },
+  "fields": {
+    "form": {
+      "图标": {
+        "edit": {
+          "type": "Upload",
+          "compute": {
+            "process": "scripts.file.image.ImagesEdit",
+            "args": [
+              "$C(row)",
+              "$C(type)",
+              "icon",
+              "sys_table_action"
+            ]
+          },
+          "props": {
+            "filetype": "image",
+            "$api": {
+              "process": "fs.system.Upload"
+            },
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "图标"
+            }
+          }
+        },
+        "bind": "icon",
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        }
+      },
+      "样式": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "按钮样式"
+            }
+          }
+        },
+        "bind": "style"
+      },
+      "修改时显示": {
+        "edit": {
+          "props": {
+            "defaultValue": 1,
+            "options": [
+              {
+                "label": "是",
+                "value": 1
+              },
+              {
+                "value": 0,
+                "label": "否"
+              }
+            ],
+            "itemProps": {
+              "tooltip": "表单修改数据时显示"
+            }
+          },
+          "type": "RadioGroup"
+        },
+        "bind": "showWhenAdd"
+      },
+      "查看时显示": {
+        "bind": "showWhenView",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "value": 0,
+                "label": "否"
+              }
+            ],
+            "itemProps": {
+              "tooltip": "表单修改数据时显示"
+            },
+            "defaultValue": 1
+          },
+          "type": "RadioGroup"
+        }
+      },
+      "操作": {
+        "bind": "action",
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "Action列表"
+            }
+          },
+          "type": "CodeEditor"
+        }
+      },
+      "所属表格": {
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段所属的表格"
+            }
+          }
+        },
+        "bind": "table_id"
+      },
+      "标题": {
+        "bind": "title",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "标题"
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "::Table Action"
+}

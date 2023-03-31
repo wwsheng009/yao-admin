@@ -12,22 +12,26 @@ function Create(model_dsl) {
         path: "/x/Chart/dashboard",
         visible_menu: 0,
     });
+    const english = /^[A-Za-z0-9\._-]*$/;
     for (let i = 0; i < model_dsl.length; i++) {
         // }
         // for (const i in model_dsl) {
         // const element = model_dsl[i];
-        const tableName = model_dsl[i].table.comment;
-        const trans = Studio("relation.translate", tableName);
+        let tableName = model_dsl[i].table.name;
+        if (!english.test(tableName)) {
+            tableName = model_dsl[i].table.comment;
+        }
+        // const trans = Studio("relation.translate", tableName);
         const dotName = Studio("file.DotName", tableName);
         const icon = GetIcon(tableName);
         let item = {
-            name: trans,
+            name: model_dsl[i].table.comment,
             path: "/x/Table/" + dotName,
             icon: icon,
             rank: i + 1,
             status: "enabled",
             visible_menu: 0,
-            model: tableName,
+            extra: tableName,
             blocks: 0,
             id: (i + 1) * 10,
             children: [],
@@ -90,7 +94,7 @@ function Create(model_dsl) {
  */
 function GetIcon(name) {
     let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
-    if (!useTranslate) {
+    if (useTranslate !== "TRUE") {
         return "icon-box";
     }
     let url = "https://brain.yaoapps.com/api/icon/search?name=" + name;

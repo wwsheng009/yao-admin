@@ -1,5 +1,6 @@
 // import { Studio } from "yao-node-client";
 /**
+ * yao studio run selector.Select
  * 把hasOne变成下拉选择
  * @param {*} column
  * @param {*} model_dsl
@@ -15,27 +16,42 @@ function Select(column, model_dsl, component) {
     for (const rel in relation) {
         if (relation[rel].type == "hasOne" &&
             column.name == relation[rel]["foreign"]) {
+            const dotName = Studio("file.DotName", relation[rel].model);
             const field = Studio("remote.select", rel, relation[rel]);
             let component = {
                 is_select: true,
                 // bind: i + "." + field,
                 bind,
-                view: { props: props, type: "Text" },
+                view: {
+                    type: "Tag",
+                    props: {
+                        xProps: {
+                            $remote: {
+                                process: "yao.component.SelectOptions",
+                                query: {
+                                    model: dotName,
+                                    label: field,
+                                    value: "id",
+                                },
+                            },
+                        },
+                        ...props,
+                    },
+                },
                 edit: {
                     type: "Select",
                     props: {
                         xProps: {
                             $remote: {
                                 process: "yao.component.SelectOptions",
-                                //"scripts." + relation[i].model + "." + i + ".GetSelect",
-                                // process: "models." + relation[i]["model"] + ".Get",
                                 query: {
-                                    model: Studio("file.DotName", relation[rel].model),
+                                    model: dotName,
                                     label: field,
                                     value: "id",
                                 },
                             },
                         },
+                        ...props,
                     },
                 },
             };
@@ -47,9 +63,7 @@ function Select(column, model_dsl, component) {
 }
 function EditSelect(column, model_dsl, component) {
     const props = column.props || {};
-    // const title = column.label;
     const name = column.name;
-    // console.log("column name:", name);
     const bind = `${name}`;
     const relation = model_dsl.relations;
     for (const rel in relation) {
@@ -58,15 +72,12 @@ function EditSelect(column, model_dsl, component) {
             const field = Studio("remote.select", rel, relation[rel]);
             let component = {
                 bind: bind,
-                view: { props: props, type: "Text" },
                 edit: {
                     type: "Select",
                     props: {
                         xProps: {
                             $remote: {
                                 process: "yao.component.SelectOptions",
-                                // "scripts." + relation[i].model + "." + i + ".GetSelect",
-                                // process: "models." + relation[i]["model"] + ".Get",
                                 query: {
                                     model: Studio("file.DotName", relation[rel].model),
                                     label: field,
@@ -74,6 +85,7 @@ function EditSelect(column, model_dsl, component) {
                                 },
                             },
                         },
+                        ...props,
                     },
                 },
             };
@@ -83,8 +95,8 @@ function EditSelect(column, model_dsl, component) {
     }
     return component;
 }
+/**增加关联表关系 */
 function Withs(component, relation_name) {
-    // "option": { "withs": { "user": {} } }
     const withs = [];
     withs.push({
         name: relation_name,
@@ -93,7 +105,7 @@ function Withs(component, relation_name) {
     return component;
 }
 /**
- * 把hasMany变成列表
+ * 把hasMany变成表单中的Table
  */
 function Table(form_dsl, model_dsl) {
     const relation = model_dsl.relations;

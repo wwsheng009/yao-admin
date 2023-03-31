@@ -1,4 +1,11 @@
-// import { log, Studio } from "yao-node-client";
+// import { log, Process, Studio } from "yao-node-client";
+let DbType = "";
+function getDBType() {
+    if (DbType === "") {
+        DbType = Process("utils.env.Get", "YAO_DB_DRIVER");
+    }
+    return DbType;
+}
 /**
  * 数据库类型与控件类型对应字段
  * @returns
@@ -17,16 +24,16 @@ function getType() {
         timeTz: "DatePicker",
         timestamp: "DatePicker",
         timestampTz: "DatePicker",
-        tinyInteger: "Input",
-        tinyIncrements: "Input",
-        unsignedTinyInteger: "Input",
-        smallInteger: "Input",
-        unsignedSmallInteger: "Input",
-        integer: "Input",
-        bigInteger: "Input",
-        decimal: "Input",
-        unsignedDecimal: "Input",
-        float: "Input",
+        tinyInteger: "InputNumber",
+        tinyIncrements: "InputNumber",
+        unsignedTinyInteger: "InputNumber",
+        smallInteger: "InputNumber",
+        unsignedSmallInteger: "InputNumber",
+        integer: "InputNumber",
+        bigInteger: "InputNumber",
+        decimal: "InputNumber",
+        unsignedDecimal: "InputNumber",
+        float: "InputNumber",
         boolean: "Input",
         enum: "Select",
     };
@@ -74,7 +81,7 @@ function filter() {
 }
 //create table from model
 function toTable(model_dsl) {
-    const columns = model_dsl.columns || [];
+    let columns = model_dsl.columns || [];
     const table_dot_name = Studio("file.DotName", model_dsl.table.name);
     let tableTemplate = {
         name: model_dsl.name || "表格",
@@ -173,6 +180,7 @@ function toTable(model_dsl) {
             table: {},
         },
     };
+    columns = MakeColumnOrder(columns);
     columns.forEach((column) => {
         let col = castTableColumn(column, model_dsl);
         if (col) {
@@ -199,6 +207,75 @@ function toTable(model_dsl) {
         // });
     });
     return tableTemplate;
+}
+/**
+ * 更新一些编辑属性
+ * @param component
+ * @param column
+ */
+function updateViewSwitchPropes(component, column) {
+    if (!component.view) {
+        return;
+    }
+    if (column.type !== "Switch") {
+        return;
+    }
+    component.view.props = component.view.props || {};
+    const { unique, nullable, default: columnDefault, type } = column;
+    if (unique || (!columnDefault && !nullable)) {
+        component.view.props.itemProps = { rules: [{ required: true }] };
+    }
+    if (column.comment) {
+        component.view.props["itemProps"] = component.edit.props["itemProps"] || {};
+        component.view.props["itemProps"]["tooltip"] = column.comment;
+    }
+    if (column.default != null) {
+        const dbType = getDBType();
+        const defaultValue = /mysql/i.test(dbType) && type === "Switch"
+            ? column.default
+                ? 1
+                : 0
+            : column.default;
+        component.view.props["defaultValue"] = defaultValue;
+        component.view.props["value"] = defaultValue;
+    }
+}
+/**
+ * 更新一些编辑属性
+ * @param component
+ * @param column
+ */
+function updateEditPropes(component, column) {
+    if (!component.edit) {
+        return;
+    }
+    component.edit.props = component.edit.props || {};
+    const { unique, nullable, default: columnDefault, type } = column;
+    if (unique || (!columnDefault && !nullable)) {
+        component.edit.props.itemProps = { rules: [{ required: true }] };
+    }
+    else if (/^id$/i.test(type)) {
+        component.edit.props.itemProps = {};
+    }
+    if (column.comment) {
+        component.edit.props["itemProps"] = component.edit.props["itemProps"] || {};
+        component.edit.props["itemProps"]["tooltip"] = column.comment;
+    }
+    if (column.default != null) {
+        const dbType = getDBType();
+        const defaultValue = /mysql/i.test(dbType) && type === "boolean"
+            ? column.default
+                ? 1
+                : 0
+            : column.default;
+        component.edit.props["defaultValue"] = defaultValue;
+        if (["RadioGroup", "Select"].includes(column.type)) {
+            component.edit.props["value"] = defaultValue;
+        }
+        if (component.view && ["Switch"].includes(column.type)) {
+            component.view.props["value"] = defaultValue;
+        }
+    }
 }
 function castTableColumn(column, model_dsl) {
     // const props = column.props || {};
@@ -247,19 +324,36 @@ function castTableColumn(column, model_dsl) {
             props: {},
         },
     };
-    let width = 200;
+    let width = 160;
     if (title.length > 5) {
         width = 250;
     }
     // 如果是json的,去看看是不是图片文件
-    if (column["type"] == "json") {
+    if (column.type == "json") {
         component = Studio("file.File", column, false);
         if (!component) {
-            return false;
+            component = {
+                bind: bind,
+                edit: {
+                    props: {
+                        language: "json",
+                        height: 200,
+                    },
+                    type: "TextArea",
+                },
+                view: {
+                    props: {},
+                    type: "Tooltip",
+                },
+            };
+            res.layout.table.columns.push({
+                name: title,
+                width: width,
+            });
         }
         // log.Error("castTableColumn: Type %s does not support", column.type);
     }
-    else if (column["type"] == "enum") {
+    else if (column.type == "enum") {
         component = {
             bind: bind,
             edit: {
@@ -282,9 +376,48 @@ function castTableColumn(column, model_dsl) {
             width: width,
         });
     }
+    else if (column.type === "boolean") {
+        const dbtype = getDBType();
+        let checkedValue = true;
+        let unCheckedValue = false;
+        if (/mysql/i.test(dbtype)) {
+            checkedValue = 1;
+            unCheckedValue = 0;
+        }
+        component = {
+            bind: bind,
+            view: {
+                type: "Switch",
+                props: {
+                    checkedChildren: "是",
+                    checkedValue: checkedValue,
+                    unCheckedChildren: "否",
+                    unCheckedValue: unCheckedValue,
+                },
+            },
+        };
+        res.layout.table.columns.push({
+            name: title,
+            width: width,
+        });
+    }
+    else if (/color/i.test(column.name)) {
+        component.edit.type = "ColorPicker";
+        res.layout.table.columns.push({
+            name: title,
+            width: 80,
+        });
+    }
+    else if (column.crypt === "PASSWORD") {
+        component.edit.type = "Password";
+        res.layout.table.columns.push({
+            name: title,
+            width: 180,
+        });
+    }
     else {
-        if (column["type"] in typeMapping) {
-            component.edit.type = typeMapping[column["type"]];
+        if (column.type in typeMapping) {
+            component.edit.type = typeMapping[column.type];
             res.layout.table.columns.push({
                 name: title,
                 width: width,
@@ -328,6 +461,8 @@ function castTableColumn(column, model_dsl) {
     // res.edit.push({ name: title, width: 24 });
     // break;
     delete component.is_select;
+    updateEditPropes(component, column);
+    updateViewSwitchPropes(component, column);
     res.fields.table.push({
         name: title,
         component: component,
@@ -429,7 +564,7 @@ function toForm(model_dsl) {
             ],
         },
     ];
-    const columns = model_dsl.columns || [];
+    let columns = model_dsl.columns || [];
     let tableTemplate = {
         name: model_dsl.name || "表单",
         action: {
@@ -454,12 +589,7 @@ function toForm(model_dsl) {
             form: {},
         },
     };
-    /**
-     *let res = {
-      layout: [],
-      fields: {},
-    };
-     */
+    columns = MakeColumnOrder(columns);
     columns.forEach((column) => {
         let col = castFormColumn(column, model_dsl);
         if (col) {
@@ -480,6 +610,21 @@ function toForm(model_dsl) {
     });
     tableTemplate = Studio("selector.Table", tableTemplate, model_dsl);
     return tableTemplate;
+}
+function MakeColumnOrder(columns) {
+    const typeMapping = getType();
+    let columns1 = [];
+    let columns2 = [];
+    columns.forEach((column) => {
+        if (["TextArea"].includes(typeMapping[column.type]) ||
+            column.type === "json") {
+            columns2.push(column);
+        }
+        else {
+            columns1.push(column);
+        }
+    });
+    return columns1.concat(columns2);
 }
 /**根据模型定义生成Form定义 */
 function castFormColumn(column, model_dsl) {
@@ -510,15 +655,24 @@ function castFormColumn(column, model_dsl) {
             props: {},
         },
     };
+    let width = 8;
     const bind = `${name}`;
-    if (column["type"] == "json") {
+    if (column.type == "json") {
         component = Studio("file.FormFile", column, false, model_dsl);
         if (!component) {
-            // log.Error("castTableColumn: Type %s does not support", column.type);
-            return false;
+            component = {
+                bind: bind,
+                edit: {
+                    props: {
+                        language: "json",
+                        height: 200,
+                    },
+                    type: "CodeEditor",
+                },
+            };
         }
     }
-    else if (column["type"] == "enum") {
+    else if (column.type == "enum") {
         component = {
             bind: bind,
             edit: {
@@ -530,26 +684,58 @@ function castFormColumn(column, model_dsl) {
             },
         };
     }
+    else if (column.type === "boolean") {
+        const dbtype = getDBType();
+        let checkedValue = true;
+        let unCheckedValue = false;
+        if (/mysql/i.test(dbtype)) {
+            checkedValue = 1;
+            unCheckedValue = 0;
+        }
+        component = {
+            bind: bind,
+            edit: {
+                type: "RadioGroup",
+                props: {
+                    options: [
+                        {
+                            label: "是",
+                            value: checkedValue,
+                        },
+                        {
+                            label: "否",
+                            value: unCheckedValue,
+                        },
+                    ],
+                },
+            },
+        };
+    }
+    else if (/color/i.test(column.name)) {
+        component.edit.type = "ColorPicker";
+    }
+    else if (column.crypt === "PASSWORD") {
+        component.edit.type = "Password";
+    }
     else {
-        if (column["type"] in types) {
-            component.edit.type = types[column["type"]];
+        if (column.type in types) {
+            component.edit.type = types[column.type];
         }
     }
-    let width = 8;
+    if (["TextArea"].includes(types[column.type]) || column.type === "json") {
+        width = 24;
+    }
     component = Studio("selector.EditSelect", column, model_dsl, component);
     component = Studio("file.FormFile", column, component, model_dsl);
-    if (component["is_image"]) {
+    if (component.is_image) {
         width = 24;
     }
     res.layout.push({
         name: title,
         width: width,
     });
-    // component.edit = { type: "input", props: { value: bind } };
-    // res.list.columns.push({ name: title });
-    // res.edit.push({ name: title, width: 24 });
-    // break;
-    delete component["is_image"];
+    delete component.is_image;
+    updateEditPropes(component, column);
     res.fields.push({
         name: title,
         component: component,
