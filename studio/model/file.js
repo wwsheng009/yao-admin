@@ -50,10 +50,10 @@ function File(column, component) {
  * 根据图片组件更新组件类型,可上传
  * @param column 模型中的字段定义
  * @param component 数据库字段定义
- * @param model_dsl 模型引用
+ * @param modelDsl 模型引用
  * @returns
  */
-function FormFile(column, component, model_dsl) {
+function FormFile(column, component, modelDsl) {
     var guard = [
         "img",
         "image",
@@ -86,7 +86,7 @@ function FormFile(column, component, model_dsl) {
                     type: "Upload",
                     compute: {
                         process: "scripts.file.image.ImagesEdit",
-                        args: ["$C(row)", "$C(type)", name, model_dsl.table.name],
+                        args: ["$C(row)", "$C(type)", name, modelDsl.table.name],
                     },
                     props: {
                         filetype: "image",
@@ -100,8 +100,8 @@ function FormFile(column, component, model_dsl) {
     return component;
 }
 /**
- * yao studio run file.DotName table_name
- * yao studio run file.DotName /file/name
+ * yao studio run model.file.DotName table_name
+ * yao studio run model.file.DotName /file/name
  * @param {string} pathname
  * @returns model name with dot
  */
@@ -116,7 +116,7 @@ function DotName(pathname) {
     return newStr;
 }
 /**
- * yao studio run file.SlashName crm_help
+ * yao studio run model.file.SlashName crm_help
  * @param {string} pathname
  * @returns pathname
  */
@@ -131,9 +131,9 @@ function SlashName(pathname) {
     return newStr;
 }
 /**
- * yao studio run file.FileNameConvert "/models/cms__help.mod.json"
- * yao studio run file.FileNameConvert "/models/cms.help.mod.json"
- * yao studio run file.FileNameConvert "/models/cms.json"
+ * yao studio run model.file.FileNameConvert "/models/cms__help.mod.json"
+ * yao studio run model.file.FileNameConvert "/models/cms.help.mod.json"
+ * yao studio run model.file.FileNameConvert "/models/cms.json"
  * @param {string} filename
  * @returns new filename
  */
@@ -166,9 +166,9 @@ function FileNameConvert(filename) {
 // }
 /**
  * write file
- * yao studio run file.WriteFile "/models/cms_help.mod.json"
- * yao studio run file.WriteFile "/models/cms.help.mod.json"
- * yao studio run file.WriteFile "/models/cms.json"
+ * yao studio run model.file.WriteFile "/models/cms_help.mod.json"
+ * yao studio run model.file.WriteFile "/models/cms.help.mod.json"
+ * yao studio run model.file.WriteFile "/models/cms.json"
  * @param {string} filename filename
  * @param {object} data
  */

@@ -1,0 +1,308 @@
+{
+  "name": "::Table Field",
+  "action": {
+    "bind": {
+      "table": "ddic.table.field"
+    }
+  },
+  "layout": {
+    "list": {
+      "columns": [
+        {
+          "name": "名称",
+          "width": 8
+        },
+        {
+          "name": "绑定字段",
+          "width": 8
+        },
+        {
+          "name": "编辑类型",
+          "width": 8
+        },
+        {
+          "width": 8,
+          "name": "查看类型"
+        },
+        {
+          "width": 8,
+          "name": "显示长度"
+        },
+        {
+          "name": "是否必输",
+          "width": 8
+        },
+        {
+          "name": "默认值",
+          "width": 8
+        },
+        {
+          "name": "启用",
+          "width": 8
+        },
+        {
+          "name": "是否显示",
+          "width": 8
+        },
+        {
+          "name": "是否编辑",
+          "width": 8
+        },
+        {
+          "name": "编辑属性",
+          "width": 24
+        },
+        {
+          "name": "查看属性",
+          "width": 24
+        },
+        {
+          "name": "选项",
+          "width": 24
+        }
+      ]
+    }
+  },
+  "fields": {
+    "list": {
+      "查看类型": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件类型"
+            }
+          }
+        },
+        "bind": "view_type"
+      },
+      "默认值": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段默认值"
+            }
+          }
+        },
+        "bind": "default"
+      },
+      "是否编辑": {
+        "bind": "is_edit",
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "是否编辑"
+            },
+            "defaultValue": 1
+          }
+        }
+      },
+      "选项": {
+        "bind": "option",
+        "edit": {
+          "props": {
+            "height": 200,
+            "language": "json",
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段许可值"
+            }
+          },
+          "type": "CodeEditor"
+        }
+      },
+      "名称": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段名称",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        "bind": "name"
+      },
+      "编辑类型": {
+        "bind": "edit_type",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件类型"
+            }
+          }
+        }
+      },
+      "显示长度": {
+        "bind": "width",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段显示长度"
+            }
+          },
+          "type": "InputNumber"
+        }
+      },
+      "是否必输": {
+        "bind": "required",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "label": "是",
+                "value": 1
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "字段是否是否必输"
+            },
+            "defaultValue": 0
+          },
+          "type": "RadioGroup"
+        }
+      },
+      "启用": {
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "value": 0,
+                "label": "否"
+              }
+            ],
+            "itemProps": {
+              "tooltip": "启用"
+            },
+            "defaultValue": 1
+          },
+          "type": "RadioGroup"
+        },
+        "bind": "enable"
+      },
+      "是否显示": {
+        "bind": "is_dispaly",
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "value": 0,
+                "label": "否"
+              }
+            ],
+            "itemProps": {
+              "tooltip": "是否显示"
+            },
+            "defaultValue": 1
+          }
+        }
+      },
+      "编辑属性": {
+        "bind": "edit_props",
+        "edit": {
+          "type": "CodeEditor",
+          "props": {
+            "height": 200,
+            "language": "json",
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件属性"
+            }
+          }
+        }
+      },
+      "查看属性": {
+        "bind": "view_props",
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件属性"
+            }
+          },
+          "type": "CodeEditor"
+        }
+      },
+      "绑定字段": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "绑定的模型字段"
+            }
+          }
+        },
+        "bind": "bind"
+      }
+    }
+  }
+}

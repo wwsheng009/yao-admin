@@ -1,6 +1,6 @@
 // import { Exception, log, Process, Studio } from "yao-node-client";
 let AllTables = [];
-/**yao studio run schema.GetTable role
+/**yao studio run model.schema.GetTable role
  * 获取单个表字段
  * @param {*} name
  * @returns
@@ -23,7 +23,7 @@ function GetTableName() {
 /**
  * 分析关联关系处理器
  * @param {*} type
- * yao studio run schema.Relation
+ * yao studio run model.schema.Relation
  */
 function Relation() {
     const tableNameList = GetTableName();
@@ -68,7 +68,7 @@ function Relation() {
         }
         // 去除表前缀
         let name = ReplacePrefix(prefixList, tableName);
-        // name = Studio("relation.translate", name);
+        // name = Studio("model.relation.translate", name);
         table.name = name;
         table.description = name;
         table.comment = name;
@@ -78,12 +78,12 @@ function Relation() {
         };
         table.relations = {};
         let parent = Studio("relation.parent", tableName, table.columns, table);
-        parent = Studio("relation.child", tableName, table.columns, parent);
+        parent = Studio("model.relation.child", tableName, table.columns, parent);
         tableList.push(parent);
     }
-    tableList = Studio("relation.other", tableList);
+    tableList = Studio("model.relation.other", tableList);
     //翻译字段
-    tableList = Studio("relation.BatchModel", tableList);
+    tableList = Studio("model.relation.BatchModel", tableList);
     return tableList;
 }
 function FieldHandle(labelin) {
@@ -93,7 +93,7 @@ function FieldHandle(labelin) {
     }
     return labelin;
 }
-//yao studio run schema.TablePrefix
+//yao studio run model.schema.TablePrefix
 //数据表前缀列表
 function TablePrefix(allTableNames) {
     const prefixes = new Set();

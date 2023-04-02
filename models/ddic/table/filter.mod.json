@@ -61,13 +61,6 @@
       "comment": "查看控件属性"
     },
     {
-      "label": "描述",
-      "name": "description",
-      "type": "string",
-      "length": 400,
-      "comment": "字段介绍"
-    },
-    {
       "label": "显示长度",
       "name": "width",
       "type": "integer",

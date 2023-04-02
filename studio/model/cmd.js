@@ -1,52 +1,73 @@
-//yao studio run model.Create
 // import { FS, Studio } from "yao-node-client";
 /**
+ * yao studio run model.cmd.Create
  * 从数据结构中创建模型
  */
-function Create() {
+function CreateFromDB() {
     const start = Math.floor(Date.now() / 1000);
-    const model_dsl = CreateModels();
+    const modelDsl = GetModelsFromDB();
     console.log(`Create Modes:${Math.floor(Date.now() / 1000) - start} seconds`);
     // 创建表格dsl
-    Studio("table.Create", model_dsl);
-    version10_0_3();
-    login();
+    Studio("model.table.Create", modelDsl);
+    CreateAPPdsl();
+    CreateLoginDsl();
     // 创建菜单
-    Studio("menu.Create", model_dsl);
+    Studio("model.menu.Create", modelDsl);
     console.log(`Total:${Math.floor(Date.now() / 1000) - start} seconds`);
 }
 /**
- * yao studio run model.CreateModels
+ * yao studio run model.cmd.CreateFromFile
+ * 根据本地的模型文件创建表格与表单配置
+ */
+function CreateFromFile() {
+    const files = GetModelFnameList();
+    const fs = new FS("dsl");
+    const modelDsls = files.map((file) => {
+        return JSON.parse(fs.ReadFile("models/" + file));
+    });
+    // 创建表格与表单dsl
+    Studio("model.table.Create", modelDsls);
+    // 创建菜单
+    Studio("model.menu.Create", modelDsls);
+    Studio("model.ts.CreatTypes", modelDsls);
+}
+/**
+ * create model from tables
+ * yao studio run model.cmd.GetModelsFromDB
  * @returns
  */
-function CreateModels() {
-    const model_dsl = Studio("schema.Relation");
+function GetModelsFromDB() {
+    const modelDsl = Studio("model.schema.Relation");
     const fs = new FS("dsl");
-    for (const i in model_dsl) {
-        let table_name = Studio("file.SlashName", model_dsl[i]["table"]["name"]);
+    for (const i in modelDsl) {
+        let table_name = Studio("model.file.SlashName", modelDsl[i].table.name);
         const table_file_name = table_name + ".mod.json";
-        const table = JSON.stringify(model_dsl[i]);
-        Studio("move.Move", "models", table_file_name);
+        const table = JSON.stringify(modelDsl[i]);
+        Studio("model.move.Move", "models", table_file_name);
         //console.log(`create model:/models/"${table_file_name}.mod.json`);
         fs.WriteFile("/models/" + table_file_name, table);
     }
-    return model_dsl;
+    return modelDsl;
 }
 /**
- * yao studio run model.Get
+ * yao studio run model.cmd.Get
  * @param model_name
  * @returns
  */
 function Get(model_name) {
     const fs = new FS("dsl");
-    let model_file_name = Studio("file.SlashName", model_name);
+    let model_file_name = Studio("model.file.SlashName", model_name);
     const fname = "models/" + model_file_name + ".mod.json";
     if (!fs.Exists(fname)) {
         return false;
     }
     return JSON.parse(fs.ReadFile(fname));
 }
-function getAllModelsFromFile() {
+/**
+ * yao studio run model.cmd.GetModelFnameList
+ * @returns model file list
+ */
+function GetModelFnameList() {
     const fs = new FS("dsl");
     const files = fs.ReadDir("models/", true);
     return files
@@ -54,35 +75,32 @@ function getAllModelsFromFile() {
         .map((file) => file.replace("/models/", ""));
 }
 /**
- * 根据本地的模型文件创建表格与表单配置
+ * yao studio run mocdel.cmd.GetModelsFromFile
+ * @returns get all models from files
  */
-function CreateLocal() {
-    const files = getAllModelsFromFile();
+function GetModelsFromFile() {
+    const files = GetModelFnameList();
     const fs = new FS("dsl");
-    const model_dsl = files.map((file) => {
+    return files.map((file) => {
         return JSON.parse(fs.ReadFile("models/" + file));
     });
-    // 创建表格与表单dsl
-    Studio("table.Create", model_dsl);
-    // 创建菜单
-    Studio("menu.Create", model_dsl);
 }
 //创建单个表格的studio
-///yao studio run model.CreateOne address
+///yao studio run model.cmd.CreateOne address
 function CreateOne(model_name) {
-    let model_file_name = Studio("file.SlashName", model_name);
+    let model_file_name = Studio("model.file.SlashName", model_name);
     const fs = new FS("dsl");
-    let model_dsl = [];
-    model_dsl.push(JSON.parse(fs.ReadFile("models/" + model_file_name + ".mod.json")));
+    let modelDsl = [];
+    modelDsl.push(JSON.parse(fs.ReadFile("models/" + model_file_name + ".mod.json")));
     // 创建表格dsl
-    Studio("table.Create", model_dsl);
+    Studio("model.table.Create", modelDsl);
     //version10_0_2();
     //login();
 }
 /**
  * 写入10.3版本的
  */
-function version10_0_3() {
+function CreateAPPdsl() {
     const fs = new FS("dsl");
     fs.WriteFile("app.json", JSON.stringify({
         xgen: "1.0",
@@ -102,7 +120,7 @@ function version10_0_3() {
         },
     }));
 }
-function login() {
+function CreateLoginDsl() {
     const fs = new FS("dsl");
     // const menu = Process("models.xiang.menu.get", {
     //   limit: 1,
@@ -122,6 +140,6 @@ function login() {
             site: "https://yaoapps.com?from=yao-admin",
         },
     });
-    Studio("move.Move", "logins", fname);
+    Studio("model.move.Move", "logins", fname);
     fs.WriteFile("/logins/" + fname, table);
 }

@@ -3,12 +3,12 @@ const parents = ["parent", "parent_id", "pid"];
 const children = ["children", "children_id", "child", "child_id"];
 /**
  * 关联关系分析同一个表中关联关系
- * @param {*} model_name
+ * @param {*} modelName
  * @param {*} columns
- * @param {*} table_struct
+ * @param {*} tableStruct
  */
 function child(modelName, columns, tableStruct) {
-    const dotName = Studio("file.DotName", modelName);
+    const dotName = Studio("model.file.DotName", modelName);
     const childColumns = columns.filter((column) => column.type === "integer" && children.includes(column.name));
     if (childColumns.length > 0) {
         tableStruct.relations.children = {
@@ -29,7 +29,7 @@ function child(modelName, columns, tableStruct) {
  * @returns
  */
 function parent(model_name, columns, table_struct) {
-    const dotName = Studio("file.DotName", model_name);
+    const dotName = Studio("model.file.DotName", model_name);
     const parentColumn = columns.find((column) => column.type === "integer" && parents.includes(column.name));
     if (parentColumn) {
         table_struct.relations.parent = {
@@ -52,7 +52,7 @@ function other(all_table_struct) {
     }
     return all_table_struct;
 }
-// yao studio run relation.translate member_id
+// yao studio run model.relation.translate member_id
 function translate(keywordsIn) {
     let useTranslate = Process("utils.env.Get", "USE_TRANSLATE");
     if (useTranslate !== "TRUE") {
@@ -113,12 +113,12 @@ function BatchModel(keywords) {
     const models = keywords;
     models.forEach((model) => {
         model.columns.forEach((col) => {
-            col.label = Studio("relation.translate", col.label); //col.label.replace(/_id$/i, "");
+            col.label = Studio("model.relation.translate", col.label); //col.label.replace(/_id$/i, "");
             // col.name = col.name.replace(/_id$/i, "");
         });
-        model.comment = Studio("relation.translate", model.name);
+        model.comment = Studio("model.relation.translate", model.name);
         model.table.comment = model.table.name;
-        model.table.name = Studio("relation.translate", model.table.name);
+        model.table.name = Studio("model.relation.translate", model.table.name);
     });
     return models;
     let url = "https://brain.yaoapps.com/api/keyword/batch_model";
@@ -135,13 +135,13 @@ function BatchModel(keywords) {
 }
 function hasOne(table_name, all_table) {
     const foreignIds = [`${table_name}_id`, `${table_name}ID`, `${table_name}Id`];
-    const prefix = Studio("schema.TablePrefix");
+    const prefix = Studio("model.schema.TablePrefix");
     if (prefix.length) {
-        foreignIds.push(`${Studio("schema.ReplacePrefix", prefix, table_name)}_id`);
-        foreignIds.push(`${Studio("schema.ReplacePrefix", prefix, table_name)}ID`);
-        foreignIds.push(`${Studio("schema.ReplacePrefix", prefix, table_name)}Id`);
+        foreignIds.push(`${Studio("model.schema.ReplacePrefix", prefix, table_name)}_id`);
+        foreignIds.push(`${Studio("model.schema.ReplacePrefix", prefix, table_name)}ID`);
+        foreignIds.push(`${Studio("model.schema.ReplacePrefix", prefix, table_name)}Id`);
     }
-    const dotName = Studio("file.DotName", table_name);
+    const dotName = Studio("model.file.DotName", table_name);
     return all_table.map((table) => {
         table.columns.forEach((column) => {
             if (foreignIds.includes(column.name)) {
@@ -159,8 +159,8 @@ function hasOne(table_name, all_table) {
 }
 function hasMany(tableName, fieldName, allTables) {
     const relationSuffixes = ["_id", "_ID", "_Id"];
-    const tablePrefixes = Studio("schema.TablePrefix");
-    const dotName = Studio("file.DotName", tableName);
+    const tablePrefixes = Studio("model.schema.TablePrefix");
+    const dotName = Studio("model.file.DotName", tableName);
     for (const suffix of relationSuffixes) {
         for (const table of allTables) {
             if (fieldName.endsWith(suffix)) {

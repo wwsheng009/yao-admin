@@ -1,0 +1,397 @@
+{
+  "fields": {
+    "table": {
+      "关联关系": {
+        "view": {
+          "props": {
+            "options": [
+              {
+                "value": "hasOne",
+                "label": "::hasOne"
+              },
+              {
+                "value": "hasMany",
+                "label": "::hasMany"
+              }
+            ],
+            "placeholder": "请选择关联关系"
+          },
+          "type": "Tag"
+        },
+        "bind": "type",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "value": "hasOne",
+                "label": "::hasOne"
+              },
+              {
+                "value": "hasMany",
+                "label": "::hasMany"
+              }
+            ],
+            "placeholder": "请选择关联关系",
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。"
+            }
+          },
+          "type": "Select"
+        }
+      },
+      "外键": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "外键"
+            }
+          },
+          "type": "Input",
+          "bind": "foreign"
+        },
+        "bind": "foreign"
+      },
+      "主键": {
+        "bind": "key_id",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "value": "id",
+                  "model": "ddic.model.column",
+                  "label": "name"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            }
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "model": "ddic.model.column",
+                  "label": "name",
+                  "value": "id"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            },
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "主键"
+            }
+          }
+        }
+      },
+      "关联条件": {
+        "bind": "query",
+        "edit": {
+          "props": {
+            "height": 200,
+            "language": "json",
+            "itemProps": {
+              "tooltip": "关联条件"
+            }
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "type": "Tooltip",
+          "props": {}
+        }
+      },
+      "ID": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "表名"
+            }
+          },
+          "type": "Input",
+          "bind": "id"
+        },
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      },
+      "模型": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "model": "ddic.model",
+                  "label": "name",
+                  "value": "id"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            },
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "所属模型"
+            }
+          }
+        },
+        "bind": "model_id",
+        "view": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "value": "id",
+                  "model": "ddic.model",
+                  "label": "name"
+                }
+              }
+            }
+          },
+          "type": "Tag"
+        }
+      },
+      "名称": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "name",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "定义关系名称"
+            }
+          }
+        },
+        "bind": "name"
+      }
+    },
+    "filter": {
+      "模型": {
+        "bind": "where.model_id.in",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "model": "ddic.model",
+                  "label": "name",
+                  "value": "id"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            }
+          }
+        }
+      },
+      "名称": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入名称"
+          }
+        }
+      },
+      "主键": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "bind": "where.key_id.in"
+      }
+    }
+  },
+  "name": "::Model Relation",
+  "action": {
+    "bind": {
+      "model": "ddic.model.relation",
+      "option": {
+        "withs": {
+          "key": {},
+          "model": {}
+        },
+        "option": {
+          "form": "ddic.model.relation"
+        }
+      }
+    }
+  },
+  "layout": {
+    "header": {
+      "actions": [],
+      "preset": {}
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "模型",
+          "width": 4
+        },
+        {
+          "width": 4,
+          "name": "名称"
+        },
+        {
+          "name": "主键",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3,
+          "action": [
+            {
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "ddic.model.relation"
+                }
+              },
+              "name": "OpenModal",
+              "type": "Common.openModal"
+            }
+          ]
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "模型",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "名称"
+        },
+        {
+          "width": 160,
+          "name": "关联关系"
+        },
+        {
+          "name": "外键",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "主键"
+        },
+        {
+          "name": "关联条件",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "ddic.model.relation",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "title": "编辑",
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "model": "ddic.model.relation",
+                    "type": "edit"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                }
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "ddic.model.relation"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "primary": "id"
+  }
+}

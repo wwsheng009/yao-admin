@@ -319,6 +319,6 @@ function CreateTableAndForm(model) {
 // CreateForm("chat.prompt_template");
 // CreateTableAndForm("chat.prompt_template");
 // 使用命令行
-// yao-debug studio run init.CreateTable supplier
-// yao-debug studio run init.CreateForm supplier
-// yao-debug studio run init.CreateTableAndForm supplier
+// yao-debug studio run model.init.CreateTable supplier
+// yao-debug studio run model.init.CreateForm supplier
+// yao-debug studio run model.init.CreateTableAndForm supplier

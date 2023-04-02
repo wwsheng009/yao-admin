@@ -1,5 +1,4 @@
 {
-  "name": "::Pet",
   "action": {
     "bind": {
       "model": "demo.pet",
@@ -12,6 +11,11 @@
     }
   },
   "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
     "filter": {
       "columns": [
         {
@@ -21,37 +25,37 @@
       ],
       "actions": [
         {
-          "title": "添加",
-          "icon": "icon-plus",
           "width": 3,
           "action": [
             {
+              "name": "OpenModal",
               "type": "Common.openModal",
               "payload": {
                 "Form": {
-                  "type": "edit",
-                  "model": "demo.pet"
+                  "model": "demo.pet",
+                  "type": "edit"
                 }
-              },
-              "name": "OpenModal"
+              }
             }
-          ]
+          ],
+          "title": "添加",
+          "icon": "icon-plus"
         }
       ]
     },
     "table": {
       "columns": [
         {
-          "width": 160,
-          "name": "昵称"
+          "name": "昵称",
+          "width": 160
         },
         {
           "name": "类型",
           "width": 160
         },
         {
-          "name": "入院状态",
-          "width": 160
+          "width": 160,
+          "name": "入院状态"
         },
         {
           "name": "状态",
@@ -70,8 +74,8 @@
           "width": 160
         },
         {
-          "name": "花费",
-          "width": 160
+          "width": 160,
+          "name": "花费"
         }
       ],
       "operation": {
@@ -98,27 +102,28 @@
             "icon": "icon-edit-2",
             "action": [
               {
-                "name": "OpenModal",
-                "type": "Common.openModal",
                 "payload": {
                   "Form": {
                     "type": "edit",
                     "model": "demo.pet"
                   }
-                }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
               }
             ]
           },
           {
+            "title": "删除",
             "icon": "icon-trash-2",
             "action": [
               {
+                "name": "Confirm",
+                "type": "Common.confirm",
                 "payload": {
                   "title": "确认删除",
                   "content": "删除后不可撤销！"
-                },
-                "name": "Confirm",
-                "type": "Common.confirm"
+                }
               },
               {
                 "payload": {
@@ -127,16 +132,10 @@
                 "name": "Delete",
                 "type": "Table.delete"
               }
-            ],
-            "title": "删除"
+            ]
           }
         ]
       }
-    },
-    "primary": "id",
-    "header": {
-      "actions": [],
-      "preset": {}
     }
   },
   "fields": {
@@ -153,21 +152,45 @@
       }
     },
     "table": {
-      "状态": {
-        "bind": "mode",
-        "edit": {
+      "类型": {
+        "view": {
+          "type": "Tag",
           "props": {
+            "placeholder": "请选择类型",
             "options": [
               {
-                "value": "enabled",
-                "label": "::enabled"
+                "label": "::cat",
+                "value": "cat"
               },
               {
-                "label": "::disabled",
-                "value": "disabled"
+                "label": "::dog",
+                "value": "dog"
+              },
+              {
+                "label": "::others",
+                "value": "others"
+              }
+            ]
+          }
+        },
+        "bind": "type",
+        "edit": {
+          "props": {
+            "placeholder": "请选择类型",
+            "options": [
+              {
+                "value": "cat",
+                "label": "::cat"
+              },
+              {
+                "label": "::dog",
+                "value": "dog"
+              },
+              {
+                "label": "::others",
+                "value": "others"
               }
             ],
-            "placeholder": "请选择状态",
             "itemProps": {
               "rules": [
                 {
@@ -177,22 +200,71 @@
             }
           },
           "type": "Select"
-        },
+        }
+      },
+      "入院时间": {
+        "bind": "stay",
         "view": {
-          "type": "Tag",
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
           "props": {
-            "options": [
-              {
-                "value": "enabled",
-                "label": "::enabled"
-              },
-              {
-                "value": "disabled",
-                "label": "::disabled"
-              }
-            ],
-            "placeholder": "请选择状态"
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "InputNumber",
+          "bind": "stay"
+        }
+      },
+      "相关图片": {
+        "edit": {
+          "type": "Upload",
+          "compute": "Upload",
+          "props": {
+            "filetype": "image",
+            "disabled": true,
+            "$api": {
+              "process": "fs.system.Upload"
+            }
           }
+        },
+        "bind": "images",
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {
+            "itemProps": {}
+          }
+        }
+      },
+      "昵称": {
+        "edit": {
+          "bind": "name",
+          "props": {},
+          "type": "Input"
+        },
+        "bind": "name",
+        "view": {
+          "props": {},
+          "type": "Text"
         }
       },
       "是否在线": {
@@ -200,12 +272,56 @@
         "view": {
           "type": "Switch",
           "props": {
+            "checkedValue": 1,
             "unCheckedChildren": "否",
             "unCheckedValue": 0,
-            "checkedChildren": "是",
-            "checkedValue": 1
+            "checkedChildren": "是"
           }
         }
+      },
+      "治疗状态": {
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "label": "::0",
+                "value": "0"
+              },
+              {
+                "label": "::1",
+                "value": "1"
+              },
+              {
+                "label": "::2",
+                "value": "2"
+              }
+            ],
+            "placeholder": "请选择治疗状态",
+            "defaultValue": "0"
+          },
+          "type": "Select"
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "options": [
+              {
+                "value": "0",
+                "label": "::0"
+              },
+              {
+                "label": "::1",
+                "value": "1"
+              },
+              {
+                "label": "::2",
+                "value": "2"
+              }
+            ],
+            "placeholder": "请选择治疗状态"
+          }
+        },
+        "bind": "curing_status"
       },
       "花费": {
         "bind": "cost",
@@ -227,172 +343,35 @@
           "type": "InputNumber"
         }
       },
-      "相关图片": {
-        "bind": "images",
-        "view": {
-          "props": {},
-          "type": "Image",
-          "compute": "scripts.file.image.ImagesView"
-        },
-        "edit": {
-          "type": "Upload",
-          "compute": "Upload",
-          "props": {
-            "$api": {
-              "process": "fs.system.Upload"
-            },
-            "filetype": "image",
-            "disabled": true
-          }
-        }
-      },
-      "治疗状态": {
-        "view": {
-          "type": "Tag",
-          "props": {
-            "options": [
-              {
-                "value": "0",
-                "label": "::0"
-              },
-              {
-                "label": "::1",
-                "value": "1"
-              },
-              {
-                "label": "::2",
-                "value": "2"
-              }
-            ],
-            "placeholder": "请选择治疗状态"
-          }
-        },
-        "bind": "curing_status",
-        "edit": {
-          "props": {
-            "placeholder": "请选择治疗状态",
-            "options": [
-              {
-                "label": "::0",
-                "value": "0"
-              },
-              {
-                "value": "1",
-                "label": "::1"
-              },
-              {
-                "label": "::2",
-                "value": "2"
-              }
-            ],
-            "defaultValue": "0"
-          },
-          "type": "Select"
-        }
-      },
-      "入院时间": {
-        "edit": {
-          "type": "InputNumber",
-          "bind": "stay",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          }
-        },
-        "bind": "stay",
-        "view": {
-          "type": "Text",
-          "props": {}
-        }
-      },
-      "ID": {
-        "bind": "id",
-        "view": {
-          "props": {},
-          "type": "Text"
-        },
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
-          "type": "Input",
-          "bind": "id"
-        }
-      },
-      "昵称": {
-        "bind": "name",
-        "view": {
-          "props": {},
-          "type": "Text"
-        },
-        "edit": {
-          "props": {},
-          "type": "Input",
-          "bind": "name"
-        }
-      },
-      "类型": {
-        "view": {
-          "type": "Tag",
-          "props": {
-            "placeholder": "请选择类型",
-            "options": [
-              {
-                "value": "cat",
-                "label": "::cat"
-              },
-              {
-                "label": "::dog",
-                "value": "dog"
-              },
-              {
-                "label": "::others",
-                "value": "others"
-              }
-            ]
-          }
-        },
-        "bind": "type",
-        "edit": {
-          "props": {
-            "options": [
-              {
-                "value": "cat",
-                "label": "::cat"
-              },
-              {
-                "value": "dog",
-                "label": "::dog"
-              },
-              {
-                "label": "::others",
-                "value": "others"
-              }
-            ],
-            "placeholder": "请选择类型",
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
-          "type": "Select"
-        }
-      },
       "入院状态": {
+        "bind": "status",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            },
+            "options": [
+              {
+                "label": "::checked",
+                "value": "checked"
+              },
+              {
+                "label": "::curing",
+                "value": "curing"
+              },
+              {
+                "value": "cured",
+                "label": "::cured"
+              }
+            ],
+            "placeholder": "请选择入院状态"
+          }
+        },
         "view": {
           "type": "Tag",
           "props": {
@@ -412,36 +391,51 @@
             ],
             "placeholder": "请选择入院状态"
           }
-        },
-        "bind": "status",
+        }
+      },
+      "状态": {
         "edit": {
+          "type": "Select",
           "props": {
             "options": [
               {
-                "value": "checked",
-                "label": "::checked"
+                "label": "::enabled",
+                "value": "enabled"
               },
               {
-                "label": "::curing",
-                "value": "curing"
-              },
-              {
-                "value": "cured",
-                "label": "::cured"
+                "value": "disabled",
+                "label": "::disabled"
               }
             ],
+            "placeholder": "请选择状态",
             "itemProps": {
               "rules": [
                 {
                   "required": true
                 }
               ]
-            },
-            "placeholder": "请选择入院状态"
-          },
-          "type": "Select"
-        }
+            }
+          }
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "options": [
+              {
+                "label": "::enabled",
+                "value": "enabled"
+              },
+              {
+                "label": "::disabled",
+                "value": "disabled"
+              }
+            ],
+            "placeholder": "请选择状态"
+          }
+        },
+        "bind": "mode"
       }
     }
-  }
+  },
+  "name": "::Pet"
 }

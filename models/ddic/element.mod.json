@@ -8,69 +8,55 @@
   },
   "columns": [
     {
-      "precision": 20,
-      "primary": true,
       "type": "ID",
       "comment": "标识",
       "label": "标识",
       "name": "id"
     },
     {
-      "default": 0,
-      "label": "域",
-      "name": "domain_id",
-      "nullable": true,
-      "precision": 10,
-      "type": "integer",
-      "comment": "域定义"
-    },
-    {
-      "label": "名称",
+      "label": "描述",
       "length": 80,
       "name": "name",
       "type": "string",
       "unique": true
     },
     {
-      "name": "title",
-      "type": "string",
-      "comment": "字段标题",
-      "label": "字段标题",
-      "length": 80
+      "label": "域",
+      "name": "domain_id",
+      "nullable": true,
+      "type": "integer",
+      "comment": "域定义"
     },
     {
-      "name": "description",
-      "type": "string",
-      "comment": "字段介绍",
-      "label": "字段介绍",
-      "length": 400
-    },
-    {
-      "name": "comment",
-      "type": "text",
-      "comment": "字段注释",
-      "label": "字段注释"
+      "label": "字段类型",
+      "name": "field_type_id",
+      "nullable": true,
+      "type": "integer",
+      "comment": "字段类型定义"
     },
     {
       "comment": "字段长度，对 `string` 等类型字段有效",
       "label": "字段长度",
       "name": "length",
       "precision": 10,
-      "type": "integer"
+      "type": "integer",
+      "nullable": true
     },
     {
       "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效",
       "label": "字段位数(含小数位)",
       "name": "precision",
       "precision": 10,
-      "type": "integer"
+      "type": "integer",
+      "nullable": true
     },
     {
       "label": "字段小数位位数",
       "name": "scale",
       "precision": 10,
       "type": "integer",
-      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
+      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
+      "nullable": true
     },
     {
       "type": "boolean",
@@ -83,36 +69,46 @@
       "label": "字段许可值",
       "name": "option",
       "type": "json",
-      "comment": "字段许可值，对 `enum` 类型字段有效"
+      "comment": "字段许可值，对 `enum` 类型字段有效",
+      "nullable": true
     },
     {
       "name": "default",
       "type": "string",
       "comment": "string|number|float|字段默认值",
       "label": "字段默认值",
-      "length": 200
+      "length": 200,
+      "nullable": true
     },
     {
       "name": "crypt",
       "type": "enum",
       "option": ["PASSWORD", "AES"],
       "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
-      "label": "加密方式"
+      "label": "加密方式",
+      "nullable": true
     },
     {
       "type": "json",
       "comment": "字段校验规则",
       "label": "字段校验规则",
-      "name": "validations"
+      "name": "validations",
+      "nullable": true
     }
   ],
-
   "relations": {
     "domain": {
       "type": "hasOne",
       "foreign": "domain_id",
       "key": "id",
       "model": "ddic.domain",
+      "query": {}
+    },
+    "field_type": {
+      "type": "hasOne",
+      "foreign": "field_type_id",
+      "key": "id",
+      "model": "ddic.model.column.type",
       "query": {}
     }
   }

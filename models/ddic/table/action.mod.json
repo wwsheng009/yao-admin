@@ -62,7 +62,7 @@
       "type": "hasOne",
       "model": "ddic.form",
       "key": "id",
-      "foreign": "form_id"
+      "foreign": "table_id"
     }
   },
   "option": {}

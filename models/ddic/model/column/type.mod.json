@@ -1,0 +1,83 @@
+{
+  "name": "::Model Column Type",
+  "comment": "数据字段类型",
+  "option": {},
+  "table": { "name": "ddic_model_column_type", "comment": "模型字段类型" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "标识",
+      "comment": "标识"
+    },
+    {
+      "label": "字段描述",
+      "length": 80,
+      "name": "name",
+      "type": "string",
+      "unique": true,
+      "nullable": false
+    },
+    {
+      "label": "字段类型",
+      "length": 80,
+      "name": "type",
+      "type": "string",
+      "nullable": false
+    },
+    {
+      "label": "注释",
+      "name": "comment",
+      "type": "string",
+      "length": 200,
+      "comment": "注释",
+      "nullable": true
+    }
+  ],
+  "values": [
+    { "name": "字符串", "type": "string" },
+    { "name": "字符", "type": "char" },
+    { "name": "文本", "type": "text" },
+    { "name": "中文本", "type": "mediumText" },
+    { "name": "长文本", "type": "longText" },
+    { "name": "二进制数据", "type": "binary" },
+    { "name": "日期", "type": "date" },
+    { "name": "日期时间", "type": "datetime" },
+    { "name": "带时区的日期时间", "type": "datetimeTz" },
+    { "name": "时间", "type": "time" },
+    { "name": "带时区的时间", "type": "timeTz" },
+    { "name": "时间戳", "type": "timestamp" },
+    { "name": "带时区的时间戳", "type": "timestampTz" },
+    { "name": "微整型", "type": "tinyInteger" },
+    { "name": "无符号微整型+自增", "type": "tinyIncrements" },
+    { "name": "无符号微整型", "type": "unsignedTinyInteger" },
+    { "name": "小整型", "type": "smallInteger" },
+    { "name": "无符号小整型+自增", "type": "smallIncrements" },
+    { "name": "无符号小整型", "type": "unsignedSmallInteger" },
+    { "name": "整型", "type": "integer" },
+    { "name": "无符号整型+自增", "type": "increments" },
+    { "name": "无符号整型", "type": "unsignedInteger" },
+    { "name": "长整型", "type": "bigInteger" },
+    { "name": "无符号长整型+自增", "type": "bigIncrements" },
+    { "name": "无符号长整型", "type": "unsignedBigInteger" },
+    { "name": "长整型+自增", "type": "id" },
+    { "name": "长整型+自增(同 id)", "type": "ID" },
+    { "name": "小数(一般用于存储货币)", "type": "decimal" },
+    { "name": "无符号小数 (一般用于存储货币)", "type": "unsignedDecimal" },
+    { "name": "浮点数", "type": "float" },
+    { "name": "无符号浮点数", "type": "unsignedFloat" },
+    { "name": "双精度", "type": "double" },
+    { "name": "无符号双精度", "type": "unsignedDouble" },
+    { "name": "布尔型", "type": "boolean" },
+    { "name": "枚举型", "type": "enum" },
+    { "name": "JSON 文本", "type": "json" },
+    { "name": "JSON 文本(同 json)", "type": "JSON" },
+    { "name": "JSON (二进制格式存储)", "type": "jsonb" },
+    { "name": "JSON (二进制格式存储 同 jsonb)", "type": "JSONB" },
+    { "name": "UUID 格式字符串", "type": "uuid" },
+    { "name": "IP 地址", "type": "ipAddress" },
+    { "name": "MAC 地址", "type": "macAddress" },
+    { "name": "年份", "type": "year" }
+  ],
+  "relations": {}
+}

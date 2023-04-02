@@ -9,31 +9,69 @@
       "comment": "表名"
     },
     {
-      "label": "名称",
+      "label": "命名空间",
+      "name": "namespace",
+      "type": "string",
+      "length": 80,
+      "default": "app",
+      "nullable": false
+    },
+    {
+      "label": "模型名称",
       "name": "name",
       "type": "string",
       "length": 80,
       "unique": true
     },
     {
-      "label": "备注",
-      "name": "comment",
+      "label": "模型备注",
+      "name": "model_comment",
       "type": "string",
-      "length": 200,
-      "comment": "对应数据表中字段注释"
+      "length": 100,
+      "comment": "模型定义注释",
+      "nullable": true
+    },
+    {
+      "label": "数据库表名",
+      "name": "table_name",
+      "type": "string",
+      "length": 80,
+      "unique": true
+    },
+    {
+      "label": "数据库表备注",
+      "name": "table_comment",
+      "type": "string",
+      "length": 100,
+      "comment": "对应数据表中字段注释",
+      "nullable": true
     },
 
     {
-      "label": "描述",
-      "name": "description",
-      "type": "text",
-      "comment": "介绍"
+      "label": "软删除",
+      "name": "soft_deletes",
+      "type": "boolean",
+      "default": true,
+      "comment": "软删除，不直接删除"
+    },
+    {
+      "label": "增加时间戳",
+      "name": "timestamps",
+      "type": "boolean",
+      "default": true,
+      "comment": "增加创建，更新时间戳"
     }
   ],
   "relations": {
-    "fields": {
+    "columns": {
       "type": "hasMany",
-      "model": "ddic.model.field",
+      "model": "ddic.model.column",
+      "key": "model_id",
+      "foreign": "id"
+    },
+    "relations": {
+      "type": "hasMany",
+      "model": "ddic.model.relation",
       "key": "model_id",
       "foreign": "id"
     }

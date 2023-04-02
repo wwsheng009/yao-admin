@@ -40,7 +40,15 @@
           "width": 6
         },
         {
+          "name": "模型字段类型记录数",
+          "width": 6
+        },
+        {
           "name": "模型字段列表记录数",
+          "width": 6
+        },
+        {
+          "name": "模型关联关系记录数",
           "width": 6
         },
         {
@@ -131,9 +139,29 @@
           }
         }
       },
+      "模型字段类型记录数": {
+        "bind": "ddic_model_column_type",
+        "link": "/x/Table/ddic.model.column.type",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
       "模型字段列表记录数": {
-        "bind": "ddic_model_field",
-        "link": "/x/Table/ddic.model.field",
+        "bind": "ddic_model_column",
+        "link": "/x/Table/ddic.model.column",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "模型关联关系记录数": {
+        "bind": "ddic_model_relation",
+        "link": "/x/Table/ddic.model.relation",
         "view": {
           "type": "Number",
           "props": {

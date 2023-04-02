@@ -1,11 +1,4 @@
-// import { log, Process, Studio } from "yao-node-client";
-let DbType = "";
-function getDBType() {
-    if (DbType === "") {
-        DbType = Process("utils.env.Get", "YAO_DB_DRIVER");
-    }
-    return DbType;
-}
+// import { log, Studio } from "yao-node-client";
 /**
  * 数据库类型与控件类型对应字段
  * @returns
@@ -79,12 +72,52 @@ function Hidden(isTable) {
 function filter() {
     return ["name", "title", "_sn"];
 }
+function toList(modelDsl) {
+    const copiedObject = JSON.parse(JSON.stringify(modelDsl.columns));
+    let columns = copiedObject || [];
+    const table_dot_name = Studio("model.file.DotName", modelDsl.table.name);
+    let listTemplate = {
+        name: modelDsl.name || "列表",
+        action: {
+            bind: {
+                table: table_dot_name,
+            },
+        },
+        layout: {
+            list: {
+                columns: [],
+            },
+        },
+        fields: {
+            list: {},
+        },
+    };
+    //并不知道谁会调用列表，
+    //不要显示外部关联ID
+    // columns = columns.filter((col) => !/_id$/i.test(col.name));
+    columns = MakeColumnOrder(columns);
+    columns.forEach((column) => {
+        let col = castFormColumn(column, modelDsl);
+        if (col) {
+            col.layout.forEach((tc) => {
+                listTemplate.layout.list.columns.push(tc);
+            });
+            col.fields.forEach((c) => {
+                // delete c.component.withs;
+                listTemplate.fields.list[c.name] = c.component;
+            });
+        }
+    });
+    // listTemplate.action.bind.option.withs = Studio("model.selector.GetWiths", modelDsl);
+    return listTemplate;
+}
 //create table from model
-function toTable(model_dsl) {
-    let columns = model_dsl.columns || [];
-    const table_dot_name = Studio("file.DotName", model_dsl.table.name);
+function toTable(modelDsl) {
+    const copiedObject = JSON.parse(JSON.stringify(modelDsl.columns));
+    let columns = copiedObject || [];
+    const table_dot_name = Studio("model.file.DotName", modelDsl.table.name);
     let tableTemplate = {
-        name: model_dsl.name || "表格",
+        name: modelDsl.name || "表格",
         action: {
             bind: {
                 model: table_dot_name,
@@ -182,30 +215,26 @@ function toTable(model_dsl) {
     };
     columns = MakeColumnOrder(columns);
     columns.forEach((column) => {
-        let col = castTableColumn(column, model_dsl);
+        let col = castTableColumn(column, modelDsl);
         if (col) {
-            // col.layout.filter.columns.forEach((fc) => {});
             col.layout.table.columns.forEach((tc) => {
                 tableTemplate.layout.table.columns.push(tc);
             });
             col.fields.table.forEach((c) => {
-                let cop = c.component.withs || [];
-                cop.forEach((fct) => {
-                    tableTemplate.action.bind.option.withs[fct.name] = {};
-                });
-                delete c.component.withs;
+                // let cop = c.component.withs || [];
+                // cop.forEach((fct: { name: string }) => {
+                //   tableTemplate.action.bind.option.withs[fct.name] = {};
+                // });
+                // delete c.component.withs;
                 tableTemplate.fields.table[c.name] = c.component;
             });
             col.fields.filter.forEach((ff) => {
                 tableTemplate.layout.filter.columns.push({ name: ff.name, width: 4 });
                 tableTemplate.fields.filter[ff.name] = ff.component;
             });
-            // col.fields.filter.forEach((ff) => {});
         }
-        // col.fields.table.forEach((ft) => {
-        //   tableTemplate.fields.table[ft.name] = ft.component;
-        // });
     });
+    tableTemplate.action.bind.option.withs = Studio("model.selector.GetWiths", modelDsl);
     return tableTemplate;
 }
 /**
@@ -230,12 +259,8 @@ function updateViewSwitchPropes(component, column) {
         component.view.props["itemProps"]["tooltip"] = column.comment;
     }
     if (column.default != null) {
-        const dbType = getDBType();
-        const defaultValue = /mysql/i.test(dbType) && type === "Switch"
-            ? column.default
-                ? 1
-                : 0
-            : column.default;
+        const ismysql = Studio("model.utils.IsMysql");
+        const defaultValue = ismysql && type === "Switch" ? (column.default ? 1 : 0) : column.default;
         component.view.props["defaultValue"] = defaultValue;
         component.view.props["value"] = defaultValue;
     }
@@ -251,23 +276,20 @@ function updateEditPropes(component, column) {
     }
     component.edit.props = component.edit.props || {};
     const { unique, nullable, default: columnDefault, type } = column;
-    if (unique || (!columnDefault && !nullable)) {
-        component.edit.props.itemProps = { rules: [{ required: true }] };
-    }
-    else if (/^id$/i.test(type)) {
+    if (/^id$/i.test(type)) {
         component.edit.props.itemProps = {};
+    }
+    else if (unique || (columnDefault == null && !nullable)) {
+        //这里不要判断同时 == null || == undefined
+        component.edit.props.itemProps = { rules: [{ required: true }] };
     }
     if (column.comment) {
         component.edit.props["itemProps"] = component.edit.props["itemProps"] || {};
         component.edit.props["itemProps"]["tooltip"] = column.comment;
     }
     if (column.default != null) {
-        const dbType = getDBType();
-        const defaultValue = /mysql/i.test(dbType) && type === "boolean"
-            ? column.default
-                ? 1
-                : 0
-            : column.default;
+        const ismysql = Studio("model.utils.IsMysql");
+        const defaultValue = ismysql && type === "boolean" ? (column.default ? 1 : 0) : column.default;
         component.edit.props["defaultValue"] = defaultValue;
         if (["RadioGroup", "Select"].includes(column.type)) {
             component.edit.props["value"] = defaultValue;
@@ -277,7 +299,7 @@ function updateEditPropes(component, column) {
         }
     }
 }
-function castTableColumn(column, model_dsl) {
+function castTableColumn(column, modelDsl) {
     // const props = column.props || {};
     let title = column.label || column.name;
     const name = column.name;
@@ -297,7 +319,7 @@ function castTableColumn(column, model_dsl) {
     // if (/_id$/i.test(newTitle)) {
     //   title = newTitle.replace(/_id$/i, "");
     // }
-    // title = Studio("relation.translate", title);
+    // title = Studio("model.relation.translate", title);
     if (!title) {
         // console.log("castTableColumn: missing title");
         log.Error("castTableColumn: missing title");
@@ -330,7 +352,7 @@ function castTableColumn(column, model_dsl) {
     }
     // 如果是json的,去看看是不是图片文件
     if (column.type == "json") {
-        component = Studio("file.File", column, false);
+        component = Studio("model.file.File", column, false);
         if (!component) {
             component = {
                 bind: bind,
@@ -377,10 +399,10 @@ function castTableColumn(column, model_dsl) {
         });
     }
     else if (column.type === "boolean") {
-        const dbtype = getDBType();
         let checkedValue = true;
         let unCheckedValue = false;
-        if (/mysql/i.test(dbtype)) {
+        const ismysql = Studio("model.utils.IsMysql");
+        if (ismysql) {
             checkedValue = 1;
             unCheckedValue = 0;
         }
@@ -425,7 +447,7 @@ function castTableColumn(column, model_dsl) {
         }
     }
     //检查是否下拉框显示
-    component = Studio("selector.Select", column, model_dsl, component);
+    component = Studio("model.selector.Select", column, modelDsl, component);
     // 如果是下拉的,则增加查询条件
     if (component.is_select) {
         const where_bind = "where." + name + ".in";
@@ -455,7 +477,7 @@ function castTableColumn(column, model_dsl) {
             }
         }
     }
-    component = Studio("file.File", column, component);
+    component = Studio("model.file.File", column, component);
     // component.edit = { type: "input", props: { value: bind } };
     // res.list.columns.push({ name: title });
     // res.edit.push({ name: title, width: 24 });
@@ -481,8 +503,10 @@ function Enum(option) {
     }
     return res;
 }
-function toForm(model_dsl) {
-    const table_dot_name = Studio("file.DotName", model_dsl.table.name);
+function toForm(modelDsl) {
+    const copiedObject = JSON.parse(JSON.stringify(modelDsl.columns));
+    let columns = copiedObject || [];
+    const table_dot_name = Studio("model.file.DotName", modelDsl.table.name);
     const actions = [
         {
             title: "重新生成代码",
@@ -564,9 +588,8 @@ function toForm(model_dsl) {
             ],
         },
     ];
-    let columns = model_dsl.columns || [];
     let tableTemplate = {
-        name: model_dsl.name || "表单",
+        name: modelDsl.name || "表单",
         action: {
             bind: {
                 model: table_dot_name,
@@ -591,24 +614,25 @@ function toForm(model_dsl) {
     };
     columns = MakeColumnOrder(columns);
     columns.forEach((column) => {
-        let col = castFormColumn(column, model_dsl);
+        let col = castFormColumn(column, modelDsl);
         if (col) {
             // col.layout.filter.columns.forEach((fc) => {});
             col.layout.forEach((tc) => {
                 tableTemplate.layout.form.sections[0].columns.push(tc);
             });
             col.fields.forEach((ft) => {
-                let cop = ft.component.withs || [];
-                cop.forEach((fct) => {
-                    tableTemplate.action.bind.option.withs[fct.name] = {};
-                });
-                delete ft.component.withs;
+                // let cop = ft.component.withs || [];
+                // cop.forEach((fct: { name: string | number }) => {
+                //   tableTemplate.action.bind.option.withs[fct.name] = {};
+                // });
+                // delete ft.component.withs;
                 tableTemplate.fields.form[ft.name] = ft.component;
             });
             // col.fields.filter.forEach((ff) => {});
         }
     });
-    tableTemplate = Studio("selector.Table", tableTemplate, model_dsl);
+    tableTemplate.action.bind.option.withs = Studio("model.selector.GetWiths", modelDsl);
+    tableTemplate = Studio("model.selector.List", tableTemplate, modelDsl);
     return tableTemplate;
 }
 function MakeColumnOrder(columns) {
@@ -627,7 +651,7 @@ function MakeColumnOrder(columns) {
     return columns1.concat(columns2);
 }
 /**根据模型定义生成Form定义 */
-function castFormColumn(column, model_dsl) {
+function castFormColumn(column, modelDsl) {
     const types = getType();
     const title = column.label || column.name;
     const name = column.name;
@@ -658,7 +682,7 @@ function castFormColumn(column, model_dsl) {
     let width = 8;
     const bind = `${name}`;
     if (column.type == "json") {
-        component = Studio("file.FormFile", column, false, model_dsl);
+        component = Studio("model.file.FormFile", column, false, modelDsl);
         if (!component) {
             component = {
                 bind: bind,
@@ -685,10 +709,10 @@ function castFormColumn(column, model_dsl) {
         };
     }
     else if (column.type === "boolean") {
-        const dbtype = getDBType();
+        const ismysql = Studio("model.utils.IsMysql");
         let checkedValue = true;
         let unCheckedValue = false;
-        if (/mysql/i.test(dbtype)) {
+        if (ismysql) {
             checkedValue = 1;
             unCheckedValue = 0;
         }
@@ -725,8 +749,8 @@ function castFormColumn(column, model_dsl) {
     if (["TextArea"].includes(types[column.type]) || column.type === "json") {
         width = 24;
     }
-    component = Studio("selector.EditSelect", column, model_dsl, component);
-    component = Studio("file.FormFile", column, component, model_dsl);
+    component = Studio("model.selector.EditSelect", column, modelDsl, component);
+    component = Studio("model.file.FormFile", column, component, modelDsl);
     if (component.is_image) {
         width = 24;
     }

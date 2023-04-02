@@ -15,7 +15,7 @@
       "name": "id"
     },
     {
-      "label": "name",
+      "label": "描述",
       "length": 80,
       "name": "name",
       "type": "string",
@@ -23,46 +23,32 @@
       "nullable": false
     },
     {
-      "comment": "字段标题",
-      "label": "标题",
-      "length": 80,
-      "name": "title",
-      "type": "string",
-      "nullable": false
-    },
-    {
-      "length": 400,
-      "name": "description",
-      "type": "string",
-      "comment": "字段介绍",
-      "label": "介绍"
-    },
-    {
-      "type": "text",
-      "comment": "字段注释",
-      "label": "注释",
-      "name": "comment"
+      "label": "字段类型",
+      "name": "field_type_id",
+      "nullable": true,
+      "type": "integer",
+      "comment": "字段类型定义"
     },
     {
       "comment": "字段长度，对string等类型字段有效",
-      "label": "长度",
+      "label": "字段长度",
       "name": "length",
-      "precision": 10,
-      "type": "integer"
+      "type": "integer",
+      "nullable": true
     },
     {
       "name": "precision",
-      "precision": 10,
       "type": "integer",
       "comment": "字段位数(含小数位)，对float、decimal等类型字段有效",
-      "label": "位数"
+      "label": "位数",
+      "nullable": true
     },
     {
       "type": "integer",
       "comment": "字段小数位位数，对float、decimal等类型字段有效",
       "label": "小数位位数",
       "name": "scale",
-      "precision": 10
+      "nullable": true
     },
     {
       "type": "boolean",
@@ -73,29 +59,41 @@
     },
     {
       "comment": "字段许可值，对enum类型字段有效",
-      "label": "字段许可值",
+      "label": "许可值",
       "name": "option",
-      "type": "json"
+      "type": "json",
+      "nullable": true
     },
     {
       "type": "string",
       "comment": "字段默认值",
       "label": "默认值",
-      "name": "default"
+      "name": "default",
+      "nullable": true
     },
     {
       "name": "crypt",
       "type": "enum",
       "option": ["", "PASSWORD", "AES"],
       "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
-      "label": "加密方式"
+      "label": "加密方式",
+      "nullable": true
     },
     {
       "label": "校验规则",
       "name": "validations",
       "type": "json",
-      "comment": "字段校验规则"
+      "comment": "字段校验规则",
+      "nullable": true
     }
   ],
-  "relations": {}
+  "relations": {
+    "field_type": {
+      "type": "hasOne",
+      "foreign": "field_type_id",
+      "key": "id",
+      "model": "ddic.model.column.type",
+      "query": {}
+    }
+  }
 }

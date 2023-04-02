@@ -1,13 +1,16 @@
 {
+  "name": "::Table Action",
   "action": {
     "bind": {
+      "model": "ddic.table.action",
       "option": {
-        "withs": {},
         "option": {
           "form": "ddic.table.action"
+        },
+        "withs": {
+          "form": {}
         }
-      },
-      "model": "ddic.table.action"
+      }
     }
   },
   "layout": {
@@ -19,12 +22,17 @@
     "filter": {
       "columns": [
         {
+          "name": "所属表格",
+          "width": 4
+        },
+        {
           "name": "标题",
           "width": 4
         }
       ],
       "actions": [
         {
+          "title": "添加",
           "icon": "icon-plus",
           "width": 3,
           "action": [
@@ -38,8 +46,7 @@
                 }
               }
             }
-          ],
-          "title": "添加"
+          ]
         }
       ]
     },
@@ -54,8 +61,8 @@
               {
                 "payload": {
                   "Form": {
-                    "type": "view",
-                    "model": "ddic.table.action"
+                    "model": "ddic.table.action",
+                    "type": "view"
                   }
                 },
                 "name": "OpenModal",
@@ -68,14 +75,14 @@
             "icon": "icon-edit-2",
             "action": [
               {
+                "name": "OpenModal",
                 "type": "Common.openModal",
                 "payload": {
                   "Form": {
-                    "model": "ddic.table.action",
-                    "type": "edit"
+                    "type": "edit",
+                    "model": "ddic.table.action"
                   }
-                },
-                "name": "OpenModal"
+                }
               }
             ]
           },
@@ -92,11 +99,11 @@
                 "name": "Confirm"
               },
               {
-                "name": "Delete",
-                "type": "Table.delete",
                 "payload": {
                   "model": "ddic.table.action"
-                }
+                },
+                "name": "Delete",
+                "type": "Table.delete"
               }
             ]
           }
@@ -116,8 +123,8 @@
           "width": 160
         },
         {
-          "name": "样式",
-          "width": 160
+          "width": 160,
+          "name": "样式"
         },
         {
           "name": "修改时显示",
@@ -136,20 +143,85 @@
   },
   "fields": {
     "filter": {
+      "所属表格": {
+        "bind": "where.table_id.in",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.form",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        }
+      },
       "标题": {
         "bind": "where.title.match",
         "edit": {
+          "type": "Input",
           "compute": "Trim",
           "props": {
             "placeholder": "请输入标题"
-          },
-          "type": "Input"
+          }
         }
       }
     },
     "table": {
+      "标题": {
+        "edit": {
+          "bind": "title",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "标题"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "title",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "图标": {
+        "bind": "icon",
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        },
+        "edit": {
+          "type": "Upload",
+          "compute": "Upload",
+          "props": {
+            "disabled": true,
+            "$api": {
+              "process": "fs.system.Upload"
+            },
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "图标"
+            },
+            "filetype": "image"
+          }
+        }
+      },
       "样式": {
-        "bind": "style",
         "view": {
           "props": {},
           "type": "Text"
@@ -167,42 +239,36 @@
           },
           "type": "Input",
           "bind": "style"
-        }
+        },
+        "bind": "style"
       },
       "修改时显示": {
-        "bind": "showWhenAdd",
-        "view": {
-          "props": {
-            "checkedChildren": "是",
-            "checkedValue": 1,
-            "unCheckedChildren": "否",
-            "unCheckedValue": 0
-          },
-          "type": "Switch"
-        }
-      },
-      "查看时显示": {
-        "bind": "showWhenView",
         "view": {
           "type": "Switch",
           "props": {
-            "checkedChildren": "是",
             "checkedValue": 1,
             "unCheckedChildren": "否",
-            "unCheckedValue": 0
+            "unCheckedValue": 0,
+            "checkedChildren": "是"
           }
-        }
+        },
+        "bind": "showWhenAdd"
+      },
+      "查看时显示": {
+        "view": {
+          "props": {
+            "unCheckedChildren": "否",
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1
+          },
+          "type": "Switch"
+        },
+        "bind": "showWhenView"
       },
       "操作": {
-        "view": {
-          "type": "Tooltip",
-          "props": {}
-        },
-        "bind": "action",
         "edit": {
           "props": {
-            "height": 200,
-            "language": "json",
             "itemProps": {
               "rules": [
                 {
@@ -210,41 +276,63 @@
                 }
               ],
               "tooltip": "Action列表"
-            }
+            },
+            "height": 200,
+            "language": "json"
           },
           "type": "TextArea"
-        }
+        },
+        "view": {
+          "props": {},
+          "type": "Tooltip"
+        },
+        "bind": "action"
       },
       "ID": {
+        "bind": "id",
         "view": {
-          "type": "Text",
-          "props": {}
+          "props": {},
+          "type": "Text"
         },
         "edit": {
-          "bind": "id",
           "props": {
             "itemProps": {
-              "tooltip": "表名",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
+              "tooltip": "表名"
             }
           },
-          "type": "Input"
-        },
-        "bind": "id"
+          "type": "Input",
+          "bind": "id"
+        }
       },
       "所属表格": {
         "view": {
-          "type": "Text",
-          "props": {}
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "ddic.form"
+                }
+              }
+            }
+          }
         },
         "edit": {
-          "type": "InputNumber",
-          "bind": "table_id",
+          "type": "Select",
           "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "ddic.form"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            },
             "itemProps": {
               "rules": [
                 {
@@ -256,56 +344,7 @@
           }
         },
         "bind": "table_id"
-      },
-      "标题": {
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "type": "Input",
-          "bind": "title",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "标题"
-            }
-          }
-        },
-        "bind": "title"
-      },
-      "图标": {
-        "edit": {
-          "type": "Upload",
-          "compute": "Upload",
-          "props": {
-            "filetype": "image",
-            "disabled": true,
-            "$api": {
-              "process": "fs.system.Upload"
-            },
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "图标"
-            }
-          }
-        },
-        "bind": "icon",
-        "view": {
-          "type": "Image",
-          "compute": "scripts.file.image.ImagesView",
-          "props": {}
-        }
       }
     }
-  },
-  "name": "::Table Action"
+  }
 }

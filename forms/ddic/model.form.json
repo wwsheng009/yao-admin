@@ -1,11 +1,19 @@
 {
+  "name": "::Model",
   "action": {
     "bind": {
       "model": "ddic.model",
       "option": {
-        "withs": {}
+        "withs": {
+          "columns": {},
+          "relations": {}
+        }
       }
-    }
+    },
+    "save": {
+      "process": "scripts.ddic.model.Save"
+    },
+    "before:delete": "scripts.ddic.model.BeforeDelete"
   },
   "layout": {
     "form": {
@@ -14,24 +22,48 @@
         {
           "columns": [
             {
-              "name": "名称",
+              "name": "命名空间",
               "width": 8
             },
             {
-              "name": "备注",
+              "name": "模型名称",
               "width": 8
             },
             {
-              "width": 24,
-              "name": "描述"
+              "name": "模型备注",
+              "width": 8
+            },
+            {
+              "name": "数据库表名",
+              "width": 8
+            },
+            {
+              "name": "数据库表备注",
+              "width": 8
+            },
+            {
+              "name": "软删除",
+              "width": 8
+            },
+            {
+              "name": "增加时间戳",
+              "width": 8
             }
           ]
         },
         {
           "columns": [
             {
-              "name": "表格fields",
+              "name": "列表columns",
               "width": 24
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "width": 24,
+              "name": "列表relations"
             }
           ]
         }
@@ -40,8 +72,6 @@
     "primary": "id",
     "actions": [
       {
-        "icon": "icon-layers",
-        "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
@@ -55,64 +85,67 @@
             }
           },
           {
+            "type": "Common.confirm",
             "payload": {
-              "title": "提示",
-              "content": "处理完成"
+              "content": "处理完成",
+              "title": "提示"
             },
-            "name": "Confirm",
-            "type": "Common.confirm"
+            "name": "Confirm"
           }
         ],
-        "title": "重新生成代码"
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true
       },
       {
+        "icon": "icon-arrow-left",
         "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
+            "type": "Common.closeModal",
             "payload": {},
-            "name": "CloseModal",
+            "name": "CloseModal"
+          }
+        ],
+        "title": "返回"
+      },
+      {
+        "action": [
+          {
+            "payload": {},
+            "name": "Submit",
+            "type": "Form.submit"
+          },
+          {
+            "payload": {},
+            "name": "Back",
             "type": "Common.closeModal"
           }
         ],
-        "title": "返回",
-        "icon": "icon-arrow-left"
-      },
-      {
-        "style": "primary",
-        "showWhenAdd": true,
-        "action": [
-          {
-            "name": "Submit",
-            "type": "Form.submit",
-            "payload": {}
-          },
-          {
-            "type": "Common.closeModal",
-            "payload": {},
-            "name": "Back"
-          }
-        ],
         "title": "保存",
-        "icon": "icon-check"
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true
       },
       {
+        "style": "danger",
         "title": "Delete",
         "action": [
           {
-            "name": "Confirm",
             "type": "Common.confirm",
             "payload": {
-              "title": "提示",
-              "content": "确认删除，删除后数据无法恢复？"
-            }
+              "content": "确认删除，删除后数据无法恢复？",
+              "title": "提示"
+            },
+            "name": "Confirm"
           },
           {
+            "name": "Delete",
             "payload": {
               "model": "ddic.model"
             },
-            "type": "Form.delete",
-            "name": "Delete"
+            "type": "Form.delete"
           },
           {
             "name": "Back",
@@ -120,15 +153,88 @@
             "payload": {}
           }
         ],
-        "icon": "icon-trash-2",
-        "style": "danger"
+        "icon": "icon-trash-2"
       }
     ]
   },
   "fields": {
     "form": {
-      "名称": {
+      "增加时间戳": {
         "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "label": "是",
+                "value": 1
+              },
+              {
+                "value": 0,
+                "label": "否"
+              }
+            ],
+            "itemProps": {
+              "tooltip": "增加创建，更新时间戳"
+            },
+            "defaultValue": 1
+          }
+        },
+        "bind": "timestamps"
+      },
+      "命名空间": {
+        "bind": "namespace",
+        "edit": {
+          "props": {
+            "defaultValue": "app"
+          },
+          "type": "Input"
+        }
+      },
+      "软删除": {
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "软删除，不直接删除"
+            },
+            "defaultValue": 1
+          }
+        },
+        "bind": "soft_deletes"
+      },
+      "列表columns": {
+        "edit": {
+          "type": "List",
+          "props": {
+            "name": "ddic.model.column",
+            "showLabel": true
+          }
+        },
+        "bind": "columns"
+      },
+      "列表relations": {
+        "bind": "relations",
+        "edit": {
+          "type": "List",
+          "props": {
+            "name": "ddic.model.relation",
+            "showLabel": true
+          }
+        }
+      },
+      "模型名称": {
+        "edit": {
+          "type": "Input",
           "props": {
             "itemProps": {
               "rules": [
@@ -137,56 +243,47 @@
                 }
               ]
             }
-          },
-          "type": "Input"
+          }
         },
         "bind": "name"
       },
-      "备注": {
+      "模型备注": {
+        "bind": "model_comment",
         "edit": {
           "props": {
             "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
+              "tooltip": "模型定义注释"
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "数据库表备注": {
+        "edit": {
+          "props": {
+            "itemProps": {
               "tooltip": "对应数据表中字段注释"
             }
           },
           "type": "Input"
         },
-        "bind": "comment"
+        "bind": "table_comment"
       },
-      "描述": {
+      "数据库表名": {
         "edit": {
-          "type": "TextArea",
           "props": {
             "itemProps": {
-              "tooltip": "介绍",
               "rules": [
                 {
                   "required": true
                 }
               ]
             }
-          }
+          },
+          "type": "Input"
         },
-        "bind": "description"
-      },
-      "表格fields": {
-        "bind": "id",
-        "edit": {
-          "type": "Table",
-          "props": {
-            "model": "ddic.model.field",
-            "query": {
-              "where.model_id.eq": "{{id}}"
-            }
-          }
-        }
+        "bind": "table_name"
       }
     }
-  },
-  "name": "::Model"
+  }
 }

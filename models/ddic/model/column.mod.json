@@ -1,19 +1,27 @@
 {
-  "name": "::Model Field",
-  "table": { "name": "ddic_model_field", "comment": "模型字段列表" },
+  "name": "::Model Column",
+  "table": { "name": "ddic_model_column", "comment": "模型字段列表" },
   "columns": [
     {
       "name": "id",
       "type": "ID",
       "label": "ID",
-      "comment": "表名"
+      "comment": "标识"
     },
     {
       "name": "model_id",
       "type": "integer",
-      "label": "模型标识",
+      "label": "模型",
       "comment": "字段所属的模型",
       "nullable": false
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "数据库表的字段名"
     },
     {
       "name": "domain_id",
@@ -34,65 +42,36 @@
       "name": "label",
       "type": "string",
       "length": 80,
-      "unique": true,
-      "nullable": false,
+      "nullable": true,
       "comment": "字段显示名称，用于在管理表单，开发平台等成场景下呈现"
     },
     {
-      "label": "名称",
-      "name": "name",
-      "type": "string",
-      "length": 80,
-      "nullable": false,
-      "unique": true,
-      "comment": "数据库表的字段名"
-    },
-    {
-      "label": "类型",
-      "name": "type",
-      "type": "string",
-      "length": 80,
-      "nullable": false,
-      "comment": "字段类型"
-    },
-    {
-      "label": "标题",
-      "name": "title",
-      "type": "string",
-      "length": 80,
-      "nullable": false,
-      "comment": "字段标题，可用于开发平台中呈现"
-    },
-    {
-      "label": "描述",
-      "name": "description",
-      "type": "string",
-      "length": 400,
-      "comment": "字段介绍，可用于开发平台中呈现"
-    },
-    {
-      "label": "备注",
-      "name": "comment",
-      "type": "text",
-      "comment": "字段注释，对应数据表中字段注释"
+      "label": "字段类型",
+      "name": "column_type_id",
+      "nullable": true,
+      "type": "integer",
+      "comment": "字段类型定义"
     },
     {
       "label": "长度",
       "name": "length",
       "type": "integer",
-      "comment": "字段长度，对 `string` 等类型字段有效"
+      "comment": "字段长度，对 `string` 等类型字段有效",
+      "nullable": true
     },
     {
       "label": "位数(含小数位)",
       "name": "precision",
       "type": "integer",
-      "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效"
+      "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效",
+      "nullable": true
     },
     {
       "label": "小数位",
       "name": "scale",
       "type": "integer",
-      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
+      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
+      "nullable": true
     },
     {
       "label": "是否空值",
@@ -105,26 +84,30 @@
       "label": "选项",
       "name": "option",
       "type": "json",
-      "comment": "字段许可值，对 `enum` 类型字段有效"
+      "comment": "字段许可值，对 `enum` 类型字段有效",
+      "nullable": true
     },
     {
       "label": "默认值",
       "name": "default",
       "type": "string",
-      "comment": "string|number|float|字段默认值"
+      "comment": "string|number|float|字段默认值",
+      "nullable": true
     },
     {
       "label": "加密方式",
       "name": "crypt",
-      "type": "string",
-      "option": ["", "PASSWORD", "AES"],
-      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
+      "type": "enum",
+      "option": ["PASSWORD", "AES"],
+      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
+      "nullable": true
     },
     {
       "label": "字段校验规则",
       "name": "validations",
       "type": "json",
-      "comment": "字段校验规则"
+      "comment": "字段校验规则",
+      "nullable": true
     },
     {
       "label": "索引",
@@ -148,11 +131,12 @@
       "comment": "字段是否为主键，每张表至多一个主键字段。默认为 false"
     },
     {
-      "label": "用户",
-      "name": "user",
+      "label": "注释",
+      "name": "comment",
       "type": "string",
-      "length": 80,
-      "unique": true
+      "length": 200,
+      "comment": "注释",
+      "nullable": true
     }
   ],
   "relations": {
@@ -167,6 +151,19 @@
       "model": "ddic.domain",
       "key": "id",
       "foreign": "domain_id"
+    },
+    "element": {
+      "type": "hasOne",
+      "model": "ddic.element",
+      "key": "id",
+      "foreign": "element_id"
+    },
+    "column_type": {
+      "type": "hasOne",
+      "foreign": "column_type_id",
+      "key": "id",
+      "model": "ddic.model.column.type",
+      "query": {}
     }
   },
   "option": {}

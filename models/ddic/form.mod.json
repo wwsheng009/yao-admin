@@ -50,12 +50,6 @@
       "type": "string",
       "length": 200,
       "comment": "表注释"
-    },
-    {
-      "label": "描述",
-      "name": "description",
-      "type": "text",
-      "comment": "介绍"
     }
   ],
   "relations": {

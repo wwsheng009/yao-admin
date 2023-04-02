@@ -1,0 +1,72 @@
+{
+  "name": "::Model Relation",
+  "table": { "name": "ddic_model_relation", "comment": "模型关联关系" },
+  "columns": [
+    {
+      "name": "id",
+      "type": "ID",
+      "label": "ID",
+      "comment": "表名"
+    },
+    {
+      "name": "model_id",
+      "type": "integer",
+      "label": "模型",
+      "comment": "所属模型",
+      "nullable": false
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "unique": true,
+      "comment": "定义关系名称"
+    },
+    {
+      "name": "type",
+      "type": "enum",
+      "option": ["hasOne", "hasMany"],
+      "label": "关联关系",
+      "comment": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。",
+      "nullable": false
+    },
+    {
+      "name": "foreign",
+      "type": "string",
+      "label": "外键",
+      "comment": "外键",
+      "nullable": false
+    },
+    {
+      "name": "key_id",
+      "type": "integer",
+      "label": "主键",
+      "comment": "主键",
+      "nullable": false
+    },
+    {
+      "name": "query",
+      "type": "json",
+      "label": "关联条件",
+      "comment": "关联条件",
+      "nullable": true
+    }
+  ],
+  "relations": {
+    "model": {
+      "type": "hasOne",
+      "model": "ddic.model",
+      "key": "id",
+      "foreign": "model_id"
+    },
+    "key": {
+      "type": "hasOne",
+      "model": "ddic.model.column",
+      "key": "id",
+      "foreign": "key_id"
+    }
+  },
+  "option": {}
+}
