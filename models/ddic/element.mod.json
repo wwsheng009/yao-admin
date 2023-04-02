@@ -3,7 +3,7 @@
   "name": "::Data Element",
   "option": {},
   "table": {
-    "name": "sys_element",
+    "name": "ddic_element",
     "comment": "数据元素"
   },
   "columns": [
@@ -112,7 +112,7 @@
       "type": "hasOne",
       "foreign": "domain_id",
       "key": "id",
-      "model": "sys.domain",
+      "model": "ddic.domain",
       "query": {}
     }
   }

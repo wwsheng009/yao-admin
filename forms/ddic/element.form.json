@@ -1,0 +1,406 @@
+{
+  "layout": {
+    "primary": "id",
+    "actions": [
+      {
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "ddic.element"
+              ]
+            },
+            "name": "StudioModel"
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "content": "处理完成",
+              "title": "提示"
+            }
+          }
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true
+      },
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "CloseModal"
+          }
+        ]
+      },
+      {
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ],
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary"
+      },
+      {
+        "action": [
+          {
+            "payload": {
+              "content": "确认删除，删除后数据无法恢复？",
+              "title": "提示"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
+          },
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "ddic.element"
+            },
+            "type": "Form.delete"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ],
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 8,
+              "name": "域"
+            },
+            {
+              "name": "名称",
+              "width": 8
+            },
+            {
+              "name": "字段标题",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "字段介绍"
+            },
+            {
+              "width": 8,
+              "name": "字段长度"
+            },
+            {
+              "name": "字段位数(含小数位)",
+              "width": 8
+            },
+            {
+              "name": "字段小数位位数",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "是否为空"
+            },
+            {
+              "name": "字段默认值",
+              "width": 8
+            },
+            {
+              "name": "加密方式",
+              "width": 8
+            },
+            {
+              "width": 24,
+              "name": "字段注释"
+            },
+            {
+              "name": "字段许可值",
+              "width": 24
+            },
+            {
+              "name": "字段校验规则",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "fields": {
+    "form": {
+      "加密方式": {
+        "bind": "crypt",
+        "edit": {
+          "props": {
+            "placeholder": "请选择加密方式",
+            "options": [
+              {
+                "value": "PASSWORD",
+                "label": "::PASSWORD"
+              },
+              {
+                "value": "AES",
+                "label": "::AES"
+              }
+            ],
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
+            }
+          },
+          "type": "Select"
+        }
+      },
+      "字段校验规则": {
+        "bind": "validations",
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段校验规则"
+            }
+          },
+          "type": "CodeEditor"
+        }
+      },
+      "字段小数位位数": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "InputNumber"
+        },
+        "bind": "scale"
+      },
+      "字段位数(含小数位)": {
+        "bind": "precision",
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效"
+            }
+          }
+        }
+      },
+      "字段长度": {
+        "bind": "length",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段长度，对 `string` 等类型字段有效"
+            }
+          },
+          "type": "InputNumber"
+        }
+      },
+      "字段注释": {
+        "bind": "comment",
+        "edit": {
+          "type": "TextArea",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段注释",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "名称": {
+        "bind": "name",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "字段介绍": {
+        "bind": "description",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "字段介绍",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "字段默认值": {
+        "bind": "default",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "string|number|float|字段默认值"
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "域": {
+        "bind": "domain_id",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "itemProps": {
+              "tooltip": "域定义"
+            },
+            "defaultValue": 0,
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "ddic.domain"
+                }
+              }
+            }
+          }
+        }
+      },
+      "字段标题": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段标题"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "title"
+      },
+      "字段许可值": {
+        "edit": {
+          "type": "CodeEditor",
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段许可值，对 `enum` 类型字段有效"
+            }
+          }
+        },
+        "bind": "option"
+      },
+      "是否为空": {
+        "bind": "nullable",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "字段是否可以为空，默认为 false",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            },
+            "defaultValue": 0,
+            "options": [
+              {
+                "label": "是",
+                "value": 1
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ]
+          },
+          "type": "RadioGroup"
+        }
+      }
+    }
+  },
+  "name": "::Data Element",
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {
+          "domain": {}
+        }
+      },
+      "model": "ddic.element"
+    }
+  }
+}

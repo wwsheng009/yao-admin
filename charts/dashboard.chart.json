@@ -62,6 +62,10 @@
         {
           "name": "表格定义记录数",
           "width": 6
+        },
+        {
+          "name": "宠物表记录数",
+          "width": 6
         }
       ]
     }
@@ -88,8 +92,8 @@
         }
       },
       "数据元素记录数": {
-        "bind": "sys_element",
-        "link": "/x/Table/sys.element",
+        "bind": "ddic_element",
+        "link": "/x/Table/ddic.element",
         "view": {
           "type": "Number",
           "props": {
@@ -98,8 +102,8 @@
         }
       },
       "表单动作记录数": {
-        "bind": "sys_form_action",
-        "link": "/x/Table/sys.form.action",
+        "bind": "ddic_form_action",
+        "link": "/x/Table/ddic.form.action",
         "view": {
           "type": "Number",
           "props": {
@@ -108,8 +112,8 @@
         }
       },
       "表单字段列表记录数": {
-        "bind": "sys_form_field",
-        "link": "/x/Table/sys.form.field",
+        "bind": "ddic_form_field",
+        "link": "/x/Table/ddic.form.field",
         "view": {
           "type": "Number",
           "props": {
@@ -118,8 +122,8 @@
         }
       },
       "表单定义记录数": {
-        "bind": "sys_form",
-        "link": "/x/Table/sys.form",
+        "bind": "ddic_form",
+        "link": "/x/Table/ddic.form",
         "view": {
           "type": "Number",
           "props": {
@@ -128,8 +132,8 @@
         }
       },
       "模型字段列表记录数": {
-        "bind": "sys_model_field",
-        "link": "/x/Table/sys.model.field",
+        "bind": "ddic_model_field",
+        "link": "/x/Table/ddic.model.field",
         "view": {
           "type": "Number",
           "props": {
@@ -138,8 +142,8 @@
         }
       },
       "业务模型记录数": {
-        "bind": "sys_model",
-        "link": "/x/Table/sys.model",
+        "bind": "ddic_model",
+        "link": "/x/Table/ddic.model",
         "view": {
           "type": "Number",
           "props": {
@@ -148,8 +152,8 @@
         }
       },
       "表格动作记录数": {
-        "bind": "sys_table_action",
-        "link": "/x/Table/sys.table.action",
+        "bind": "ddic_table_action",
+        "link": "/x/Table/ddic.table.action",
         "view": {
           "type": "Number",
           "props": {
@@ -158,8 +162,8 @@
         }
       },
       "表格字段列表记录数": {
-        "bind": "sys_table_field",
-        "link": "/x/Table/sys.table.field",
+        "bind": "ddic_table_field",
+        "link": "/x/Table/ddic.table.field",
         "view": {
           "type": "Number",
           "props": {
@@ -168,8 +172,8 @@
         }
       },
       "表格筛选字段列表记录数": {
-        "bind": "sys_table_filter",
-        "link": "/x/Table/sys.table.filter",
+        "bind": "ddic_table_filter",
+        "link": "/x/Table/ddic.table.filter",
         "view": {
           "type": "Number",
           "props": {
@@ -178,8 +182,18 @@
         }
       },
       "表格定义记录数": {
-        "bind": "sys_table",
-        "link": "/x/Table/sys.table",
+        "bind": "ddic_table",
+        "link": "/x/Table/ddic.table",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "宠物表记录数": {
+        "bind": "demo_pet",
+        "link": "/x/Table/demo.pet",
         "view": {
           "type": "Number",
           "props": {

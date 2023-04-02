@@ -1,6 +1,6 @@
 {
-  "name": "::Table Field",
-  "table": { "name": "sys_table_field", "comment": "表格字段列表" },
+  "name": "::Form Field",
+  "table": { "name": "ddic_form_field", "comment": "表单字段列表" },
   "columns": [
     {
       "name": "id",
@@ -9,10 +9,10 @@
       "comment": "表名"
     },
     {
-      "name": "table_id",
+      "name": "form_id",
       "type": "integer",
-      "label": "表格标识",
-      "comment": "字段所属的表格",
+      "label": "所属表单",
+      "comment": "字段所属的表单",
       "nullable": false
     },
     {
@@ -87,12 +87,6 @@
       "comment": "字段许可值"
     },
     {
-      "label": "默认值",
-      "name": "default",
-      "type": "string",
-      "comment": "字段默认值"
-    },
-    {
       "label": "启用",
       "name": "enable",
       "type": "boolean",
@@ -100,26 +94,25 @@
       "comment": "启用"
     },
     {
+      "label": "默认值",
+      "name": "default",
+      "type": "string",
+      "comment": "字段默认值"
+    },
+    {
       "label": "是否显示",
       "name": "is_dispaly",
       "type": "boolean",
       "default": true,
       "comment": "是否显示"
-    },
-    {
-      "label": "是否编辑",
-      "name": "is_edit",
-      "type": "boolean",
-      "default": true,
-      "comment": "是否编辑"
     }
   ],
   "relations": {
-    "table": {
+    "form": {
       "type": "hasOne",
-      "model": "sys.table",
+      "model": "ddic.form",
       "key": "id",
-      "foreign": "table_id"
+      "foreign": "form_id"
     }
   },
   "option": {}

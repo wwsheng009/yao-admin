@@ -1,3 +1,3 @@
 function Data() {
-    return {"table_count":10,"model_count":10,"sys_element":1,"sys_form_action":0,"sys_form_field":0,"sys_form":0,"sys_model_field":0,"sys_model":1,"sys_table_action":0,"sys_table_field":0,"sys_table_filter":0,"sys_table":0}
+    return {"table_count":11,"model_count":11,"ddic_element":0,"ddic_form_action":0,"ddic_form_field":0,"ddic_form":0,"ddic_model_field":0,"ddic_model":0,"ddic_table_action":0,"ddic_table_field":0,"ddic_table_filter":0,"ddic_table":0,"demo_pet":0}
   }

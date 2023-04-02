@@ -1,0 +1,434 @@
+{
+  "layout": {
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "所属表单",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "名称"
+            },
+            {
+              "name": "绑定字段",
+              "width": 8
+            },
+            {
+              "name": "编辑类型",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "查看类型"
+            },
+            {
+              "name": "描述",
+              "width": 8
+            },
+            {
+              "name": "显示长度",
+              "width": 8
+            },
+            {
+              "name": "是否必输",
+              "width": 8
+            },
+            {
+              "name": "启用",
+              "width": 8
+            },
+            {
+              "name": "默认值",
+              "width": 8
+            },
+            {
+              "name": "是否显示",
+              "width": 8
+            },
+            {
+              "name": "编辑属性",
+              "width": 24
+            },
+            {
+              "name": "查看属性",
+              "width": 24
+            },
+            {
+              "name": "选项",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    },
+    "primary": "id",
+    "actions": [
+      {
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "ddic.form.field"
+              ]
+            },
+            "name": "StudioModel"
+          },
+          {
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
+          }
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "CloseModal",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left"
+      },
+      {
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "payload": {},
+            "name": "Back",
+            "type": "Common.closeModal"
+          }
+        ],
+        "title": "保存",
+        "icon": "icon-check"
+      },
+      {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            }
+          },
+          {
+            "type": "Form.delete",
+            "name": "Delete",
+            "payload": {
+              "model": "ddic.form.field"
+            }
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ]
+      }
+    ]
+  },
+  "fields": {
+    "form": {
+      "所属表单": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段所属的表单",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            },
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.form",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "bind": "form_id"
+      },
+      "编辑类型": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件类型"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "edit_type"
+      },
+      "是否显示": {
+        "bind": "is_dispaly",
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "是否显示"
+            },
+            "defaultValue": 1
+          }
+        }
+      },
+      "编辑属性": {
+        "bind": "edit_props",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件属性"
+            },
+            "language": "json",
+            "height": 200
+          },
+          "type": "CodeEditor"
+        }
+      },
+      "启用": {
+        "bind": "enable",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "启用"
+            },
+            "defaultValue": 1
+          },
+          "type": "RadioGroup"
+        }
+      },
+      "显示长度": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段显示长度"
+            }
+          },
+          "type": "InputNumber"
+        },
+        "bind": "width"
+      },
+      "描述": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段介绍"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "description"
+      },
+      "是否必输": {
+        "bind": "required",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段是否是否必输"
+            },
+            "defaultValue": 0
+          },
+          "type": "RadioGroup"
+        }
+      },
+      "选项": {
+        "edit": {
+          "props": {
+            "language": "json",
+            "itemProps": {
+              "tooltip": "字段许可值",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            },
+            "height": 200
+          },
+          "type": "CodeEditor"
+        },
+        "bind": "option"
+      },
+      "绑定字段": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "tooltip": "绑定的模型字段",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        "bind": "bind"
+      },
+      "名称": {
+        "bind": "name",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段名称"
+            }
+          }
+        }
+      },
+      "默认值": {
+        "bind": "default",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段默认值"
+            }
+          }
+        }
+      },
+      "查看类型": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件类型"
+            }
+          }
+        },
+        "bind": "view_type"
+      },
+      "查看属性": {
+        "bind": "view_props",
+        "edit": {
+          "props": {
+            "language": "json",
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件属性"
+            },
+            "height": 200
+          },
+          "type": "CodeEditor"
+        }
+      }
+    }
+  },
+  "name": "::Form Field",
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {
+          "form": {}
+        }
+      },
+      "model": "ddic.form.field"
+    }
+  }
+}

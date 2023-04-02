@@ -1,6 +1,6 @@
 {
-  "name": "::Table Action",
-  "table": { "name": "sys_table_action", "comment": "表格动作" },
+  "name": "::Form Action",
+  "table": { "name": "ddic_form_action", "comment": "表单动作" },
   "columns": [
     {
       "name": "id",
@@ -9,10 +9,10 @@
       "comment": "表名"
     },
     {
-      "name": "table_id",
+      "name": "form_id",
       "type": "integer",
-      "label": "所属表格",
-      "comment": "字段所属的表格",
+      "label": "所属表单",
+      "comment": "字段所属的表单",
       "nullable": false
     },
     {
@@ -60,7 +60,7 @@
   "relations": {
     "form": {
       "type": "hasOne",
-      "model": "sys.form",
+      "model": "ddic.form",
       "key": "id",
       "foreign": "form_id"
     }

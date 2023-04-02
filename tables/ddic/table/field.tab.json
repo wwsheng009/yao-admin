@@ -1,0 +1,533 @@
+{
+  "fields": {
+    "filter": {
+      "表格标识": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.table",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "bind": "where.table_id.in"
+      },
+      "名称": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入名称"
+          }
+        }
+      }
+    },
+    "table": {
+      "名称": {
+        "bind": "name",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "name",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段名称"
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "编辑类型": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "bind": "edit_type",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件类型"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "edit_type"
+      },
+      "是否显示": {
+        "bind": "is_dispaly",
+        "view": {
+          "type": "Switch",
+          "props": {
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1,
+            "unCheckedChildren": "否"
+          }
+        }
+      },
+      "编辑属性": {
+        "edit": {
+          "props": {
+            "height": 200,
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件属性"
+            },
+            "language": "json"
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "type": "Tooltip",
+          "props": {}
+        },
+        "bind": "edit_props"
+      },
+      "查看属性": {
+        "bind": "view_props",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件属性"
+            },
+            "language": "json",
+            "height": 200
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "props": {},
+          "type": "Tooltip"
+        }
+      },
+      "ID": {
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "表名"
+            }
+          }
+        },
+        "bind": "id",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "表格标识": {
+        "bind": "table_id",
+        "view": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.table",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          },
+          "type": "Tag"
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "model": "ddic.table",
+                  "label": "name",
+                  "value": "id"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            },
+            "itemProps": {
+              "tooltip": "字段所属的表格",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "选项": {
+        "bind": "option",
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "tooltip": "字段许可值",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "type": "Tooltip",
+          "props": {}
+        }
+      },
+      "描述": {
+        "edit": {
+          "bind": "description",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段介绍"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "description",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "是否编辑": {
+        "view": {
+          "type": "Switch",
+          "props": {
+            "unCheckedChildren": "否",
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1
+          }
+        },
+        "bind": "is_edit"
+      },
+      "默认值": {
+        "bind": "default",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段默认值"
+            }
+          },
+          "type": "Input",
+          "bind": "default"
+        }
+      },
+      "启用": {
+        "bind": "enable",
+        "view": {
+          "props": {
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1,
+            "unCheckedChildren": "否"
+          },
+          "type": "Switch"
+        }
+      },
+      "绑定字段": {
+        "bind": "bind",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "bind",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "绑定的模型字段"
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "是否必输": {
+        "bind": "required",
+        "view": {
+          "props": {
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1,
+            "unCheckedChildren": "否"
+          },
+          "type": "Switch"
+        }
+      },
+      "查看类型": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "view_type",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件类型"
+            }
+          }
+        },
+        "bind": "view_type"
+      },
+      "显示长度": {
+        "edit": {
+          "type": "InputNumber",
+          "bind": "width",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段显示长度"
+            }
+          }
+        },
+        "bind": "width",
+        "view": {
+          "type": "Text",
+          "props": {}
+        }
+      }
+    }
+  },
+  "name": "::Table Field",
+  "action": {
+    "bind": {
+      "model": "ddic.table.field",
+      "option": {
+        "withs": {
+          "table": {}
+        },
+        "option": {
+          "form": "ddic.table.field"
+        }
+      }
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "width": 4,
+          "name": "表格标识"
+        },
+        {
+          "name": "名称",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "icon": "icon-plus",
+          "width": 3,
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "ddic.table.field"
+                }
+              }
+            }
+          ],
+          "title": "添加"
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "width": 160,
+          "name": "表格标识"
+        },
+        {
+          "width": 160,
+          "name": "名称"
+        },
+        {
+          "name": "绑定字段",
+          "width": 160
+        },
+        {
+          "name": "编辑类型",
+          "width": 160
+        },
+        {
+          "name": "查看类型",
+          "width": 160
+        },
+        {
+          "name": "描述",
+          "width": 160
+        },
+        {
+          "name": "显示长度",
+          "width": 160
+        },
+        {
+          "name": "是否必输",
+          "width": 160
+        },
+        {
+          "name": "默认值",
+          "width": 160
+        },
+        {
+          "name": "启用",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "是否显示"
+        },
+        {
+          "name": "是否编辑",
+          "width": 160
+        },
+        {
+          "name": "编辑属性",
+          "width": 160
+        },
+        {
+          "name": "查看属性",
+          "width": 160
+        },
+        {
+          "name": "选项",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "ddic.table.field",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "ddic.table.field"
+                  }
+                }
+              }
+            ],
+            "title": "编辑"
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "payload": {
+                  "content": "删除后不可撤销！",
+                  "title": "确认删除"
+                },
+                "name": "Confirm",
+                "type": "Common.confirm"
+              },
+              {
+                "payload": {
+                  "model": "ddic.table.field"
+                },
+                "name": "Delete",
+                "type": "Table.delete"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

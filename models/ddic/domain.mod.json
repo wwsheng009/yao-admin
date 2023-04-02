@@ -3,7 +3,7 @@
   "name": "::Domain",
   "option": {},
   "table": {
-    "name": "sys_domain",
+    "name": "ddic_domain",
     "comment": "域"
   },
   "columns": [

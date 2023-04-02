@@ -1,0 +1,192 @@
+{
+  "action": {
+    "bind": {
+      "model": "ddic.model",
+      "option": {
+        "withs": {}
+      }
+    }
+  },
+  "layout": {
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "名称",
+              "width": 8
+            },
+            {
+              "name": "备注",
+              "width": 8
+            },
+            {
+              "width": 24,
+              "name": "描述"
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "name": "表格fields",
+              "width": 24
+            }
+          ]
+        }
+      ]
+    },
+    "primary": "id",
+    "actions": [
+      {
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "StudioModel",
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "ddic.model"
+              ]
+            }
+          },
+          {
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
+          }
+        ],
+        "title": "重新生成代码"
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {},
+            "name": "CloseModal",
+            "type": "Common.closeModal"
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left"
+      },
+      {
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ],
+        "title": "保存",
+        "icon": "icon-check"
+      },
+      {
+        "title": "Delete",
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            }
+          },
+          {
+            "payload": {
+              "model": "ddic.model"
+            },
+            "type": "Form.delete",
+            "name": "Delete"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "icon": "icon-trash-2",
+        "style": "danger"
+      }
+    ]
+  },
+  "fields": {
+    "form": {
+      "名称": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "name"
+      },
+      "备注": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "对应数据表中字段注释"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "comment"
+      },
+      "描述": {
+        "edit": {
+          "type": "TextArea",
+          "props": {
+            "itemProps": {
+              "tooltip": "介绍",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        "bind": "description"
+      },
+      "表格fields": {
+        "bind": "id",
+        "edit": {
+          "type": "Table",
+          "props": {
+            "model": "ddic.model.field",
+            "query": {
+              "where.model_id.eq": "{{id}}"
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "::Model"
+}

@@ -1,6 +1,6 @@
 {
   "name": "::Table Filter Field",
-  "table": { "name": "sys_table_filter", "comment": "表格筛选字段列表" },
+  "table": { "name": "ddic_table_filter", "comment": "表格筛选字段列表" },
   "columns": [
     {
       "name": "id",
@@ -117,7 +117,7 @@
   "relations": {
     "table": {
       "type": "hasOne",
-      "model": "sys.table",
+      "model": "ddic.table",
       "key": "id",
       "foreign": "table_id"
     }

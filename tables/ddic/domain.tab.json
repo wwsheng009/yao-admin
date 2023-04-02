@@ -1,0 +1,483 @@
+{
+  "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "name": "name",
+          "width": 4
+        },
+        {
+          "name": "标题",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "ddic.domain"
+                }
+              }
+            }
+          ],
+          "title": "添加",
+          "icon": "icon-plus",
+          "width": 3
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "name",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "标题"
+        },
+        {
+          "name": "介绍",
+          "width": 160
+        },
+        {
+          "name": "长度",
+          "width": 160
+        },
+        {
+          "name": "位数",
+          "width": 160
+        },
+        {
+          "name": "小数位位数",
+          "width": 160
+        },
+        {
+          "name": "是否为空",
+          "width": 160
+        },
+        {
+          "name": "默认值",
+          "width": 160
+        },
+        {
+          "name": "加密方式",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "注释"
+        },
+        {
+          "name": "字段许可值",
+          "width": 160
+        },
+        {
+          "name": "校验规则",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "icon": "icon-eye",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "model": "ddic.domain",
+                    "type": "view"
+                  }
+                }
+              }
+            ],
+            "title": "查看"
+          },
+          {
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "ddic.domain"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ],
+            "title": "编辑",
+            "icon": "icon-edit-2"
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                }
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "ddic.domain"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "fields": {
+    "filter": {
+      "name": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入name"
+          }
+        }
+      },
+      "标题": {
+        "bind": "where.title.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入标题"
+          }
+        }
+      }
+    },
+    "table": {
+      "长度": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "bind": "length",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段长度，对string等类型字段有效"
+            }
+          },
+          "type": "InputNumber"
+        },
+        "bind": "length"
+      },
+      "位数": {
+        "bind": "precision",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "InputNumber",
+          "bind": "precision",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
+            }
+          }
+        }
+      },
+      "小数位位数": {
+        "bind": "scale",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "bind": "scale",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段小数位位数，对float、decimal等类型字段有效"
+            }
+          },
+          "type": "InputNumber"
+        }
+      },
+      "加密方式": {
+        "bind": "crypt",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
+            },
+            "placeholder": "请选择加密方式",
+            "options": [
+              {
+                "label": "::",
+                "value": ""
+              },
+              {
+                "label": "::PASSWORD",
+                "value": "PASSWORD"
+              },
+              {
+                "value": "AES",
+                "label": "::AES"
+              }
+            ]
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "placeholder": "请选择加密方式",
+            "options": [
+              {
+                "label": "::",
+                "value": ""
+              },
+              {
+                "label": "::PASSWORD",
+                "value": "PASSWORD"
+              },
+              {
+                "label": "::AES",
+                "value": "AES"
+              }
+            ]
+          },
+          "type": "Tag"
+        }
+      },
+      "校验规则": {
+        "bind": "validations",
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段校验规则"
+            }
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "props": {},
+          "type": "Tooltip"
+        }
+      },
+      "标识": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "标识"
+            }
+          }
+        },
+        "bind": "id"
+      },
+      "标题": {
+        "bind": "title",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段标题"
+            }
+          },
+          "type": "Input",
+          "bind": "title"
+        }
+      },
+      "介绍": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段介绍"
+            }
+          },
+          "type": "Input",
+          "bind": "description"
+        },
+        "bind": "description"
+      },
+      "是否为空": {
+        "bind": "nullable",
+        "view": {
+          "props": {
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1,
+            "unCheckedChildren": "否"
+          },
+          "type": "Switch"
+        }
+      },
+      "默认值": {
+        "bind": "default",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "default",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段默认值"
+            }
+          }
+        }
+      },
+      "注释": {
+        "bind": "comment",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段注释"
+            }
+          },
+          "type": "TextArea",
+          "bind": "comment"
+        }
+      },
+      "字段许可值": {
+        "bind": "option",
+        "edit": {
+          "props": {
+            "language": "json",
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段许可值，对enum类型字段有效"
+            },
+            "height": 200
+          },
+          "type": "TextArea"
+        },
+        "view": {
+          "props": {},
+          "type": "Tooltip"
+        }
+      },
+      "name": {
+        "bind": "name",
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "name",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "name": "::Domain",
+  "action": {
+    "bind": {
+      "model": "ddic.domain",
+      "option": {
+        "withs": {},
+        "option": {
+          "form": "ddic.domain"
+        }
+      }
+    }
+  }
+}

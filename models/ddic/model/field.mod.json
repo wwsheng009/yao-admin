@@ -1,6 +1,6 @@
 {
   "name": "::Model Field",
-  "table": { "name": "sys_model_field", "comment": "模型字段列表" },
+  "table": { "name": "ddic_model_field", "comment": "模型字段列表" },
   "columns": [
     {
       "name": "id",
@@ -158,13 +158,13 @@
   "relations": {
     "model": {
       "type": "hasOne",
-      "model": "sys.model",
+      "model": "ddic.model",
       "key": "id",
       "foreign": "model_id"
     },
     "domain": {
       "type": "hasOne",
-      "model": "sys.domain",
+      "model": "ddic.domain",
       "key": "id",
       "foreign": "domain_id"
     }

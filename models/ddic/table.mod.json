@@ -1,12 +1,12 @@
 {
-  "name": "::Form",
-  "table": { "name": "sys_form", "comment": "表单定义" },
+  "name": "::Table",
+  "table": { "name": "ddic_table", "comment": "表格定义" },
   "columns": [
     {
       "name": "id",
       "type": "ID",
       "label": "ID",
-      "comment": "标识"
+      "comment": "表名"
     },
     {
       "label": "名称",
@@ -16,33 +16,18 @@
       "unique": true
     },
     {
-      "label": "主键",
-      "name": "primary",
-      "type": "string",
-      "length": 80,
+      "label": "表单",
+      "name": "form_id",
       "nullable": false,
-      "default": "id",
-      "comment": "显示主键"
+      "type": "integer",
+      "comment": "表关联的表单"
     },
     {
-      "label": "关联模型",
+      "label": "模型",
       "name": "model_id",
       "nullable": false,
       "type": "integer",
-      "comment": "表单关联的模型"
-    },
-    {
-      "label": "关联表格",
-      "name": "table_id",
-      "nullable": true,
-      "type": "integer",
-      "comment": "表单关联的表格"
-    },
-    {
-      "label": "绑定选项",
-      "name": "bind_option",
-      "type": "json",
-      "comment": "绑定模型选项"
+      "comment": "表关联的模型"
     },
     {
       "label": "备注",
@@ -61,21 +46,21 @@
   "relations": {
     "fields": {
       "type": "hasMany",
-      "model": "sys.form.field",
-      "key": "form_id",
+      "model": "ddic.table.field",
+      "key": "table_id",
       "foreign": "id"
     },
     "model": {
       "type": "hasOne",
-      "model": "sys.model",
+      "model": "ddic.model",
       "key": "id",
       "foreign": "model_id"
     },
-    "table": {
+    "form": {
       "type": "hasOne",
-      "model": "sys.table",
+      "model": "ddic.form",
       "key": "id",
-      "foreign": "table_id"
+      "foreign": "form_id"
     }
   },
   "option": {}
