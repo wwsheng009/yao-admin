@@ -1,6 +1,16 @@
 {
+  "name": "::Model Column Type",
+  "action": {
+    "bind": {
+      "model": "ddic.model.column.type",
+      "option": {
+        "withs": {}
+      }
+    }
+  },
   "layout": {
     "form": {
+      "props": {},
       "sections": [
         {
           "columns": [
@@ -18,14 +28,11 @@
             }
           ]
         }
-      ],
-      "props": {}
+      ]
     },
     "primary": "id",
     "actions": [
       {
-        "title": "重新生成代码",
-        "icon": "icon-layers",
         "showWhenAdd": true,
         "showWhenView": true,
         "action": [
@@ -43,55 +50,54 @@
             "name": "Confirm",
             "type": "Common.confirm",
             "payload": {
-              "content": "处理完成",
-              "title": "提示"
+              "title": "提示",
+              "content": "处理完成"
             }
           }
-        ]
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers"
       },
       {
-        "title": "返回",
-        "icon": "icon-arrow-left",
-        "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
-            "payload": {},
             "name": "CloseModal",
-            "type": "Common.closeModal"
+            "type": "Common.closeModal",
+            "payload": {}
           }
-        ]
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true
       },
       {
-        "title": "保存",
-        "icon": "icon-check",
-        "style": "primary",
         "showWhenAdd": true,
         "action": [
           {
-            "payload": {},
             "name": "Submit",
-            "type": "Form.submit"
+            "type": "Form.submit",
+            "payload": {}
           },
           {
             "name": "Back",
             "type": "Common.closeModal",
             "payload": {}
           }
-        ]
+        ],
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary"
       },
       {
-        "icon": "icon-trash-2",
-        "style": "danger",
-        "title": "Delete",
         "action": [
           {
-            "name": "Confirm",
-            "type": "Common.confirm",
             "payload": {
-              "title": "提示",
-              "content": "确认删除，删除后数据无法恢复？"
-            }
+              "content": "确认删除，删除后数据无法恢复？",
+              "title": "提示"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
           },
           {
             "type": "Form.delete",
@@ -105,13 +111,32 @@
             "type": "Common.closeModal",
             "payload": {}
           }
-        ]
+        ],
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
       }
     ]
   },
   "fields": {
     "form": {
       "字段描述": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        "bind": "name"
+      },
+      "字段类型": {
+        "bind": "type",
         "edit": {
           "props": {
             "itemProps": {
@@ -123,43 +148,18 @@
             }
           },
           "type": "Input"
-        },
-        "bind": "name"
-      },
-      "字段类型": {
-        "edit": {
-          "type": "Input",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          }
-        },
-        "bind": "type"
+        }
       },
       "注释": {
         "edit": {
-          "type": "Input",
           "props": {
             "itemProps": {
               "tooltip": "注释"
             }
-          }
+          },
+          "type": "Input"
         },
         "bind": "comment"
-      }
-    }
-  },
-  "name": "::Model Column Type",
-  "action": {
-    "bind": {
-      "model": "ddic.model.column.type",
-      "option": {
-        "withs": {}
       }
     }
   }

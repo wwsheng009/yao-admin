@@ -3,30 +3,35 @@ function Save(payload) {
 //先保存主表，获取id后再保存从表
 
 const t = new Query();
-t.Run({
-sql: {
-stmt: "START TRANSACTION;",
-},
+  t.Run({
+    sql: {
+    stmt: "START TRANSACTION;",
+  },
 });
 
 try {
-  var id = Process('models.ddic.form.Save', payload);
-  SaveRelations(id, payload);
+  var res = Process('models.ddic.form.Save', payload);
+  if (res.code && res.code > 300) {
+    throw new Exception(res.message, res.code);
+  }
+  SaveRelations(res, payload);
 } catch (error) {
+  console.log("Data Save Failed")
+  console.log(error)
   
 t.Run({
-sql: {
-stmt: 'ROLLBACK;',
-},
+  sql: {
+    stmt: 'ROLLBACK;',
+  },
 });
 
-  throw new Exception(error,500)
+  throw new Exception(error.message,error.code)
 }
 
 t.Run({
-sql: {
-stmt: 'COMMIT;',
-},
+  sql: {
+    stmt: 'COMMIT;',
+  },
 });
 
 }

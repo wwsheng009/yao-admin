@@ -1,23 +1,99 @@
 {
-  "action": {
-    "bind": {
-      "model": "ddic.model.relation",
-      "option": {
-        "withs": {
-          "model": {},
-          "key": {}
-        }
-      }
-    }
-  },
   "layout": {
+    "actions": [
+      {
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "ddic.model.relation"
+              ]
+            },
+            "name": "StudioModel",
+            "type": "Studio.model"
+          },
+          {
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            },
+            "name": "Confirm"
+          }
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true
+      },
+      {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "CloseModal"
+          }
+        ]
+      },
+      {
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "type": "Form.submit",
+            "payload": {},
+            "name": "Submit"
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "title": "保存"
+      },
+      {
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            }
+          },
+          {
+            "type": "Form.delete",
+            "name": "Delete",
+            "payload": {
+              "model": "ddic.model.relation"
+            }
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "icon": "icon-trash-2"
+      }
+    ],
     "form": {
+      "props": {},
       "sections": [
         {
           "columns": [
             {
-              "width": 8,
-              "name": "模型"
+              "name": "模型",
+              "width": 8
             },
             {
               "name": "名称",
@@ -41,155 +117,14 @@
             }
           ]
         }
-      ],
-      "props": {}
+      ]
     },
-    "primary": "id",
-    "actions": [
-      {
-        "showWhenAdd": true,
-        "showWhenView": true,
-        "action": [
-          {
-            "type": "Studio.model",
-            "payload": {
-              "method": "CreateOne",
-              "args": [
-                "ddic.model.relation"
-              ]
-            },
-            "name": "StudioModel"
-          },
-          {
-            "name": "Confirm",
-            "type": "Common.confirm",
-            "payload": {
-              "title": "提示",
-              "content": "处理完成"
-            }
-          }
-        ],
-        "title": "重新生成代码",
-        "icon": "icon-layers"
-      },
-      {
-        "icon": "icon-arrow-left",
-        "showWhenAdd": true,
-        "showWhenView": true,
-        "action": [
-          {
-            "name": "CloseModal",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ],
-        "title": "返回"
-      },
-      {
-        "icon": "icon-check",
-        "style": "primary",
-        "showWhenAdd": true,
-        "action": [
-          {
-            "payload": {},
-            "name": "Submit",
-            "type": "Form.submit"
-          },
-          {
-            "name": "Back",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ],
-        "title": "保存"
-      },
-      {
-        "icon": "icon-trash-2",
-        "style": "danger",
-        "title": "Delete",
-        "action": [
-          {
-            "type": "Common.confirm",
-            "payload": {
-              "title": "提示",
-              "content": "确认删除，删除后数据无法恢复？"
-            },
-            "name": "Confirm"
-          },
-          {
-            "name": "Delete",
-            "payload": {
-              "model": "ddic.model.relation"
-            },
-            "type": "Form.delete"
-          },
-          {
-            "name": "Back",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ]
-      }
-    ]
+    "primary": "id"
   },
   "fields": {
     "form": {
-      "外键": {
-        "bind": "foreign",
-        "edit": {
-          "type": "Input",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "外键"
-            }
-          }
-        }
-      },
-      "主键": {
-        "edit": {
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "value": "id",
-                  "model": "ddic.model.column",
-                  "label": "name"
-                }
-              }
-            },
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "主键"
-            }
-          },
-          "type": "Select"
-        },
-        "bind": "key_id"
-      },
-      "关联条件": {
-        "edit": {
-          "type": "CodeEditor",
-          "props": {
-            "language": "json",
-            "height": 200,
-            "itemProps": {
-              "tooltip": "关联条件"
-            }
-          }
-        },
-        "bind": "query"
-      },
       "模型": {
+        "bind": "model_id",
         "edit": {
           "type": "Select",
           "props": {
@@ -212,11 +147,9 @@
               ]
             }
           }
-        },
-        "bind": "model_id"
+        }
       },
       "名称": {
-        "bind": "name",
         "edit": {
           "type": "Input",
           "props": {
@@ -229,36 +162,104 @@
               "tooltip": "定义关系名称"
             }
           }
-        }
+        },
+        "bind": "name"
       },
       "关联关系": {
         "bind": "type",
         "edit": {
           "props": {
             "placeholder": "请选择关联关系",
-            "itemProps": {
-              "tooltip": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            },
             "options": [
               {
                 "label": "::hasOne",
                 "value": "hasOne"
               },
               {
-                "label": "::hasMany",
-                "value": "hasMany"
+                "value": "hasMany",
+                "label": "::hasMany"
               }
-            ]
+            ],
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。"
+            }
           },
           "type": "Select"
         }
+      },
+      "外键": {
+        "bind": "foreign",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "外键"
+            }
+          },
+          "type": "Input"
+        }
+      },
+      "主键": {
+        "bind": "key_id",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "value": "id",
+                  "model": "ddic.model.column",
+                  "label": "name"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            },
+            "itemProps": {
+              "tooltip": "主键",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "关联条件": {
+        "edit": {
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "tooltip": "关联条件"
+            }
+          },
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "CodeEditor"
+        },
+        "bind": "query"
       }
     }
   },
-  "name": "::Model Relation"
+  "name": "::Model Relation",
+  "action": {
+    "bind": {
+      "model": "ddic.model.relation",
+      "option": {
+        "withs": {
+          "key": {},
+          "model": {}
+        }
+      }
+    }
+  }
 }

@@ -13,16 +13,16 @@
           "width": 8
         },
         {
-          "width": 8,
-          "name": "绑定字段"
-        },
-        {
-          "name": "编辑类型",
+          "name": "绑定字段",
           "width": 8
         },
         {
           "width": 8,
-          "name": "查看类型"
+          "name": "编辑类型"
+        },
+        {
+          "name": "查看类型",
+          "width": 8
         },
         {
           "name": "描述",
@@ -33,8 +33,8 @@
           "width": 8
         },
         {
-          "name": "是否必输",
-          "width": 8
+          "width": 8,
+          "name": "是否必输"
         },
         {
           "name": "启用",
@@ -49,8 +49,8 @@
           "width": 8
         },
         {
-          "name": "编辑属性",
-          "width": 24
+          "width": 24,
+          "name": "编辑属性"
         },
         {
           "name": "查看属性",
@@ -65,13 +65,54 @@
   },
   "fields": {
     "list": {
-      "查看类型": {
-        "bind": "view_type",
+      "默认值": {
+        "bind": "default",
         "edit": {
           "type": "Input",
           "props": {
             "itemProps": {
-              "tooltip": "查看控件类型",
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段默认值"
+            }
+          }
+        }
+      },
+      "是否显示": {
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "value": 0,
+                "label": "否"
+              }
+            ],
+            "itemProps": {
+              "tooltip": "是否显示"
+            },
+            "defaultValue": 1
+          }
+        },
+        "bind": "is_dispaly"
+      },
+      "查看属性": {
+        "bind": "view_props",
+        "edit": {
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "CodeEditor",
+          "props": {
+            "height": 200,
+            "language": "json",
+            "itemProps": {
+              "tooltip": "查看控件属性",
               "rules": [
                 {
                   "required": true
@@ -81,18 +122,50 @@
           }
         }
       },
+      "绑定字段": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "绑定的模型字段"
+            }
+          }
+        },
+        "bind": "bind"
+      },
+      "编辑类型": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "编辑控件类型"
+            }
+          }
+        },
+        "bind": "edit_type"
+      },
       "描述": {
         "bind": "description",
         "edit": {
           "type": "Input",
           "props": {
             "itemProps": {
-              "tooltip": "字段介绍",
               "rules": [
                 {
                   "required": true
                 }
-              ]
+              ],
+              "tooltip": "字段介绍"
             }
           }
         }
@@ -104,8 +177,8 @@
           "props": {
             "options": [
               {
-                "label": "是",
-                "value": 1
+                "value": 1,
+                "label": "是"
               },
               {
                 "label": "否",
@@ -130,8 +203,8 @@
                 "label": "是"
               },
               {
-                "value": 0,
-                "label": "否"
+                "label": "否",
+                "value": 0
               }
             ],
             "itemProps": {
@@ -141,115 +214,12 @@
           }
         }
       },
-      "是否显示": {
-        "bind": "is_dispaly",
-        "edit": {
-          "type": "RadioGroup",
-          "props": {
-            "defaultValue": 1,
-            "options": [
-              {
-                "label": "是",
-                "value": 1
-              },
-              {
-                "value": 0,
-                "label": "否"
-              }
-            ],
-            "itemProps": {
-              "tooltip": "是否显示"
-            }
-          }
-        }
-      },
-      "查看属性": {
-        "edit": {
-          "props": {
-            "language": "json",
-            "height": 200,
-            "itemProps": {
-              "tooltip": "查看控件属性",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
-          "type": "CodeEditor"
-        },
-        "bind": "view_props"
-      },
-      "编辑类型": {
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "编辑控件类型"
-            }
-          },
-          "type": "Input"
-        },
-        "bind": "edit_type"
-      },
-      "绑定字段": {
-        "bind": "bind",
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "绑定的模型字段"
-            }
-          },
-          "type": "Input"
-        }
-      },
-      "显示长度": {
-        "edit": {
-          "type": "InputNumber",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "字段显示长度"
-            }
-          }
-        },
-        "bind": "width"
-      },
-      "默认值": {
-        "edit": {
-          "type": "Input",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "字段默认值"
-            }
-          }
-        },
-        "bind": "default"
-      },
       "编辑属性": {
+        "bind": "edit_props",
         "edit": {
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "CodeEditor",
           "props": {
-            "language": "json",
-            "height": 200,
             "itemProps": {
               "rules": [
                 {
@@ -257,32 +227,32 @@
                 }
               ],
               "tooltip": "编辑控件属性"
-            }
-          },
-          "type": "CodeEditor"
-        },
-        "bind": "edit_props"
+            },
+            "language": "json",
+            "height": 200
+          }
+        }
       },
       "选项": {
+        "bind": "option",
         "edit": {
+          "type": "CodeEditor",
           "props": {
-            "language": "json",
-            "height": 200,
             "itemProps": {
-              "tooltip": "字段许可值",
               "rules": [
                 {
                   "required": true
                 }
-              ]
-            }
+              ],
+              "tooltip": "字段许可值"
+            },
+            "language": "json",
+            "height": 200
           },
-          "type": "CodeEditor"
-        },
-        "bind": "option"
+          "compute": "scripts.ddic.compute.json.Edit"
+        }
       },
       "名称": {
-        "bind": "name",
         "edit": {
           "type": "Input",
           "props": {
@@ -295,6 +265,39 @@
               "tooltip": "字段名称"
             }
           }
+        },
+        "bind": "name"
+      },
+      "查看类型": {
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "查看控件类型"
+            }
+          }
+        },
+        "bind": "view_type"
+      },
+      "显示长度": {
+        "bind": "width",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "字段显示长度"
+            }
+          },
+          "type": "InputNumber"
         }
       }
     }

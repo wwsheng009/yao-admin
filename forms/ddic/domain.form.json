@@ -1,57 +1,66 @@
 {
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {
+          "field_type": {}
+        }
+      },
+      "model": "ddic.domain"
+    }
+  },
   "layout": {
-    "primary": "id",
     "actions": [
       {
+        "showWhenView": true,
         "action": [
           {
             "payload": {
+              "method": "CreateOne",
               "args": [
                 "ddic.domain"
-              ],
-              "method": "CreateOne"
+              ]
             },
             "name": "StudioModel",
             "type": "Studio.model"
           },
           {
-            "name": "Confirm",
-            "type": "Common.confirm",
             "payload": {
               "title": "提示",
               "content": "处理完成"
-            }
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
           }
         ],
         "title": "重新生成代码",
         "icon": "icon-layers",
-        "showWhenAdd": true,
-        "showWhenView": true
+        "showWhenAdd": true
       },
       {
-        "title": "返回",
-        "icon": "icon-arrow-left",
-        "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
+            "payload": {},
             "name": "CloseModal",
-            "type": "Common.closeModal",
-            "payload": {}
+            "type": "Common.closeModal"
           }
-        ]
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true
       },
       {
         "action": [
           {
+            "payload": {},
             "name": "Submit",
-            "type": "Form.submit",
-            "payload": {}
+            "type": "Form.submit"
           },
           {
+            "name": "Back",
             "type": "Common.closeModal",
-            "payload": {},
-            "name": "Back"
+            "payload": {}
           }
         ],
         "title": "保存",
@@ -60,7 +69,6 @@
         "showWhenAdd": true
       },
       {
-        "icon": "icon-trash-2",
         "style": "danger",
         "title": "Delete",
         "action": [
@@ -73,18 +81,19 @@
             "name": "Confirm"
           },
           {
-            "name": "Delete",
             "payload": {
               "model": "ddic.domain"
             },
-            "type": "Form.delete"
+            "type": "Form.delete",
+            "name": "Delete"
           },
           {
             "name": "Back",
             "type": "Common.closeModal",
             "payload": {}
           }
-        ]
+        ],
+        "icon": "icon-trash-2"
       }
     ],
     "form": {
@@ -93,8 +102,8 @@
         {
           "columns": [
             {
-              "width": 8,
-              "name": "描述"
+              "name": "描述",
+              "width": 8
             },
             {
               "name": "字段类型",
@@ -113,94 +122,65 @@
               "width": 8
             },
             {
-              "name": "是否为空",
-              "width": 8
-            },
-            {
-              "name": "默认值",
-              "width": 8
-            },
-            {
-              "name": "加密方式",
-              "width": 8
-            },
-            {
               "name": "许可值",
               "width": 24
             },
             {
-              "name": "校验规则",
-              "width": 24
+              "width": 24,
+              "name": "校验规则"
             }
           ]
         }
       ]
-    }
+    },
+    "primary": "id"
   },
   "fields": {
     "form": {
-      "加密方式": {
+      "小数位位数": {
+        "bind": "scale",
         "edit": {
-          "type": "Select",
+          "type": "InputNumber",
           "props": {
             "itemProps": {
-              "tooltip": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
-            },
-            "options": [
-              {
-                "value": "",
-                "label": "::"
-              },
-              {
-                "value": "PASSWORD",
-                "label": "::PASSWORD"
-              },
-              {
-                "value": "AES",
-                "label": "::AES"
-              }
-            ],
-            "placeholder": "请选择加密方式"
-          }
-        },
-        "bind": "crypt"
-      },
-      "字段类型": {
-        "bind": "field_type_id",
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "ddic.model.column.type"
-                }
-              }
-            },
-            "itemProps": {
-              "tooltip": "字段类型定义"
+              "tooltip": "字段小数位位数，对float、decimal等类型字段有效"
             }
           }
+        }
+      },
+      "许可值": {
+        "bind": "option",
+        "edit": {
+          "props": {
+            "language": "json",
+            "itemProps": {
+              "tooltip": "字段许可值，对enum类型字段有效"
+            },
+            "name": "ddic.option",
+            "showLabel": true,
+            "height": 200
+          },
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "List"
         }
       },
       "校验规则": {
-        "bind": "validations",
         "edit": {
           "type": "CodeEditor",
           "props": {
-            "language": "json",
-            "height": 200,
             "itemProps": {
               "tooltip": "字段校验规则"
-            }
-          }
-        }
+            },
+            "height": 200,
+            "language": "json"
+          },
+          "compute": "scripts.ddic.compute.json.Edit"
+        },
+        "bind": "validations"
       },
       "描述": {
         "edit": {
+          "type": "Input",
           "props": {
             "itemProps": {
               "rules": [
@@ -209,67 +189,30 @@
                 }
               ]
             }
-          },
-          "type": "Input"
+          }
         },
         "bind": "name"
       },
-      "默认值": {
-        "bind": "default",
+      "字段类型": {
+        "bind": "field_type_id",
         "edit": {
-          "type": "Input",
+          "type": "Select",
           "props": {
             "itemProps": {
-              "tooltip": "字段默认值"
-            }
-          }
-        }
-      },
-      "位数": {
-        "bind": "precision",
-        "edit": {
-          "type": "InputNumber",
-          "props": {
-            "itemProps": {
-              "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
-            }
-          }
-        }
-      },
-      "是否为空": {
-        "bind": "nullable",
-        "edit": {
-          "props": {
-            "defaultValue": 0,
-            "options": [
-              {
-                "label": "是",
-                "value": 1
-              },
-              {
-                "label": "否",
-                "value": 0
+              "tooltip": "字段类型定义"
+            },
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "value": "id",
+                  "model": "ddic.model.column.type",
+                  "label": "name"
+                }
               }
-            ],
-            "itemProps": {
-              "tooltip": "字段是否可以为空，默认为 false"
             }
-          },
-          "type": "RadioGroup"
+          }
         }
-      },
-      "许可值": {
-        "edit": {
-          "props": {
-            "height": 200,
-            "language": "json",
-            "itemProps": {
-              "tooltip": "字段许可值，对enum类型字段有效"
-            }
-          },
-          "type": "CodeEditor"
-        },
-        "bind": "option"
       },
       "字段长度": {
         "edit": {
@@ -282,28 +225,18 @@
         },
         "bind": "length"
       },
-      "小数位位数": {
-        "bind": "scale",
+      "位数": {
         "edit": {
           "type": "InputNumber",
           "props": {
             "itemProps": {
-              "tooltip": "字段小数位位数，对float、decimal等类型字段有效"
+              "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
             }
           }
-        }
+        },
+        "bind": "precision"
       }
     }
   },
-  "name": "::Domain",
-  "action": {
-    "bind": {
-      "option": {
-        "withs": {
-          "field_type": {}
-        }
-      },
-      "model": "ddic.domain"
-    }
-  }
+  "name": "::Domain"
 }

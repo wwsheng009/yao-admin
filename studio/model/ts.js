@@ -29,6 +29,16 @@ function CreatTypes(models) {
     ${item.name}${isOption(item) ? "?" : ""}: ${getTsType(item, typeMapping)};`;
         }, [])
             .join("\n");
+        let rels = [];
+        for (const key in model.relations) {
+            const element = model.relations[key];
+            let sign = "";
+            if (element.type === "hasMany") {
+                sign = "[]";
+            }
+            rels.push(`    /** Relation: ${key}=> ${element.model} */
+    ${key}?: ${element.model.replaceAll(".", "_")}${sign}`);
+        }
         return `
   /**
    * Model=> ${dotName} ${model.name ? "(" + model.name + ")" : ""}
@@ -37,6 +47,7 @@ function CreatTypes(models) {
   */
   export interface ${last} {
 ${fields}
+${rels.join("\n")}
   }
   `;
     });

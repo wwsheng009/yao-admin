@@ -97,7 +97,7 @@ function toList(modelDsl) {
     // columns = columns.filter((col) => !/_id$/i.test(col.name));
     columns = MakeColumnOrder(columns);
     columns.forEach((column) => {
-        let col = castFormColumn(column, modelDsl);
+        let col = castFormColumn(column, modelDsl, "list");
         if (col) {
             col.layout.forEach((tc) => {
                 listTemplate.layout.list.columns.push(tc);
@@ -315,11 +315,6 @@ function castTableColumn(column, modelDsl) {
         log.Error("castTableColumn: missing name");
         return false;
     }
-    // let newTitle = title;
-    // if (/_id$/i.test(newTitle)) {
-    //   title = newTitle.replace(/_id$/i, "");
-    // }
-    // title = Studio("model.relation.translate", title);
     if (!title) {
         // console.log("castTableColumn: missing title");
         log.Error("castTableColumn: missing title");
@@ -335,7 +330,7 @@ function castTableColumn(column, modelDsl) {
             table: [],
         },
     };
-    const bind = `${name}`;
+    const bind = name;
     let component = {
         is_select: false,
         bind: name,
@@ -351,31 +346,27 @@ function castTableColumn(column, modelDsl) {
         width = 250;
     }
     // 如果是json的,去看看是不是图片文件
-    if (column.type == "json") {
+    if (column.type === "json") {
         component = Studio("model.file.File", column, false);
         if (!component) {
+            //可以再优化下
             component = {
                 bind: bind,
-                edit: {
-                    props: {
-                        language: "json",
-                        height: 200,
-                    },
-                    type: "TextArea",
-                },
                 view: {
+                    compute: "scripts.ddic.compute.json.View",
                     props: {},
                     type: "Tooltip",
                 },
+                edit: {
+                    props: {},
+                    compute: "scripts.ddic.compute.json.Edit",
+                    type: "TextArea",
+                },
             };
-            res.layout.table.columns.push({
-                name: title,
-                width: width,
-            });
         }
         // log.Error("castTableColumn: Type %s does not support", column.type);
     }
-    else if (column.type == "enum") {
+    else if (column.type === "enum") {
         component = {
             bind: bind,
             edit: {
@@ -393,10 +384,6 @@ function castTableColumn(column, modelDsl) {
                 type: "Tag",
             },
         };
-        res.layout.table.columns.push({
-            name: title,
-            width: width,
-        });
     }
     else if (column.type === "boolean") {
         let checkedValue = true;
@@ -418,32 +405,18 @@ function castTableColumn(column, modelDsl) {
                 },
             },
         };
-        res.layout.table.columns.push({
-            name: title,
-            width: width,
-        });
     }
     else if (/color/i.test(column.name)) {
         component.edit.type = "ColorPicker";
-        res.layout.table.columns.push({
-            name: title,
-            width: 80,
-        });
+        width = 80;
     }
     else if (column.crypt === "PASSWORD") {
         component.edit.type = "Password";
-        res.layout.table.columns.push({
-            name: title,
-            width: 180,
-        });
+        width = 180;
     }
     else {
         if (column.type in typeMapping) {
             component.edit.type = typeMapping[column.type];
-            res.layout.table.columns.push({
-                name: title,
-                width: width,
-            });
         }
     }
     //检查是否下拉框显示
@@ -477,14 +450,15 @@ function castTableColumn(column, modelDsl) {
             }
         }
     }
-    component = Studio("model.file.File", column, component);
-    // component.edit = { type: "input", props: { value: bind } };
-    // res.list.columns.push({ name: title });
-    // res.edit.push({ name: title, width: 24 });
-    // break;
-    delete component.is_select;
+    // component = Studio("model.file.File", column, component);
     updateEditPropes(component, column);
     updateViewSwitchPropes(component, column);
+    updateTableComponentFromModel(component, column, modelDsl);
+    res.layout.table.columns.push({
+        name: title,
+        width: width,
+    });
+    delete component.is_select;
     res.fields.table.push({
         name: title,
         component: component,
@@ -651,7 +625,7 @@ function MakeColumnOrder(columns) {
     return columns1.concat(columns2);
 }
 /**根据模型定义生成Form定义 */
-function castFormColumn(column, modelDsl) {
+function castFormColumn(column, modelDsl, type = "form") {
     const types = getType();
     const title = column.label || column.name;
     const name = column.name;
@@ -680,7 +654,7 @@ function castFormColumn(column, modelDsl) {
         },
     };
     let width = 8;
-    const bind = `${name}`;
+    const bind = name;
     if (column.type == "json") {
         component = Studio("model.file.FormFile", column, false, modelDsl);
         if (!component) {
@@ -691,6 +665,7 @@ function castFormColumn(column, modelDsl) {
                         language: "json",
                         height: 200,
                     },
+                    compute: "scripts.ddic.compute.json.Edit",
                     type: "CodeEditor",
                 },
             };
@@ -760,9 +735,75 @@ function castFormColumn(column, modelDsl) {
     });
     delete component.is_image;
     updateEditPropes(component, column);
+    if (type === "form") {
+        updateFormComponentFromModel(component, column, modelDsl);
+    }
+    else if (type === "list") {
+        updateListComponentFromModel(component, column, modelDsl);
+    }
     res.fields.push({
         name: title,
         component: component,
     });
     return res;
+}
+function updateFormComponentFromModel(component, column, modelDsl) {
+    return updateComponentFromModel(component, column, modelDsl, "form");
+}
+function updateTableComponentFromModel(component, column, modelDsl) {
+    return updateComponentFromModel(component, column, modelDsl, "table");
+}
+function updateListComponentFromModel(component, column, modelDsl) {
+    return updateComponentFromModel(component, column, modelDsl, "list");
+}
+function updateComponentFromModel(component, column, modelDsl, type) {
+    if (!component ||
+        !modelDsl ||
+        !modelDsl?.xgen ||
+        !(column.name in modelDsl?.xgen)) {
+        return;
+    }
+    const config = modelDsl?.xgen[column.name];
+    switch (type) {
+        case "form":
+            component.edit = mergeObjects(component.edit, config.form?.edit);
+            break;
+        case "table":
+            component.view = mergeObjects(component.view, config.table?.view);
+            component.edit = mergeObjects(component.edit, config.table?.edit);
+            break;
+        case "list":
+            component.edit = mergeObjects(component.edit, config.list?.edit);
+            break;
+        default:
+            break;
+    }
+}
+/**
+ * 合并两个js对象，并返回新对象。
+ * @param target 目标对象
+ * @param source 源对象
+ * @returns
+ */
+function mergeObjects(target, source) {
+    if (typeof target !== "object" ||
+        target == null || //mybe undefined
+        typeof source !== "object" ||
+        source == null //mybe undefined
+    ) {
+        return;
+    }
+    for (let key in source) {
+        if (source.hasOwnProperty(key)) {
+            if (target[key] &&
+                typeof target[key] === "object" &&
+                typeof source[key] === "object") {
+                target[key] = mergeObjects(target[key], source[key]);
+            }
+            else {
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
 }

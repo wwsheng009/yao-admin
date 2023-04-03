@@ -75,7 +75,7 @@ function EditSelect(column, modelDsl, component) {
     const bind = `${name}`;
     const relation = modelDsl.relations;
     for (const rel in relation) {
-        if (relation[rel].type == "hasOne" &&
+        if (relation[rel].type === "hasOne" &&
             column.name == relation[rel]["foreign"]) {
             const field = Studio("model.remote.select", rel, relation[rel]);
             let component = {
@@ -226,10 +226,10 @@ function StartTrans() {
     return ismysql
         ? `
 const t = new Query();
-t.Run({
-sql: {
-stmt: "START TRANSACTION;",
-},
+  t.Run({
+    sql: {
+    stmt: "START TRANSACTION;",
+  },
 });
 `
         : "";
@@ -239,9 +239,9 @@ function Commit() {
     return ismysql
         ? `
 t.Run({
-sql: {
-stmt: 'COMMIT;',
-},
+  sql: {
+    stmt: 'COMMIT;',
+  },
 });
 `
         : "";
@@ -251,9 +251,9 @@ function Rollback() {
     return ismysql
         ? `
 t.Run({
-sql: {
-stmt: 'ROLLBACK;',
-},
+  sql: {
+    stmt: 'ROLLBACK;',
+  },
 });
 `
         : "";
@@ -265,11 +265,16 @@ function Save(payload) {
 //先保存主表，获取id后再保存从表
 ${StartTrans()}
 try {
-  var id = Process('models.${modelName}.Save', payload);
-  SaveRelations(id, payload);
+  var res = Process('models.${modelName}.Save', payload);
+  if (res.code && res.code > 300) {
+    throw new Exception(res.message, res.code);
+  }
+  SaveRelations(res, payload);
 } catch (error) {
+  console.log("Data Save Failed")
+  console.log(error)
   ${Rollback()}
-  throw new Exception(error,500)
+  throw new Exception(error.message,error.code)
 }
 ${Commit()}
 }
