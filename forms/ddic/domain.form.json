@@ -1,176 +1,32 @@
 {
-  "layout": {
-    "primary": "id",
-    "actions": [
-      {
-        "icon": "icon-layers",
-        "showWhenAdd": true,
-        "showWhenView": true,
-        "action": [
-          {
-            "type": "Studio.model",
-            "payload": {
-              "args": [
-                "ddic.domain"
-              ],
-              "method": "CreateOne"
-            },
-            "name": "StudioModel"
-          },
-          {
-            "payload": {
-              "content": "处理完成",
-              "title": "提示"
-            },
-            "name": "Confirm",
-            "type": "Common.confirm"
-          }
-        ],
-        "title": "重新生成代码"
-      },
-      {
-        "title": "返回",
-        "icon": "icon-arrow-left",
-        "showWhenAdd": true,
-        "showWhenView": true,
-        "action": [
-          {
-            "type": "Common.closeModal",
-            "payload": {},
-            "name": "CloseModal"
-          }
-        ]
-      },
-      {
-        "action": [
-          {
-            "name": "Submit",
-            "type": "Form.submit",
-            "payload": {}
-          },
-          {
-            "payload": {},
-            "name": "Back",
-            "type": "Common.closeModal"
-          }
-        ],
-        "title": "保存",
-        "icon": "icon-check",
-        "style": "primary",
-        "showWhenAdd": true
-      },
-      {
-        "style": "danger",
-        "title": "Delete",
-        "action": [
-          {
-            "type": "Common.confirm",
-            "payload": {
-              "content": "确认删除，删除后数据无法恢复？",
-              "title": "提示"
-            },
-            "name": "Confirm"
-          },
-          {
-            "name": "Delete",
-            "payload": {
-              "model": "ddic.domain"
-            },
-            "type": "Form.delete"
-          },
-          {
-            "payload": {},
-            "name": "Back",
-            "type": "Common.closeModal"
-          }
-        ],
-        "icon": "icon-trash-2"
-      }
-    ],
-    "form": {
-      "props": {},
-      "sections": [
-        {
-          "columns": [
-            {
-              "name": "描述",
-              "width": 8
-            },
-            {
-              "name": "字段类型",
-              "width": 8
-            },
-            {
-              "name": "字段长度",
-              "width": 8
-            },
-            {
-              "name": "位数",
-              "width": 8
-            },
-            {
-              "width": 8,
-              "name": "小数位位数"
-            },
-            {
-              "name": "可选项",
-              "width": 24
-            },
-            {
-              "width": 24,
-              "name": "校验规则"
-            }
-          ]
-        },
-        {
-          "columns": [
-            {
-              "tabs": [],
-              "width": 24,
-              "name": "列表"
-            }
-          ]
-        }
-      ]
-    }
-  },
   "fields": {
     "form": {
-      "字段长度": {
-        "bind": "length",
-        "edit": {
-          "props": {
-            "itemProps": {
-              "tooltip": "字段长度，对string等类型字段有效"
-            }
-          },
-          "type": "InputNumber"
-        }
-      },
       "位数": {
         "edit": {
-          "type": "InputNumber",
           "props": {
             "itemProps": {
               "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
             }
-          }
+          },
+          "type": "InputNumber"
         },
         "bind": "precision"
       },
       "小数位位数": {
         "edit": {
-          "type": "InputNumber",
           "props": {
             "itemProps": {
               "tooltip": "字段小数位位数，对float、decimal等类型字段有效"
             }
-          }
+          },
+          "type": "InputNumber"
         },
         "bind": "scale"
       },
       "可选项": {
         "edit": {
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "List",
           "props": {
             "showLabel": true,
             "language": "json",
@@ -179,29 +35,28 @@
               "tooltip": "字段的可选项，对enum类型字段有效"
             },
             "name": "ddic.option"
-          },
-          "compute": "scripts.ddic.compute.json.Edit",
-          "type": "List"
+          }
         },
         "bind": "options"
       },
       "校验规则": {
         "edit": {
-          "type": "List",
           "props": {
-            "height": 200,
+            "name": "ddic.validation",
+            "showLabel": true,
             "language": "json",
+            "height": 200,
             "itemProps": {
               "tooltip": "字段校验规则"
-            },
-            "name": "ddic.validation",
-            "showLabel": true
+            }
           },
-          "compute": "scripts.ddic.compute.json.Edit"
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "List"
         },
         "bind": "validations"
       },
       "描述": {
+        "bind": "name",
         "edit": {
           "type": "Input",
           "props": {
@@ -213,13 +68,10 @@
               ]
             }
           }
-        },
-        "bind": "name"
+        }
       },
       "字段类型": {
-        "bind": "type",
         "edit": {
-          "type": "Select",
           "props": {
             "itemProps": {
               "tooltip": "字段类型定义"
@@ -234,18 +86,166 @@
                 "process": "yao.component.SelectOptions"
               }
             }
+          },
+          "type": "Select"
+        },
+        "bind": "type"
+      },
+      "字段长度": {
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段长度，对string等类型字段有效"
+            }
           }
-        }
+        },
+        "bind": "length"
       }
     }
   },
   "name": "::Domain",
   "action": {
     "bind": {
-      "model": "ddic.domain",
       "option": {
         "withs": {}
+      },
+      "model": "ddic.domain"
+    }
+  },
+  "layout": {
+    "primary": "id",
+    "actions": [
+      {
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "StudioModel",
+            "type": "Studio.model",
+            "payload": {
+              "args": [
+                "ddic.domain"
+              ],
+              "method": "CreateOne"
+            }
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "处理完成"
+            }
+          }
+        ]
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "CloseModal",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left"
+      },
+      {
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ],
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true
+      },
+      {
+        "action": [
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            }
+          },
+          {
+            "type": "Form.delete",
+            "name": "Delete",
+            "payload": {
+              "model": "ddic.domain"
+            }
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ],
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
       }
+    ],
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "width": 8,
+              "name": "描述"
+            },
+            {
+              "name": "字段类型",
+              "width": 8
+            },
+            {
+              "name": "字段长度",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "位数"
+            },
+            {
+              "name": "小数位位数",
+              "width": 8
+            },
+            {
+              "name": "可选项",
+              "width": 24
+            },
+            {
+              "width": 24,
+              "name": "校验规则"
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "name": "列表",
+              "tabs": [],
+              "width": 24
+            }
+          ]
+        }
+      ]
     }
   }
 }

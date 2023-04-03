@@ -1,52 +1,51 @@
 {
   "layout": {
-    "primary": "id",
     "actions": [
       {
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true,
         "action": [
           {
-            "name": "StudioModel",
             "type": "Studio.model",
             "payload": {
               "method": "CreateOne",
               "args": [
                 "ddic.element"
               ]
-            }
+            },
+            "name": "StudioModel"
           },
           {
             "name": "Confirm",
             "type": "Common.confirm",
             "payload": {
-              "content": "处理完成",
-              "title": "提示"
+              "title": "提示",
+              "content": "处理完成"
             }
           }
+        ]
+      },
+      {
+        "action": [
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "CloseModal"
+          }
         ],
-        "title": "重新生成代码",
-        "icon": "icon-layers",
+        "title": "返回",
+        "icon": "icon-arrow-left",
         "showWhenAdd": true,
         "showWhenView": true
       },
       {
-        "showWhenAdd": true,
-        "showWhenView": true,
         "action": [
           {
-            "name": "CloseModal",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ],
-        "title": "返回",
-        "icon": "icon-arrow-left"
-      },
-      {
-        "action": [
-          {
-            "payload": {},
             "name": "Submit",
-            "type": "Form.submit"
+            "type": "Form.submit",
+            "payload": {}
           },
           {
             "name": "Back",
@@ -65,19 +64,19 @@
         "title": "Delete",
         "action": [
           {
-            "payload": {
-              "content": "确认删除，删除后数据无法恢复？",
-              "title": "提示"
-            },
             "name": "Confirm",
-            "type": "Common.confirm"
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            }
           },
           {
+            "type": "Form.delete",
             "name": "Delete",
             "payload": {
               "model": "ddic.element"
-            },
-            "type": "Form.delete"
+            }
           },
           {
             "payload": {},
@@ -88,72 +87,106 @@
       }
     ],
     "form": {
-      "props": {},
       "sections": [
         {
           "columns": [
             {
-              "name": "描述",
-              "width": 8
+              "width": 8,
+              "name": "描述"
             },
             {
               "width": 8,
               "name": "域"
             },
             {
-              "width": 8,
-              "name": "字段类型"
+              "name": "字段类型",
+              "width": 8
             },
             {
-              "name": "字段长度",
-              "width": 8
+              "width": 8,
+              "name": "字段长度"
             },
             {
               "name": "字段位数(含小数位)",
               "width": 8
             },
             {
-              "width": 8,
-              "name": "字段小数位位数"
+              "name": "字段小数位位数",
+              "width": 8
             },
             {
               "name": "是否为空",
               "width": 8
             },
             {
-              "width": 8,
-              "name": "字段默认值"
+              "name": "字段默认值",
+              "width": 8
             },
             {
-              "name": "加密方式",
-              "width": 8
+              "width": 8,
+              "name": "加密方式"
             }
           ]
         },
         {
           "columns": [
             {
+              "name": "列表",
               "tabs": [],
-              "width": 24,
-              "name": "列表"
+              "width": 24
             }
           ]
         }
-      ]
-    }
+      ],
+      "props": {}
+    },
+    "primary": "id"
   },
   "fields": {
     "form": {
-      "字段位数(含小数位)": {
-        "bind": "precision",
+      "字段长度": {
         "edit": {
           "type": "InputNumber",
           "props": {
             "itemProps": {
-              "tooltip": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效"
+              "tooltip": "字段长度，对 `string` 等类型字段有效"
             }
           }
-        }
+        },
+        "bind": "length"
+      },
+      "是否为空": {
+        "edit": {
+          "type": "RadioGroup",
+          "props": {
+            "defaultValue": 0,
+            "options": [
+              {
+                "value": 1,
+                "label": "是"
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "字段是否可以为空，默认为 false"
+            }
+          }
+        },
+        "bind": "nullable"
+      },
+      "字段位数(含小数位)": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效"
+            }
+          },
+          "type": "InputNumber"
+        },
+        "bind": "precision"
       },
       "域": {
         "bind": "domain_id",
@@ -162,12 +195,12 @@
           "props": {
             "xProps": {
               "$remote": {
-                "process": "yao.component.SelectOptions",
                 "query": {
                   "label": "name",
                   "value": "id",
                   "model": "ddic.domain"
-                }
+                },
+                "process": "yao.component.SelectOptions"
               }
             },
             "itemProps": {
@@ -176,9 +209,43 @@
           }
         }
       },
+      "加密方式": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "placeholder": "请选择加密方式",
+            "itemProps": {
+              "tooltip": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
+            },
+            "options": [
+              {
+                "label": "::PASSWORD",
+                "value": "PASSWORD"
+              },
+              {
+                "label": "::AES",
+                "value": "AES"
+              }
+            ]
+          }
+        },
+        "bind": "crypt"
+      },
+      "字段小数位位数": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
+            }
+          },
+          "type": "InputNumber"
+        },
+        "bind": "scale"
+      },
       "字段类型": {
         "bind": "type",
         "edit": {
+          "type": "Select",
           "props": {
             "itemProps": {
               "tooltip": "字段类型定义"
@@ -187,61 +254,28 @@
               "$remote": {
                 "process": "yao.component.SelectOptions",
                 "query": {
+                  "value": "type",
                   "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+                  "label": "name"
                 }
               }
             }
-          },
-          "type": "Select"
-        }
-      },
-      "是否为空": {
-        "bind": "nullable",
-        "edit": {
-          "type": "RadioGroup",
-          "props": {
-            "options": [
-              {
-                "label": "是",
-                "value": 1
-              },
-              {
-                "value": 0,
-                "label": "否"
-              }
-            ],
-            "itemProps": {
-              "tooltip": "字段是否可以为空，默认为 false"
-            },
-            "defaultValue": 0
           }
         }
       },
-      "加密方式": {
+      "字段默认值": {
         "edit": {
+          "type": "Input",
           "props": {
-            "options": [
-              {
-                "label": "::PASSWORD",
-                "value": "PASSWORD"
-              },
-              {
-                "value": "AES",
-                "label": "::AES"
-              }
-            ],
-            "placeholder": "请选择加密方式",
             "itemProps": {
-              "tooltip": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
+              "tooltip": "string|number|float|字段默认值"
             }
-          },
-          "type": "Select"
+          }
         },
-        "bind": "crypt"
+        "bind": "default"
       },
       "描述": {
+        "bind": "name",
         "edit": {
           "props": {
             "itemProps": {
@@ -253,40 +287,6 @@
             }
           },
           "type": "Input"
-        },
-        "bind": "name"
-      },
-      "字段长度": {
-        "bind": "length",
-        "edit": {
-          "type": "InputNumber",
-          "props": {
-            "itemProps": {
-              "tooltip": "字段长度，对 `string` 等类型字段有效"
-            }
-          }
-        }
-      },
-      "字段小数位位数": {
-        "bind": "scale",
-        "edit": {
-          "type": "InputNumber",
-          "props": {
-            "itemProps": {
-              "tooltip": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
-            }
-          }
-        }
-      },
-      "字段默认值": {
-        "bind": "default",
-        "edit": {
-          "props": {
-            "itemProps": {
-              "tooltip": "string|number|float|字段默认值"
-            }
-          },
-          "type": "Input"
         }
       }
     }
@@ -294,12 +294,12 @@
   "name": "::Data Element",
   "action": {
     "bind": {
-      "model": "ddic.element",
       "option": {
         "withs": {
           "domain": {}
         }
-      }
+      },
+      "model": "ddic.element"
     }
   }
 }

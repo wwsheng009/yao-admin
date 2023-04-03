@@ -2,13 +2,13 @@
   "name": "::Domain",
   "action": {
     "bind": {
-      "model": "ddic.domain",
       "option": {
         "withs": {},
         "option": {
           "form": "ddic.domain"
         }
-      }
+      },
+      "model": "ddic.domain"
     }
   },
   "layout": {
@@ -26,6 +26,7 @@
       ],
       "actions": [
         {
+          "title": "添加",
           "icon": "icon-plus",
           "width": 3,
           "action": [
@@ -39,20 +40,77 @@
                 }
               }
             }
-          ],
-          "title": "添加"
+          ]
         }
       ]
     },
     "table": {
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "title": "查看",
+            "icon": "icon-eye",
+            "action": [
+              {
+                "payload": {
+                  "Form": {
+                    "model": "ddic.domain",
+                    "type": "view"
+                  }
+                },
+                "name": "OpenModal",
+                "type": "Common.openModal"
+              }
+            ]
+          },
+          {
+            "title": "编辑",
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "ddic.domain"
+                  }
+                },
+                "name": "OpenModal"
+              }
+            ]
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "name": "Confirm",
+                "type": "Common.confirm",
+                "payload": {
+                  "content": "删除后不可撤销！",
+                  "title": "确认删除"
+                }
+              },
+              {
+                "name": "Delete",
+                "type": "Table.delete",
+                "payload": {
+                  "model": "ddic.domain"
+                }
+              }
+            ]
+          }
+        ]
+      },
       "columns": [
         {
           "name": "标识",
           "width": 160
         },
         {
-          "width": 160,
-          "name": "描述"
+          "name": "描述",
+          "width": 160
         },
         {
           "width": 160,
@@ -70,65 +128,7 @@
           "name": "小数位位数",
           "width": 160
         }
-      ],
-      "operation": {
-        "fold": false,
-        "actions": [
-          {
-            "icon": "icon-eye",
-            "action": [
-              {
-                "payload": {
-                  "Form": {
-                    "model": "ddic.domain",
-                    "type": "view"
-                  }
-                },
-                "name": "OpenModal",
-                "type": "Common.openModal"
-              }
-            ],
-            "title": "查看"
-          },
-          {
-            "title": "编辑",
-            "icon": "icon-edit-2",
-            "action": [
-              {
-                "name": "OpenModal",
-                "type": "Common.openModal",
-                "payload": {
-                  "Form": {
-                    "type": "edit",
-                    "model": "ddic.domain"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "title": "删除",
-            "icon": "icon-trash-2",
-            "action": [
-              {
-                "name": "Confirm",
-                "type": "Common.confirm",
-                "payload": {
-                  "title": "确认删除",
-                  "content": "删除后不可撤销！"
-                }
-              },
-              {
-                "name": "Delete",
-                "type": "Table.delete",
-                "payload": {
-                  "model": "ddic.domain"
-                }
-              }
-            ]
-          }
-        ]
-      }
+      ]
     }
   },
   "fields": {
@@ -136,54 +136,17 @@
       "描述": {
         "bind": "where.name.match",
         "edit": {
-          "type": "Input",
-          "compute": "Trim",
           "props": {
             "placeholder": "请输入描述"
-          }
+          },
+          "type": "Input",
+          "compute": "Trim"
         }
       }
     },
     "table": {
-      "校验规则": {
-        "bind": "validations",
-        "view": {
-          "compute": "scripts.ddic.compute.json.View",
-          "props": {
-            "ddic_hide": true
-          },
-          "type": "Tooltip"
-        },
-        "edit": {
-          "props": {
-            "itemProps": {
-              "tooltip": "字段校验规则"
-            }
-          },
-          "compute": "scripts.ddic.compute.json.Edit",
-          "type": "TextArea"
-        }
-      },
-      "标识": {
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "bind": "id",
-          "props": {
-            "itemProps": {
-              "tooltip": "标识"
-            }
-          },
-          "type": "Input"
-        },
-        "bind": "id"
-      },
       "描述": {
         "edit": {
-          "type": "Input",
-          "bind": "name",
           "props": {
             "itemProps": {
               "rules": [
@@ -192,7 +155,9 @@
                 }
               ]
             }
-          }
+          },
+          "type": "Input",
+          "bind": "name"
         },
         "bind": "name",
         "view": {
@@ -201,18 +166,17 @@
         }
       },
       "字段类型": {
-        "bind": "type",
         "view": {
           "type": "Tag",
           "props": {
             "xProps": {
               "$remote": {
-                "process": "yao.component.SelectOptions",
                 "query": {
+                  "value": "type",
                   "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
-                }
+                  "label": "name"
+                },
+                "process": "yao.component.SelectOptions"
               }
             },
             "itemProps": {
@@ -229,23 +193,19 @@
             },
             "xProps": {
               "$remote": {
+                "process": "yao.component.SelectOptions",
                 "query": {
+                  "model": "ddic.model.column.type",
                   "label": "name",
-                  "value": "type",
-                  "model": "ddic.model.column.type"
-                },
-                "process": "yao.component.SelectOptions"
+                  "value": "type"
+                }
               }
             }
           }
-        }
+        },
+        "bind": "type"
       },
       "字段长度": {
-        "bind": "length",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
         "edit": {
           "type": "InputNumber",
           "bind": "length",
@@ -254,6 +214,11 @@
               "tooltip": "字段长度，对string等类型字段有效"
             }
           }
+        },
+        "bind": "length",
+        "view": {
+          "type": "Text",
+          "props": {}
         }
       },
       "位数": {
@@ -263,20 +228,20 @@
           "props": {}
         },
         "edit": {
-          "type": "InputNumber",
-          "bind": "precision",
           "props": {
             "itemProps": {
               "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
             }
-          }
+          },
+          "type": "InputNumber",
+          "bind": "precision"
         }
       },
       "小数位位数": {
         "bind": "scale",
         "view": {
-          "type": "Text",
-          "props": {}
+          "props": {},
+          "type": "Text"
         },
         "edit": {
           "type": "InputNumber",
@@ -290,22 +255,57 @@
       },
       "可选项": {
         "view": {
-          "type": "Tooltip",
-          "compute": "scripts.ddic.compute.json.View",
           "props": {
             "ddic_hide": true
-          }
+          },
+          "type": "Tooltip",
+          "compute": "scripts.ddic.compute.json.View"
         },
         "edit": {
-          "type": "TextArea",
           "props": {
             "itemProps": {
               "tooltip": "字段的可选项，对enum类型字段有效"
             }
           },
-          "compute": "scripts.ddic.compute.json.Edit"
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "TextArea"
         },
         "bind": "options"
+      },
+      "校验规则": {
+        "bind": "validations",
+        "view": {
+          "compute": "scripts.ddic.compute.json.View",
+          "props": {
+            "ddic_hide": true
+          },
+          "type": "Tooltip"
+        },
+        "edit": {
+          "type": "TextArea",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段校验规则"
+            }
+          },
+          "compute": "scripts.ddic.compute.json.Edit"
+        }
+      },
+      "标识": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {
+            "itemProps": {
+              "tooltip": "标识"
+            }
+          }
+        },
+        "bind": "id"
       }
     }
   }

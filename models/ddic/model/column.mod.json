@@ -119,6 +119,12 @@
     }
   ],
   "relations": {
+    "model": {
+      "type": "hasOne",
+      "model": "ddic.model",
+      "key": "id",
+      "foreign": "model_id"
+    },
     "element": {
       "type": "hasOne",
       "model": "ddic.element",
