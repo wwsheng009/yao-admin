@@ -2,15 +2,16 @@
 function Save(payload) {
 //先保存主表，获取id后再保存从表
 
-const t = new Query();
-  t.Run({
-    sql: {
-    stmt: "START TRANSACTION;",
-  },
-});
-
+  const t = new Query();
+    t.Run({
+      sql: {
+      stmt: "START TRANSACTION;",
+    },
+  });
+  
+let res = null
 try {
-  var res = Process('models.ddic.model.Save', payload);
+  res = Process('models.ddic.model.Save', payload);
   if (res.code && res.code > 300) {
     throw new Exception(res.message, res.code);
   }
@@ -19,39 +20,44 @@ try {
   console.log("Data Save Failed")
   console.log(error)
   
-t.Run({
-  sql: {
-    stmt: 'ROLLBACK;',
-  },
-});
-
-  throw new Exception(error.message,error.code)
+  t.Run({
+    sql: {
+      stmt: 'ROLLBACK;',
+    },
+  });
+  
+  if(error.message,error.code){
+    throw new Exception(error.message,error.code)
+  }else{
+    throw error
+  }
 }
 
-t.Run({
-  sql: {
-    stmt: 'COMMIT;',
-  },
-});
+  t.Run({
+    sql: {
+      stmt: 'COMMIT;',
+    },
+  });
 
+return res
 }
 //保存关联表数据
 function SaveRelations(id, payload) {
-Save_columns(id,payload);
-	Save_relations(id,payload);
+Save_col(id,payload);
+	Save_rel(id,payload);
 return id;
 }
 
 //删除关联表数据
 function BeforeDelete(id){
-Delete_columns(id);
-	Delete_relations(id);
+Delete_col(id);
+	Delete_rel(id);
 }
 
 
 //保存ddic.model.column
-function Save_columns(id,payload){
-  const items = payload.columns || {};
+function Save_col(id,payload){
+  const items = payload.col || {};
   const deletes = items.delete || [];
   const data = items.data || items || [];
   if (data.length > 0 || deletes.length > 0) {
@@ -80,8 +86,8 @@ function Save_columns(id,payload){
 
 
 //保存ddic.model.relation
-function Save_relations(id,payload){
-  const items = payload.relations || {};
+function Save_rel(id,payload){
+  const items = payload.rel || {};
   const deletes = items.delete || [];
   const data = items.data || items || [];
   if (data.length > 0 || deletes.length > 0) {
@@ -111,7 +117,7 @@ function Save_relations(id,payload){
 
 
 //删除ddic.model.column == model_id
-function Delete_columns(id){
+function Delete_col(id){
   let rows = Process('models.ddic.model.column.DeleteWhere', {
     wheres: [{ column: 'model_id', value: id }],
   });
@@ -122,7 +128,7 @@ function Delete_columns(id){
 
 
 //删除ddic.model.relation == model_id
-function Delete_relations(id){
+function Delete_rel(id){
   let rows = Process('models.ddic.model.relation.DeleteWhere', {
     wheres: [{ column: 'model_id', value: id }],
   });

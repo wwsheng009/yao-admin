@@ -2,15 +2,16 @@
 function Save(payload) {
 //先保存主表，获取id后再保存从表
 
-const t = new Query();
-  t.Run({
-    sql: {
-    stmt: "START TRANSACTION;",
-  },
-});
-
+  const t = new Query();
+    t.Run({
+      sql: {
+      stmt: "START TRANSACTION;",
+    },
+  });
+  
+let res = null
 try {
-  var res = Process('models.ddic.form.Save', payload);
+  res = Process('models.ddic.form.Save', payload);
   if (res.code && res.code > 300) {
     throw new Exception(res.message, res.code);
   }
@@ -19,21 +20,26 @@ try {
   console.log("Data Save Failed")
   console.log(error)
   
-t.Run({
-  sql: {
-    stmt: 'ROLLBACK;',
-  },
-});
-
-  throw new Exception(error.message,error.code)
+  t.Run({
+    sql: {
+      stmt: 'ROLLBACK;',
+    },
+  });
+  
+  if(error.message,error.code){
+    throw new Exception(error.message,error.code)
+  }else{
+    throw error
+  }
 }
 
-t.Run({
-  sql: {
-    stmt: 'COMMIT;',
-  },
-});
+  t.Run({
+    sql: {
+      stmt: 'COMMIT;',
+    },
+  });
 
+return res
 }
 //保存关联表数据
 function SaveRelations(id, payload) {

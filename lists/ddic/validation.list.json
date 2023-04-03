@@ -1,0 +1,98 @@
+{
+  "name": "::Validation",
+  "action": {
+    "bind": {}
+  },
+  "layout": {
+    "list": {
+      "columns": [
+        {
+          "name": "方法",
+          "width": 8
+        },
+        {
+          "name": "参数",
+          "width": 8
+        },
+        {
+          "name": "消息",
+          "width": 8
+        }
+      ]
+    }
+  },
+  "fields": {
+    "list": {
+      "ID": {
+        "bind": "id",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "tooltip": "id"
+            }
+          }
+        }
+      },
+      "方法": {
+        "bind": "method",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "itemProps": {
+              "tooltip": "校验方法",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            },
+            "options": [
+              { "label": "值类型:typeof", "value": "typeof" },
+              { "label": "最小值:minLength", "value": "min" },
+              { "label": "最大值:max", "value": "max" },
+              { "label": "最小长度:minLength", "value": "minLength" },
+              { "label": "最大长度:maxLength", "value": "maxLength" },
+              { "label": "正则匹配:pattern", "value": "pattern" },
+              { "label": "邮箱地址:email", "value": "email" },
+              { "label": "手机号码:mobile", "value": "mobile" },
+              { "label": "枚举:enum", "value": "enum" }
+            ]
+          }
+        }
+      },
+      "参数": {
+        "bind": "args",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "tooltip": "调用校验方法所需要的参数",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "消息": {
+        "bind": "message",
+        "edit": {
+          "type": "Input",
+          "props": {
+            "itemProps": {
+              "tooltip": "检验失败后的消息",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

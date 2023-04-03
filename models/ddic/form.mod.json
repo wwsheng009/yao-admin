@@ -54,18 +54,21 @@
   ],
   "relations": {
     "fields": {
+      "label": "字段列表",
       "type": "hasMany",
       "model": "ddic.form.field",
       "key": "form_id",
       "foreign": "id"
     },
     "model": {
+      "label": "模型",
       "type": "hasOne",
       "model": "ddic.model",
       "key": "id",
       "foreign": "model_id"
     },
     "table": {
+      "label": "表单",
       "type": "hasOne",
       "model": "ddic.table",
       "key": "id",

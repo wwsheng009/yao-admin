@@ -9,8 +9,8 @@
     "list": {
       "columns": [
         {
-          "width": 8,
-          "name": "名称"
+          "name": "名称",
+          "width": 8
         },
         {
           "name": "关联关系",
@@ -21,8 +21,8 @@
           "width": 8
         },
         {
-          "name": "主键",
-          "width": 8
+          "width": 8,
+          "name": "主键"
         },
         {
           "name": "关联条件",
@@ -35,17 +35,17 @@
     "list": {
       "名称": {
         "edit": {
+          "type": "Input",
           "props": {
             "itemProps": {
+              "tooltip": "定义关系名称",
               "rules": [
                 {
                   "required": true
                 }
-              ],
-              "tooltip": "定义关系名称"
+              ]
             }
-          },
-          "type": "Input"
+          }
         },
         "bind": "name"
       },
@@ -55,16 +55,6 @@
           "type": "Select",
           "props": {
             "placeholder": "请选择关联关系",
-            "options": [
-              {
-                "value": "hasOne",
-                "label": "::hasOne"
-              },
-              {
-                "label": "::hasMany",
-                "value": "hasMany"
-              }
-            ],
             "itemProps": {
               "rules": [
                 {
@@ -72,12 +62,21 @@
                 }
               ],
               "tooltip": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。"
-            }
+            },
+            "options": [
+              {
+                "label": "::hasOne",
+                "value": "hasOne"
+              },
+              {
+                "label": "::hasMany",
+                "value": "hasMany"
+              }
+            ]
           }
         }
       },
       "外键": {
-        "bind": "foreign",
         "edit": {
           "type": "Input",
           "props": {
@@ -90,23 +89,14 @@
               "tooltip": "外键"
             }
           }
-        }
+        },
+        "bind": "foreign"
       },
       "主键": {
-        "bind": "key_id",
+        "bind": "key",
         "edit": {
-          "type": "Select",
+          "type": "Input",
           "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column",
-                  "label": "name",
-                  "value": "id"
-                }
-              }
-            },
             "itemProps": {
               "rules": [
                 {
@@ -121,7 +111,6 @@
       "关联条件": {
         "bind": "query",
         "edit": {
-          "compute": "scripts.ddic.compute.json.Edit",
           "type": "CodeEditor",
           "props": {
             "height": 200,
@@ -129,7 +118,8 @@
               "tooltip": "关联条件"
             },
             "language": "json"
-          }
+          },
+          "compute": "scripts.ddic.compute.json.Edit"
         }
       }
     }

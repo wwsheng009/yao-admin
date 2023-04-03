@@ -63,13 +63,15 @@
     }
   ],
   "relations": {
-    "columns": {
+    "col": {
+      "label": "字段列表",
       "type": "hasMany",
       "model": "ddic.model.column",
       "key": "model_id",
       "foreign": "id"
     },
-    "relations": {
+    "rel": {
+      "label": "关联关系",
       "type": "hasMany",
       "model": "ddic.model.relation",
       "key": "model_id",

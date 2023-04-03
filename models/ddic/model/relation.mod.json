@@ -21,7 +21,6 @@
       "type": "string",
       "length": 80,
       "nullable": false,
-      "unique": true,
       "comment": "定义关系名称"
     },
     {
@@ -40,8 +39,8 @@
       "nullable": false
     },
     {
-      "name": "key_id",
-      "type": "integer",
+      "name": "key",
+      "type": "string",
       "label": "主键",
       "comment": "主键",
       "nullable": false
@@ -54,19 +53,6 @@
       "nullable": true
     }
   ],
-  "relations": {
-    "model": {
-      "type": "hasOne",
-      "model": "ddic.model",
-      "key": "id",
-      "foreign": "model_id"
-    },
-    "key": {
-      "type": "hasOne",
-      "model": "ddic.model.column",
-      "key": "id",
-      "foreign": "key_id"
-    }
-  },
+  "relations": {},
   "option": {}
 }

@@ -24,9 +24,10 @@
     },
     {
       "label": "字段类型",
-      "name": "field_type_id",
+      "name": "type",
       "nullable": true,
-      "type": "integer",
+      "type": "string",
+      "length": 80,
       "comment": "字段类型定义"
     },
     {
@@ -51,9 +52,9 @@
       "nullable": true
     },
     {
-      "comment": "字段许可值，对enum类型字段有效",
-      "label": "许可值",
-      "name": "option",
+      "comment": "字段的可选项，对enum类型字段有效",
+      "label": "可选项",
+      "name": "options",
       "type": "json",
       "nullable": true
     },
@@ -65,23 +66,142 @@
       "nullable": true
     }
   ],
-  "relations": {
-    "field_type": {
-      "type": "hasOne",
-      "foreign": "field_type_id",
-      "key": "id",
-      "model": "ddic.model.column.type",
-      "query": {}
+  "relations": {},
+  "values": [
+    {
+      "name": "电话号码",
+      "type": "string",
+      "length": "10",
+      "validations": [
+        {
+          "method": "mobile",
+          "args": [],
+          "message": "::{{input}} should be mobile"
+        }
+      ]
+    },
+    {
+      "name": "邮件地址",
+      "type": "string",
+      "length": "50",
+      "validations": [
+        {
+          "method": "email",
+          "args": [],
+          "message": "::{{input}} should be email"
+        }
+      ]
+    },
+    {
+      "name": "状态",
+      "type": "enum",
+      "length": "10",
+      "options": [
+        {
+          "label": "启用",
+          "value": "enabled"
+        },
+        {
+          "label": "禁用",
+          "value": "disabled"
+        }
+      ],
+      "validations": [
+        {
+          "method": "enum",
+          "args": ["enabled", "disabled"],
+          "message": "::{{input}} Error, {{label}} should be enabled/disabled"
+        }
+      ]
     }
-  },
+  ],
   "xgen": {
-    "option": {
+    "type": {
+      "form": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": { "tooltip": "字段类型定义" }
+          }
+        }
+      },
+      "table": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": { "tooltip": "字段类型定义" }
+          }
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": { "tooltip": "字段类型定义" }
+          }
+        }
+      }
+    },
+    "options": {
       "form": {
         "edit": {
           "type": "List",
           "props": {
             "name": "ddic.option",
             "showLabel": true
+          }
+        }
+      },
+      "table": {
+        "view": {
+          "props": {
+            "ddic_hide": true
+          }
+        }
+      }
+    },
+    "validations": {
+      "form": {
+        "edit": {
+          "type": "List",
+          "props": {
+            "name": "ddic.validation",
+            "showLabel": true
+          }
+        }
+      },
+      "table": {
+        "view": {
+          "props": {
+            "ddic_hide": true
           }
         }
       }

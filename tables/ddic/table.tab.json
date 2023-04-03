@@ -1,150 +1,16 @@
 {
-  "name": "::Table",
-  "action": {
-    "bind": {
-      "model": "ddic.table",
-      "option": {
-        "withs": {
-          "fields": {},
-          "model": {},
-          "form": {}
-        },
-        "option": {
-          "form": "ddic.table"
-        }
-      }
-    }
-  },
-  "layout": {
-    "header": {
-      "preset": {},
-      "actions": []
-    },
-    "filter": {
-      "columns": [
-        {
-          "name": "名称",
-          "width": 4
-        },
-        {
-          "name": "表单",
-          "width": 4
-        },
-        {
-          "name": "模型",
-          "width": 4
-        }
-      ],
-      "actions": [
-        {
-          "title": "添加",
-          "icon": "icon-plus",
-          "width": 3,
-          "action": [
-            {
-              "name": "OpenModal",
-              "type": "Common.openModal",
-              "payload": {
-                "Form": {
-                  "model": "ddic.table",
-                  "type": "edit"
-                }
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "table": {
-      "columns": [
-        {
-          "name": "ID",
-          "width": 160
-        },
-        {
-          "width": 160,
-          "name": "名称"
-        },
-        {
-          "width": 160,
-          "name": "表单"
-        },
-        {
-          "name": "模型",
-          "width": 160
-        },
-        {
-          "name": "备注",
-          "width": 160
-        },
-        {
-          "name": "描述",
-          "width": 160
-        }
-      ],
-      "operation": {
-        "fold": false,
-        "actions": [
-          {
-            "title": "查看",
-            "icon": "icon-eye",
-            "action": [
-              {
-                "payload": {
-                  "Form": {
-                    "model": "ddic.table",
-                    "type": "view"
-                  }
-                },
-                "name": "OpenModal",
-                "type": "Common.openModal"
-              }
-            ]
-          },
-          {
-            "title": "编辑",
-            "icon": "icon-edit-2",
-            "action": [
-              {
-                "name": "OpenModal",
-                "type": "Common.openModal",
-                "payload": {
-                  "Form": {
-                    "type": "edit",
-                    "model": "ddic.table"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "title": "删除",
-            "icon": "icon-trash-2",
-            "action": [
-              {
-                "name": "Confirm",
-                "type": "Common.confirm",
-                "payload": {
-                  "title": "确认删除",
-                  "content": "删除后不可撤销！"
-                }
-              },
-              {
-                "payload": {
-                  "model": "ddic.table"
-                },
-                "name": "Delete",
-                "type": "Table.delete"
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "primary": "id"
-  },
   "fields": {
     "filter": {
+      "名称": {
+        "bind": "where.name.match",
+        "edit": {
+          "type": "Input",
+          "compute": "Trim",
+          "props": {
+            "placeholder": "请输入名称"
+          }
+        }
+      },
       "表单": {
         "edit": {
           "type": "Select",
@@ -153,9 +19,9 @@
               "$remote": {
                 "process": "yao.component.SelectOptions",
                 "query": {
+                  "model": "ddic.form",
                   "label": "name",
-                  "value": "id",
-                  "model": "ddic.form"
+                  "value": "id"
                 }
               }
             },
@@ -196,40 +62,9 @@
             }
           }
         }
-      },
-      "名称": {
-        "bind": "where.name.match",
-        "edit": {
-          "type": "Input",
-          "compute": "Trim",
-          "props": {
-            "placeholder": "请输入名称"
-          }
-        }
       }
     },
     "table": {
-      "描述": {
-        "bind": "description",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "介绍"
-            }
-          },
-          "type": "TextArea",
-          "bind": "description"
-        }
-      },
       "ID": {
         "bind": "id",
         "view": {
@@ -237,13 +72,13 @@
           "props": {}
         },
         "edit": {
-          "type": "Input",
           "bind": "id",
           "props": {
             "itemProps": {
               "tooltip": "表名"
             }
-          }
+          },
+          "type": "Input"
         }
       },
       "名称": {
@@ -253,8 +88,6 @@
           "props": {}
         },
         "edit": {
-          "type": "Input",
-          "bind": "name",
           "props": {
             "itemProps": {
               "rules": [
@@ -263,7 +96,9 @@
                 }
               ]
             }
-          }
+          },
+          "type": "Input",
+          "bind": "name"
         }
       },
       "表单": {
@@ -275,9 +110,9 @@
               "$remote": {
                 "process": "yao.component.SelectOptions",
                 "query": {
-                  "value": "id",
                   "model": "ddic.form",
-                  "label": "name"
+                  "label": "name",
+                  "value": "id"
                 }
               }
             }
@@ -286,6 +121,16 @@
         "edit": {
           "type": "Select",
           "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "ddic.form"
+                }
+              }
+            },
             "itemProps": {
               "rules": [
                 {
@@ -293,21 +138,12 @@
                 }
               ],
               "tooltip": "表关联的表单"
-            },
-            "xProps": {
-              "$remote": {
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "ddic.form"
-                },
-                "process": "yao.component.SelectOptions"
-              }
             }
           }
         }
       },
       "模型": {
+        "bind": "model_id",
         "view": {
           "type": "Tag",
           "props": {
@@ -345,18 +181,31 @@
               "tooltip": "表关联的模型"
             }
           }
-        },
-        "bind": "model_id"
+        }
       },
       "备注": {
-        "bind": "comment",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
         "edit": {
           "type": "Input",
           "bind": "comment",
+          "props": {
+            "itemProps": {
+              "tooltip": "表注释",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        },
+        "bind": "comment",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
+      },
+      "描述": {
+        "edit": {
           "props": {
             "itemProps": {
               "rules": [
@@ -364,11 +213,162 @@
                   "required": true
                 }
               ],
-              "tooltip": "表注释"
+              "tooltip": "介绍"
             }
-          }
+          },
+          "type": "TextArea",
+          "bind": "description"
+        },
+        "bind": "description",
+        "view": {
+          "type": "Text",
+          "props": {}
         }
       }
+    }
+  },
+  "name": "::Table",
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {
+          "fields": {},
+          "model": {},
+          "form": {}
+        },
+        "option": {
+          "form": "ddic.table"
+        }
+      },
+      "model": "ddic.table"
+    }
+  },
+  "layout": {
+    "filter": {
+      "columns": [
+        {
+          "name": "名称",
+          "width": 4
+        },
+        {
+          "name": "表单",
+          "width": 4
+        },
+        {
+          "name": "模型",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "width": 3,
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "ddic.table"
+                }
+              }
+            }
+          ],
+          "title": "添加",
+          "icon": "icon-plus"
+        }
+      ]
+    },
+    "table": {
+      "columns": [
+        {
+          "name": "ID",
+          "width": 160
+        },
+        {
+          "name": "名称",
+          "width": 160
+        },
+        {
+          "name": "表单",
+          "width": 160
+        },
+        {
+          "width": 160,
+          "name": "模型"
+        },
+        {
+          "name": "备注",
+          "width": 160
+        },
+        {
+          "name": "描述",
+          "width": 160
+        }
+      ],
+      "operation": {
+        "fold": false,
+        "actions": [
+          {
+            "icon": "icon-eye",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "model": "ddic.table",
+                    "type": "view"
+                  }
+                }
+              }
+            ],
+            "title": "查看"
+          },
+          {
+            "icon": "icon-edit-2",
+            "action": [
+              {
+                "name": "OpenModal",
+                "type": "Common.openModal",
+                "payload": {
+                  "Form": {
+                    "type": "edit",
+                    "model": "ddic.table"
+                  }
+                }
+              }
+            ],
+            "title": "编辑"
+          },
+          {
+            "title": "删除",
+            "icon": "icon-trash-2",
+            "action": [
+              {
+                "type": "Common.confirm",
+                "payload": {
+                  "title": "确认删除",
+                  "content": "删除后不可撤销！"
+                },
+                "name": "Confirm"
+              },
+              {
+                "payload": {
+                  "model": "ddic.table"
+                },
+                "name": "Delete",
+                "type": "Table.delete"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
     }
   }
 }

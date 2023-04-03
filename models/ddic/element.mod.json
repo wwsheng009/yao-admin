@@ -29,9 +29,9 @@
     },
     {
       "label": "字段类型",
-      "name": "field_type_id",
+      "name": "type",
       "nullable": true,
-      "type": "integer",
+      "type": "string",
       "comment": "字段类型定义"
     },
     {
@@ -66,13 +66,6 @@
       "name": "nullable"
     },
     {
-      "label": "字段许可值",
-      "name": "option",
-      "type": "json",
-      "comment": "字段许可值，对 `enum` 类型字段有效",
-      "nullable": true
-    },
-    {
       "name": "default",
       "type": "string",
       "comment": "string|number|float|字段默认值",
@@ -87,29 +80,72 @@
       "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
       "label": "加密方式",
       "nullable": true
-    },
-    {
-      "type": "json",
-      "comment": "字段校验规则",
-      "label": "字段校验规则",
-      "name": "validations",
-      "nullable": true
     }
   ],
   "relations": {
     "domain": {
+      "label": "域",
       "type": "hasOne",
       "foreign": "domain_id",
       "key": "id",
       "model": "ddic.domain",
       "query": {}
-    },
-    "field_type": {
-      "type": "hasOne",
-      "foreign": "field_type_id",
-      "key": "id",
-      "model": "ddic.model.column.type",
-      "query": {}
+    }
+  },
+  "xgen": {
+    "type": {
+      "form": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": { "tooltip": "字段类型定义" }
+          }
+        }
+      },
+      "table": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": { "tooltip": "字段类型定义" }
+          }
+        },
+        "view": {
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": { "tooltip": "字段类型定义" }
+          }
+        }
+      }
     }
   }
 }

@@ -1,66 +1,57 @@
 {
-  "action": {
-    "bind": {
-      "option": {
-        "withs": {
-          "field_type": {}
-        }
-      },
-      "model": "ddic.domain"
-    }
-  },
   "layout": {
+    "primary": "id",
     "actions": [
       {
+        "icon": "icon-layers",
+        "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
+            "type": "Studio.model",
             "payload": {
-              "method": "CreateOne",
               "args": [
                 "ddic.domain"
-              ]
+              ],
+              "method": "CreateOne"
             },
-            "name": "StudioModel",
-            "type": "Studio.model"
+            "name": "StudioModel"
           },
           {
             "payload": {
-              "title": "提示",
-              "content": "处理完成"
+              "content": "处理完成",
+              "title": "提示"
             },
             "name": "Confirm",
             "type": "Common.confirm"
           }
         ],
-        "title": "重新生成代码",
-        "icon": "icon-layers",
-        "showWhenAdd": true
+        "title": "重新生成代码"
       },
       {
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
+            "type": "Common.closeModal",
             "payload": {},
-            "name": "CloseModal",
-            "type": "Common.closeModal"
+            "name": "CloseModal"
           }
-        ],
-        "title": "返回",
-        "icon": "icon-arrow-left",
-        "showWhenAdd": true
+        ]
       },
       {
         "action": [
           {
-            "payload": {},
             "name": "Submit",
-            "type": "Form.submit"
+            "type": "Form.submit",
+            "payload": {}
           },
           {
+            "payload": {},
             "name": "Back",
-            "type": "Common.closeModal",
-            "payload": {}
+            "type": "Common.closeModal"
           }
         ],
         "title": "保存",
@@ -75,22 +66,22 @@
           {
             "type": "Common.confirm",
             "payload": {
-              "title": "提示",
-              "content": "确认删除，删除后数据无法恢复？"
+              "content": "确认删除，删除后数据无法恢复？",
+              "title": "提示"
             },
             "name": "Confirm"
           },
           {
+            "name": "Delete",
             "payload": {
               "model": "ddic.domain"
             },
-            "type": "Form.delete",
-            "name": "Delete"
+            "type": "Form.delete"
           },
           {
+            "payload": {},
             "name": "Back",
-            "type": "Common.closeModal",
-            "payload": {}
+            "type": "Common.closeModal"
           }
         ],
         "icon": "icon-trash-2"
@@ -118,11 +109,11 @@
               "width": 8
             },
             {
-              "name": "小数位位数",
-              "width": 8
+              "width": 8,
+              "name": "小数位位数"
             },
             {
-              "name": "许可值",
+              "name": "可选项",
               "width": 24
             },
             {
@@ -130,15 +121,44 @@
               "name": "校验规则"
             }
           ]
+        },
+        {
+          "columns": [
+            {
+              "tabs": [],
+              "width": 24,
+              "name": "列表"
+            }
+          ]
         }
       ]
-    },
-    "primary": "id"
+    }
   },
   "fields": {
     "form": {
+      "字段长度": {
+        "bind": "length",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "字段长度，对string等类型字段有效"
+            }
+          },
+          "type": "InputNumber"
+        }
+      },
+      "位数": {
+        "edit": {
+          "type": "InputNumber",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
+            }
+          }
+        },
+        "bind": "precision"
+      },
       "小数位位数": {
-        "bind": "scale",
         "edit": {
           "type": "InputNumber",
           "props": {
@@ -146,33 +166,36 @@
               "tooltip": "字段小数位位数，对float、decimal等类型字段有效"
             }
           }
-        }
+        },
+        "bind": "scale"
       },
-      "许可值": {
-        "bind": "option",
+      "可选项": {
         "edit": {
           "props": {
-            "language": "json",
-            "itemProps": {
-              "tooltip": "字段许可值，对enum类型字段有效"
-            },
-            "name": "ddic.option",
             "showLabel": true,
-            "height": 200
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "tooltip": "字段的可选项，对enum类型字段有效"
+            },
+            "name": "ddic.option"
           },
           "compute": "scripts.ddic.compute.json.Edit",
           "type": "List"
-        }
+        },
+        "bind": "options"
       },
       "校验规则": {
         "edit": {
-          "type": "CodeEditor",
+          "type": "List",
           "props": {
+            "height": 200,
+            "language": "json",
             "itemProps": {
               "tooltip": "字段校验规则"
             },
-            "height": 200,
-            "language": "json"
+            "name": "ddic.validation",
+            "showLabel": true
           },
           "compute": "scripts.ddic.compute.json.Edit"
         },
@@ -194,7 +217,7 @@
         "bind": "name"
       },
       "字段类型": {
-        "bind": "field_type_id",
+        "bind": "type",
         "edit": {
           "type": "Select",
           "props": {
@@ -203,40 +226,26 @@
             },
             "xProps": {
               "$remote": {
-                "process": "yao.component.SelectOptions",
                 "query": {
-                  "value": "id",
                   "model": "ddic.model.column.type",
-                  "label": "name"
-                }
+                  "label": "name",
+                  "value": "type"
+                },
+                "process": "yao.component.SelectOptions"
               }
             }
           }
         }
-      },
-      "字段长度": {
-        "edit": {
-          "props": {
-            "itemProps": {
-              "tooltip": "字段长度，对string等类型字段有效"
-            }
-          },
-          "type": "InputNumber"
-        },
-        "bind": "length"
-      },
-      "位数": {
-        "edit": {
-          "type": "InputNumber",
-          "props": {
-            "itemProps": {
-              "tooltip": "字段位数(含小数位)，对float、decimal等类型字段有效"
-            }
-          }
-        },
-        "bind": "precision"
       }
     }
   },
-  "name": "::Domain"
+  "name": "::Domain",
+  "action": {
+    "bind": {
+      "model": "ddic.domain",
+      "option": {
+        "withs": {}
+      }
+    }
+  }
 }

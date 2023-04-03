@@ -1,5 +1,60 @@
 {
+  "name": "::Model",
+  "action": {
+    "bind": {
+      "model": "ddic.model",
+      "option": {
+        "withs": {
+          "col": {},
+          "rel": {}
+        },
+        "option": {
+          "form": "ddic.model"
+        }
+      }
+    }
+  },
   "layout": {
+    "primary": "id",
+    "header": {
+      "preset": {},
+      "actions": []
+    },
+    "filter": {
+      "columns": [
+        {
+          "width": 4,
+          "name": "命名空间"
+        },
+        {
+          "width": 4,
+          "name": "模型名称"
+        },
+        {
+          "name": "数据库表名",
+          "width": 4
+        }
+      ],
+      "actions": [
+        {
+          "width": 3,
+          "action": [
+            {
+              "name": "OpenModal",
+              "type": "Common.openModal",
+              "payload": {
+                "Form": {
+                  "type": "edit",
+                  "model": "ddic.model"
+                }
+              }
+            }
+          ],
+          "title": "添加",
+          "icon": "icon-plus"
+        }
+      ]
+    },
     "table": {
       "columns": [
         {
@@ -7,12 +62,12 @@
           "width": 160
         },
         {
-          "name": "命名空间",
-          "width": 160
+          "width": 160,
+          "name": "命名空间"
         },
         {
-          "width": 160,
-          "name": "模型名称"
+          "name": "模型名称",
+          "width": 160
         },
         {
           "name": "模型备注",
@@ -36,6 +91,7 @@
         }
       ],
       "operation": {
+        "fold": false,
         "actions": [
           {
             "title": "查看",
@@ -54,20 +110,20 @@
             ]
           },
           {
-            "title": "编辑",
             "icon": "icon-edit-2",
             "action": [
               {
+                "type": "Common.openModal",
                 "payload": {
                   "Form": {
                     "type": "edit",
                     "model": "ddic.model"
                   }
                 },
-                "name": "OpenModal",
-                "type": "Common.openModal"
+                "name": "OpenModal"
               }
-            ]
+            ],
+            "title": "编辑"
           },
           {
             "icon": "icon-trash-2",
@@ -90,49 +146,8 @@
             ],
             "title": "删除"
           }
-        ],
-        "fold": false
+        ]
       }
-    },
-    "primary": "id",
-    "header": {
-      "preset": {},
-      "actions": []
-    },
-    "filter": {
-      "columns": [
-        {
-          "name": "命名空间",
-          "width": 4
-        },
-        {
-          "name": "模型名称",
-          "width": 4
-        },
-        {
-          "name": "数据库表名",
-          "width": 4
-        }
-      ],
-      "actions": [
-        {
-          "icon": "icon-plus",
-          "width": 3,
-          "action": [
-            {
-              "name": "OpenModal",
-              "type": "Common.openModal",
-              "payload": {
-                "Form": {
-                  "type": "edit",
-                  "model": "ddic.model"
-                }
-              }
-            }
-          ],
-          "title": "添加"
-        }
-      ]
     }
   },
   "fields": {
@@ -175,22 +190,21 @@
           "props": {}
         },
         "edit": {
-          "bind": "namespace",
           "props": {
             "defaultValue": "app"
           },
-          "type": "Input"
+          "type": "Input",
+          "bind": "namespace"
         },
         "bind": "namespace"
       },
       "模型名称": {
+        "bind": "name",
         "view": {
           "type": "Text",
           "props": {}
         },
         "edit": {
-          "type": "Input",
-          "bind": "name",
           "props": {
             "itemProps": {
               "rules": [
@@ -199,9 +213,10 @@
                 }
               ]
             }
-          }
-        },
-        "bind": "name"
+          },
+          "type": "Input",
+          "bind": "name"
+        }
       },
       "模型备注": {
         "bind": "model_comment",
@@ -210,16 +225,20 @@
           "props": {}
         },
         "edit": {
-          "type": "Input",
-          "bind": "model_comment",
           "props": {
             "itemProps": {
               "tooltip": "模型定义注释"
             }
-          }
+          },
+          "type": "Input",
+          "bind": "model_comment"
         }
       },
       "数据库表名": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
         "edit": {
           "props": {
             "itemProps": {
@@ -233,53 +252,53 @@
           "type": "Input",
           "bind": "table_name"
         },
-        "bind": "table_name",
-        "view": {
-          "props": {},
-          "type": "Text"
-        }
+        "bind": "table_name"
       },
       "数据库表备注": {
         "bind": "table_comment",
         "view": {
-          "props": {},
-          "type": "Text"
+          "type": "Text",
+          "props": {}
         },
         "edit": {
-          "bind": "table_comment",
           "props": {
             "itemProps": {
               "tooltip": "对应数据表中字段注释"
             }
           },
-          "type": "Input"
+          "type": "Input",
+          "bind": "table_comment"
         }
       },
       "软删除": {
-        "bind": "soft_deletes",
         "view": {
+          "type": "Switch",
           "props": {
-            "checkedChildren": "是",
-            "checkedValue": 1,
             "unCheckedChildren": "否",
-            "unCheckedValue": 0
-          },
-          "type": "Switch"
-        }
+            "unCheckedValue": 0,
+            "checkedChildren": "是",
+            "checkedValue": 1
+          }
+        },
+        "bind": "soft_deletes"
       },
       "增加时间戳": {
         "bind": "timestamps",
         "view": {
           "type": "Switch",
           "props": {
+            "unCheckedChildren": "否",
             "unCheckedValue": 0,
             "checkedChildren": "是",
-            "checkedValue": 1,
-            "unCheckedChildren": "否"
+            "checkedValue": 1
           }
         }
       },
       "ID": {
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
         "edit": {
           "type": "Input",
           "bind": "id",
@@ -289,26 +308,7 @@
             }
           }
         },
-        "bind": "id",
-        "view": {
-          "type": "Text",
-          "props": {}
-        }
-      }
-    }
-  },
-  "name": "::Model",
-  "action": {
-    "bind": {
-      "model": "ddic.model",
-      "option": {
-        "withs": {
-          "relations": {},
-          "columns": {}
-        },
-        "option": {
-          "form": "ddic.model"
-        }
+        "bind": "id"
       }
     }
   }

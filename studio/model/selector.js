@@ -161,6 +161,7 @@ function Table(formDsl, modelDsl) {
 function List(formDsl, modelDsl) {
     const relations = modelDsl.relations;
     let RelList = [];
+    let tabs = [];
     for (const rel in relations) {
         // console.log(`translate.translate:${i}`);
         if (relations[rel].type != "hasMany") {
@@ -172,8 +173,14 @@ function List(formDsl, modelDsl) {
             key: relations[rel].key,
         });
         //创建控件
-        const translate = Studio("model.relation.translate", rel);
-        formDsl.fields.form["列表" + translate] = {
+        let label = relations[rel].label;
+        if (!label) {
+            label = "列表" + Studio("model.relation.translate", rel);
+        }
+        if (!label) {
+            label = rel;
+        }
+        formDsl.fields.form[label] = {
             bind: rel,
             edit: {
                 type: "List",
@@ -183,12 +190,18 @@ function List(formDsl, modelDsl) {
                 },
             },
         };
-        formDsl.layout.form.sections.push({
-            // title: "表格" + translate + "信息",
+        tabs.push({
+            // Tab一定要有标题，要不然不会显示
+            title: label,
             // desc: "表格" + translate + "信息",
-            columns: [{ name: "列表" + translate, width: 24 }],
+            columns: [{ name: label, width: 24 }],
         });
     }
+    formDsl.layout.form.sections.push({
+        // title: "关联表",
+        // desc: "表格信息",
+        columns: [{ name: "列表", tabs, width: 24 }],
+    });
     const tabName = modelDsl.table.name;
     let funtionName = Studio("model.file.SlashName", tabName);
     let modelName = Studio("model.file.DotName", tabName);
@@ -225,24 +238,24 @@ function StartTrans() {
     const ismysql = Studio("model.utils.IsMysql");
     return ismysql
         ? `
-const t = new Query();
-  t.Run({
-    sql: {
-    stmt: "START TRANSACTION;",
-  },
-});
-`
+  const t = new Query();
+    t.Run({
+      sql: {
+      stmt: "START TRANSACTION;",
+    },
+  });
+  `
         : "";
 }
 function Commit() {
     const ismysql = Studio("model.utils.IsMysql");
     return ismysql
         ? `
-t.Run({
-  sql: {
-    stmt: 'COMMIT;',
-  },
-});
+  t.Run({
+    sql: {
+      stmt: 'COMMIT;',
+    },
+  });
 `
         : "";
 }
@@ -250,12 +263,12 @@ function Rollback() {
     const ismysql = Studio("model.utils.IsMysql");
     return ismysql
         ? `
-t.Run({
-  sql: {
-    stmt: 'ROLLBACK;',
-  },
-});
-`
+  t.Run({
+    sql: {
+      stmt: 'ROLLBACK;',
+    },
+  });
+  `
         : "";
 }
 function WriteScript(functionName, modelName, saveDataCodes, deleteDataCodes, saveDataFunctionList, deleteDataFuntionList) {
@@ -264,8 +277,9 @@ function WriteScript(functionName, modelName, saveDataCodes, deleteDataCodes, sa
 function Save(payload) {
 //先保存主表，获取id后再保存从表
 ${StartTrans()}
+let res = null
 try {
-  var res = Process('models.${modelName}.Save', payload);
+  res = Process('models.${modelName}.Save', payload);
   if (res.code && res.code > 300) {
     throw new Exception(res.message, res.code);
   }
@@ -274,9 +288,14 @@ try {
   console.log("Data Save Failed")
   console.log(error)
   ${Rollback()}
-  throw new Exception(error.message,error.code)
+  if(error.message,error.code){
+    throw new Exception(error.message,error.code)
+  }else{
+    throw error
+  }
 }
 ${Commit()}
+return res
 }
 //保存关联表数据
 function SaveRelations(id, payload) {

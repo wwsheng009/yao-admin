@@ -15,11 +15,37 @@ function LoadModel(modelDsls) {
             // columns: modelDsl.columns,
         };
         //TODO map the columns
-        model.table_name = tableName;
-        model.model_comment = modelDsl.comment;
-        model.table_comment = modelDsl.table?.comment;
+        model = UpdateTableFromDsl(model, modelDsl);
         id = Process("yao.form.Save", "ddic.model", model);
     });
+}
+function UpdateTableFromDsl(model, modelDsl) {
+    let tableName = Studio("model.file.DotName", modelDsl.table.name);
+    model.table_name = tableName.replaceAll(".", "_");
+    model.model_comment = modelDsl.comment;
+    model.table_comment = modelDsl.table?.comment;
+    let dots = tableName.split(".");
+    dots.pop();
+    model.namespace = dots.join(".");
+    model.name = tableName;
+    model.soft_deletes = modelDsl.option?.soft_deletes ? true : false;
+    model.timestamps = modelDsl.option?.timestamps ? true : false;
+    model.col = modelDsl.columns.map((item) => UpdateColumnFromDsl(item));
+    if (modelDsl.relations) {
+        model.rel = [];
+    }
+    for (const key in modelDsl.relations) {
+        model.rel.push(UpdateRelationFromDsl(key, modelDsl.relations[key]));
+    }
+    return model;
+}
+function UpdateColumnFromDsl(modeCol) {
+    return modeCol;
+}
+function UpdateRelationFromDsl(key, rel) {
+    let data = rel;
+    data.name = key;
+    return data;
 }
 /**
  * yao studio run ddic.loader.LoadModelFromFile
@@ -31,4 +57,23 @@ function LoadModelFromFile() {
         return JSON.parse(fs.ReadFile("models/" + file));
     });
     LoadModel(modelDsl);
+}
+function copyObject(target, source) {
+    if (typeof target !== "object" ||
+        target == null || //mybe undefined
+        typeof source !== "object" ||
+        source == null //mybe undefined
+    ) {
+        return target;
+    }
+    for (let key in source) {
+        if (typeof source[key] === "object") {
+            target[key] = {};
+            copyObject(source[key], target[key]);
+        }
+        else {
+            target[key] = source[key];
+        }
+    }
+    return target;
 }
