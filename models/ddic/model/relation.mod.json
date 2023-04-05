@@ -53,6 +53,13 @@
       "nullable": true
     }
   ],
-  "relations": {},
+  "relations": {
+    "model": {
+      "type": "hasOne",
+      "model": "ddic.model",
+      "key": "id",
+      "foreign": "model_id"
+    }
+  },
   "option": {}
 }

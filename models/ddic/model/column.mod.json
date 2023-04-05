@@ -21,13 +21,13 @@
       "type": "string",
       "length": 80,
       "nullable": false,
-      "comment": "数据库表的字段名"
+      "comment": "数据库表的字段名name"
     },
     {
       "name": "element_id",
       "type": "integer",
       "label": "数据元素",
-      "comment": "数据元素ID",
+      "comment": "数据元素ID，element_id",
       "nullable": true
     },
     {
@@ -36,89 +36,88 @@
       "type": "string",
       "length": 80,
       "nullable": true,
-      "comment": "字段显示名称，用于在管理表单，开发平台等成场景下呈现"
+      "comment": "字段显示名称label，用于在管理表单，开发平台等成场景下呈现"
     },
     {
       "label": "字段类型",
       "name": "type",
       "nullable": true,
       "type": "string",
-      "comment": "字段类型定义"
+      "comment": "字段类型定义type"
     },
     {
       "label": "长度",
       "name": "length",
       "type": "integer",
-      "comment": "字段长度，对 `string` 等类型字段有效",
+      "comment": "字段长度length，对 `string` 等类型字段有效",
       "nullable": true
     },
     {
       "label": "位数(含小数位)",
       "name": "precision",
       "type": "integer",
-      "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效",
+      "comment": "字段位数(含小数位)precision，对 `float`、`decimal` 等类型字段有效",
       "nullable": true
     },
     {
       "label": "小数位",
       "name": "scale",
       "type": "integer",
-      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
+      "comment": "字段小数位位数scale，对 `float`、`decimal` 等类型字段有效",
       "nullable": true
     },
     {
-      "label": "是否空值",
+      "label": "允许空值",
       "name": "nullable",
       "type": "boolean",
       "default": false,
-      "comment": "是否空值，默认为 false"
+      "comment": "是否允许空值nullable，默认为 false"
+    },
+    {
+      "name": "crypt",
+      "type": "enum",
+      "option": ["PASSWORD", "AES"],
+      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
+      "label": "加密方式",
+      "nullable": true
     },
     {
       "label": "默认值",
       "name": "default",
       "type": "string",
-      "comment": "string|number|float|字段默认值",
+      "comment": "string|number|float|字段默认值default",
       "nullable": true
     },
     {
-      "label": "加密方式",
-      "name": "crypt",
-      "type": "enum",
-      "option": ["PASSWORD", "AES"],
-      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
-      "nullable": true
-    },
-    {
-      "label": "索引",
+      "label": "是否索引",
       "name": "index",
       "type": "boolean",
       "default": false,
-      "comment": "字段是否为索引，默认为 false"
+      "comment": "字段是否为索引index，默认为 false"
     },
     {
       "label": "唯一索引",
       "name": "unique",
       "type": "boolean",
       "default": false,
-      "comment": "字段是否为唯一索引，默认为 false , 如为 true 无需同时将 `index` 设置为 true"
-    },
-    {
-      "label": "主键",
-      "name": "primary",
-      "type": "boolean",
-      "default": false,
-      "comment": "字段是否为主键，每张表至多一个主键字段。默认为 false"
+      "comment": "字段是否为唯一索引unique，默认为 false , 如为 true 无需同时将 `index` 设置为 true"
     },
     {
       "label": "注释",
       "name": "comment",
       "type": "string",
       "length": 200,
-      "comment": "注释",
+      "comment": "注释，comment",
       "nullable": true
     }
   ],
   "relations": {
+    "model": {
+      "type": "hasOne",
+      "model": "ddic.model",
+      "key": "id",
+      "foreign": "model_id"
+    },
     "element": {
       "type": "hasOne",
       "model": "ddic.element",

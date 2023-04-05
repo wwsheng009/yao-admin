@@ -57,29 +57,6 @@
       "type": "integer",
       "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
       "nullable": true
-    },
-    {
-      "type": "boolean",
-      "default": false,
-      "comment": "字段是否可以为空，默认为 false",
-      "label": "是否为空",
-      "name": "nullable"
-    },
-    {
-      "name": "default",
-      "type": "string",
-      "comment": "string|number|float|字段默认值",
-      "label": "字段默认值",
-      "length": 200,
-      "nullable": true
-    },
-    {
-      "name": "crypt",
-      "type": "enum",
-      "option": ["PASSWORD", "AES"],
-      "comment": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`",
-      "label": "加密方式",
-      "nullable": true
     }
   ],
   "relations": {

@@ -9,14 +9,6 @@
       "comment": "表名"
     },
     {
-      "label": "命名空间",
-      "name": "namespace",
-      "type": "string",
-      "length": 80,
-      "default": "app",
-      "nullable": false
-    },
-    {
       "label": "模型名称",
       "name": "name",
       "type": "string",
@@ -59,24 +51,44 @@
       "name": "timestamps",
       "type": "boolean",
       "default": true,
-      "comment": "增加创建，更新时间戳"
+      "comment": "增加创建，更新时间戳timestamps"
+    },
+    {
+      "comment": "关联关系",
+      "label": "关联关系",
+      "name": "relations",
+      "type": "json",
+      "nullable": true
     }
   ],
   "relations": {
-    "col": {
+    "columns": {
       "label": "字段列表",
       "type": "hasMany",
       "model": "ddic.model.column",
       "key": "model_id",
       "foreign": "id"
-    },
-    "rel": {
-      "label": "关联关系",
-      "type": "hasMany",
-      "model": "ddic.model.relation",
-      "key": "model_id",
-      "foreign": "id"
     }
   },
-  "option": {}
+  "option": {},
+  "xgen": {
+    "relations": {
+      "form": {
+        "edit": {
+          "type": "List",
+          "props": {
+            "name": "ddic.model.relation",
+            "showLabel": true
+          }
+        }
+      },
+      "table": {
+        "view": {
+          "props": {
+            "ddic_hide": true
+          }
+        }
+      }
+    }
+  }
 }
