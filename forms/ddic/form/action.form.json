@@ -1,282 +1,24 @@
 {
-  "fields": {
-    "form": {
-      "图标": {
-        "edit": {
-          "props": {
-            "filetype": "image",
-            "$api": {
-              "process": "fs.system.Upload"
-            },
-            "itemProps": {
-              "tooltip": "图标",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
-          "type": "Upload",
-          "compute": {
-            "args": [
-              "$C(row)",
-              "$C(type)",
-              "icon",
-              "ddic_form_action"
-            ],
-            "process": "scripts.file.image.ImagesEdit"
-          }
-        },
-        "bind": "icon",
-        "view": {
-          "props": {},
-          "type": "Image",
-          "compute": "scripts.file.image.ImagesView"
-        }
-      },
-      "样式": {
-        "bind": "style",
-        "edit": {
-          "type": "Input",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "按钮样式"
-            }
-          }
-        }
-      },
-      "修改时显示": {
-        "edit": {
-          "props": {
-            "options": [
-              {
-                "label": "是",
-                "value": 1
-              },
-              {
-                "value": 0,
-                "label": "否"
-              }
-            ],
-            "itemProps": {
-              "tooltip": "表单修改数据时显示"
-            },
-            "defaultValue": 1
-          },
-          "type": "RadioGroup"
-        },
-        "bind": "showWhenAdd"
-      },
-      "查看时显示": {
-        "bind": "showWhenView",
-        "edit": {
-          "props": {
-            "defaultValue": 1,
-            "options": [
-              {
-                "label": "是",
-                "value": 1
-              },
-              {
-                "label": "否",
-                "value": 0
-              }
-            ],
-            "itemProps": {
-              "tooltip": "表单修改数据时显示"
-            }
-          },
-          "type": "RadioGroup"
-        }
-      },
-      "操作": {
-        "bind": "action",
-        "edit": {
-          "props": {
-            "language": "json",
-            "height": 200,
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "Action列表"
-            }
-          },
-          "compute": "scripts.ddic.compute.json.Edit",
-          "type": "CodeEditor"
-        }
-      },
-      "所属表单": {
-        "bind": "form_id",
-        "edit": {
-          "type": "Select",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "字段所属的表单"
-            },
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "value": "id",
-                  "model": "ddic.form",
-                  "label": "name"
-                }
-              }
-            }
-          }
-        }
-      },
-      "标题": {
-        "bind": "title",
-        "edit": {
-          "props": {
-            "itemProps": {
-              "tooltip": "标题",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
-          "type": "Input"
-        }
-      }
-    }
-  },
-  "name": "::Form Action",
-  "action": {
-    "bind": {
-      "option": {
-        "withs": {
-          "form": {}
-        }
-      },
-      "model": "ddic.form.action"
-    }
-  },
   "layout": {
-    "primary": "id",
-    "actions": [
-      {
-        "showWhenView": true,
-        "action": [
-          {
-            "name": "StudioModel",
-            "type": "Studio.model",
-            "payload": {
-              "args": [
-                "ddic.form.action"
-              ],
-              "method": "CreateOne"
-            }
-          },
-          {
-            "payload": {
-              "content": "处理完成",
-              "title": "提示"
-            },
-            "name": "Confirm",
-            "type": "Common.confirm"
-          }
-        ],
-        "title": "重新生成代码",
-        "icon": "icon-layers",
-        "showWhenAdd": true
-      },
-      {
-        "showWhenAdd": true,
-        "showWhenView": true,
-        "action": [
-          {
-            "name": "CloseModal",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ],
-        "title": "返回",
-        "icon": "icon-arrow-left"
-      },
-      {
-        "title": "保存",
-        "icon": "icon-check",
-        "style": "primary",
-        "showWhenAdd": true,
-        "action": [
-          {
-            "payload": {},
-            "name": "Submit",
-            "type": "Form.submit"
-          },
-          {
-            "name": "Back",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ]
-      },
-      {
-        "title": "Delete",
-        "action": [
-          {
-            "type": "Common.confirm",
-            "payload": {
-              "content": "确认删除，删除后数据无法恢复？",
-              "title": "提示"
-            },
-            "name": "Confirm"
-          },
-          {
-            "name": "Delete",
-            "payload": {
-              "model": "ddic.form.action"
-            },
-            "type": "Form.delete"
-          },
-          {
-            "payload": {},
-            "name": "Back",
-            "type": "Common.closeModal"
-          }
-        ],
-        "icon": "icon-trash-2",
-        "style": "danger"
-      }
-    ],
     "form": {
-      "props": {},
       "sections": [
         {
           "columns": [
             {
-              "width": 8,
-              "name": "所属表单"
+              "name": "所属表单",
+              "width": 8
             },
             {
-              "name": "标题",
-              "width": 8
+              "width": 8,
+              "name": "标题"
             },
             {
               "name": "图标",
               "width": 24
             },
             {
-              "width": 8,
-              "name": "样式"
+              "name": "样式",
+              "width": 8
             },
             {
               "name": "修改时显示",
@@ -301,7 +43,265 @@
             }
           ]
         }
-      ]
+      ],
+      "props": {}
+    },
+    "primary": "id",
+    "actions": [
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "StudioModel",
+            "type": "Studio.model",
+            "payload": {
+              "method": "CreateOne",
+              "args": [
+                "ddic.form.action"
+              ]
+            }
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "content": "处理完成",
+              "title": "提示"
+            }
+          }
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers"
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {},
+            "name": "CloseModal",
+            "type": "Common.closeModal"
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left"
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "name": "Back",
+            "type": "Common.closeModal",
+            "payload": {}
+          }
+        ]
+      },
+      {
+        "action": [
+          {
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            },
+            "name": "Confirm",
+            "type": "Common.confirm"
+          },
+          {
+            "type": "Form.delete",
+            "name": "Delete",
+            "payload": {
+              "model": "ddic.form.action"
+            }
+          },
+          {
+            "payload": {},
+            "name": "Back",
+            "type": "Common.closeModal"
+          }
+        ],
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete"
+      }
+    ]
+  },
+  "fields": {
+    "form": {
+      "修改时显示": {
+        "bind": "showWhenAdd",
+        "edit": {
+          "props": {
+            "options": [
+              {
+                "label": "是",
+                "value": 1
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ],
+            "itemProps": {
+              "tooltip": "表单修改数据时显示"
+            },
+            "defaultValue": 1
+          },
+          "type": "RadioGroup"
+        }
+      },
+      "查看时显示": {
+        "bind": "showWhenView",
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "表单修改数据时显示"
+            },
+            "defaultValue": 1,
+            "options": [
+              {
+                "label": "是",
+                "value": 1
+              },
+              {
+                "label": "否",
+                "value": 0
+              }
+            ]
+          },
+          "type": "RadioGroup"
+        }
+      },
+      "操作": {
+        "bind": "action",
+        "edit": {
+          "props": {
+            "height": 200,
+            "language": "json",
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "Action列表"
+            }
+          },
+          "compute": "scripts.ddic.compute.json.Edit",
+          "type": "CodeEditor"
+        }
+      },
+      "所属表单": {
+        "bind": "form_id",
+        "edit": {
+          "type": "Select",
+          "props": {
+            "itemProps": {
+              "tooltip": "字段所属的表单",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            },
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "ddic.form"
+                }
+              }
+            }
+          }
+        }
+      },
+      "标题": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "标题"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "title"
+      },
+      "图标": {
+        "bind": "icon",
+        "view": {
+          "type": "Image",
+          "compute": "scripts.file.image.ImagesView",
+          "props": {}
+        },
+        "edit": {
+          "type": "Upload",
+          "compute": {
+            "args": [
+              "$C(row)",
+              "$C(type)",
+              "icon",
+              "ddic_form_action"
+            ],
+            "process": "scripts.file.image.ImagesEdit"
+          },
+          "props": {
+            "filetype": "image",
+            "$api": {
+              "process": "fs.system.Upload"
+            },
+            "itemProps": {
+              "tooltip": "图标",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          }
+        }
+      },
+      "样式": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "按钮样式"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "style"
+      }
+    }
+  },
+  "name": "::Form Action",
+  "action": {
+    "bind": {
+      "option": {
+        "withs": {
+          "form": {}
+        }
+      },
+      "model": "ddic.form.action"
     }
   }
 }

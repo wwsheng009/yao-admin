@@ -30,13 +30,15 @@ function UpdateTableFromDsl(model, modelDsl) {
     model.name = tableName;
     model.soft_deletes = modelDsl.option?.soft_deletes ? true : false;
     model.timestamps = modelDsl.option?.timestamps ? true : false;
-    model.col = modelDsl.columns.map((item) => UpdateColumnFromDsl(item));
+    model.columns = modelDsl.columns.map((item) => UpdateColumnFromDsl(item));
     if (modelDsl.relations) {
-        model.rel = [];
+        model.relations = "";
     }
+    let relations = [];
     for (const key in modelDsl.relations) {
-        model.rel.push(UpdateRelationFromDsl(key, modelDsl.relations[key]));
+        relations.push(UpdateRelationFromDsl(key, modelDsl.relations[key]));
     }
+    model.relations = JSON.stringify(relations);
     return model;
 }
 function UpdateColumnFromDsl(modeCol) {

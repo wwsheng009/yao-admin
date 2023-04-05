@@ -4,80 +4,40 @@
     "bind": {
       "model": "ddic.model.relation",
       "option": {
-        "withs": {}
+        "withs": {
+          "model": {}
+        }
       }
     }
   },
   "layout": {
-    "form": {
-      "props": {},
-      "sections": [
-        {
-          "columns": [
-            {
-              "name": "模型",
-              "width": 8
-            },
-            {
-              "name": "名称",
-              "width": 8
-            },
-            {
-              "name": "关联关系",
-              "width": 8
-            },
-            {
-              "name": "外键",
-              "width": 8
-            },
-            {
-              "width": 8,
-              "name": "主键"
-            },
-            {
-              "name": "关联条件",
-              "width": 24
-            }
-          ]
-        },
-        {
-          "columns": [
-            {
-              "name": "列表",
-              "tabs": [],
-              "width": 24
-            }
-          ]
-        }
-      ]
-    },
     "primary": "id",
     "actions": [
       {
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
+            "name": "StudioModel",
+            "type": "Studio.model",
             "payload": {
-              "method": "CreateOne",
               "args": [
                 "ddic.model.relation"
-              ]
-            },
-            "name": "StudioModel",
-            "type": "Studio.model"
+              ],
+              "method": "CreateOne"
+            }
           },
           {
-            "name": "Confirm",
             "type": "Common.confirm",
             "payload": {
               "title": "提示",
               "content": "处理完成"
-            }
+            },
+            "name": "Confirm"
           }
-        ],
-        "title": "重新生成代码",
-        "icon": "icon-layers",
-        "showWhenAdd": true
+        ]
       },
       {
         "icon": "icon-arrow-left",
@@ -95,9 +55,9 @@
       {
         "action": [
           {
+            "name": "Submit",
             "type": "Form.submit",
-            "payload": {},
-            "name": "Submit"
+            "payload": {}
           },
           {
             "payload": {},
@@ -111,6 +71,7 @@
         "showWhenAdd": true
       },
       {
+        "style": "danger",
         "title": "Delete",
         "action": [
           {
@@ -129,69 +90,63 @@
             "name": "Delete"
           },
           {
-            "name": "Back",
             "type": "Common.closeModal",
-            "payload": {}
+            "payload": {},
+            "name": "Back"
           }
         ],
-        "icon": "icon-trash-2",
-        "style": "danger"
+        "icon": "icon-trash-2"
       }
-    ]
+    ],
+    "form": {
+      "props": {},
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "模型",
+              "width": 8
+            },
+            {
+              "name": "名称",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "关联关系"
+            },
+            {
+              "name": "外键",
+              "width": 8
+            },
+            {
+              "name": "主键",
+              "width": 8
+            },
+            {
+              "width": 24,
+              "name": "关联条件"
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "name": "列表",
+              "tabs": [],
+              "width": 24
+            }
+          ]
+        }
+      ]
+    }
   },
   "fields": {
     "form": {
-      "关联条件": {
-        "bind": "query",
-        "edit": {
-          "type": "CodeEditor",
-          "props": {
-            "itemProps": {
-              "tooltip": "关联条件"
-            },
-            "language": "json",
-            "height": 200
-          },
-          "compute": "scripts.ddic.compute.json.Edit"
-        }
-      },
-      "模型": {
-        "bind": "model_id",
-        "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "所属模型"
-            }
-          },
-          "type": "InputNumber"
-        }
-      },
-      "名称": {
-        "edit": {
-          "type": "Input",
-          "props": {
-            "itemProps": {
-              "tooltip": "定义关系名称",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          }
-        },
-        "bind": "name"
-      },
       "关联关系": {
         "edit": {
           "type": "Select",
           "props": {
-            "placeholder": "请选择关联关系",
             "options": [
               {
                 "label": "::hasOne",
@@ -202,6 +157,7 @@
                 "value": "hasMany"
               }
             ],
+            "placeholder": "请选择关联关系",
             "itemProps": {
               "rules": [
                 {
@@ -215,8 +171,8 @@
         "bind": "type"
       },
       "外键": {
+        "bind": "foreign",
         "edit": {
-          "type": "Input",
           "props": {
             "itemProps": {
               "rules": [
@@ -226,13 +182,69 @@
               ],
               "tooltip": "外键"
             }
-          }
-        },
-        "bind": "foreign"
+          },
+          "type": "Input"
+        }
       },
       "主键": {
         "edit": {
-          "type": "Input",
+          "props": {
+            "itemProps": {
+              "tooltip": "主键",
+              "rules": [
+                {
+                  "required": true
+                }
+              ]
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "key"
+      },
+      "关联条件": {
+        "bind": "query",
+        "edit": {
+          "type": "CodeEditor",
+          "props": {
+            "language": "json",
+            "height": 200,
+            "itemProps": {
+              "tooltip": "关联条件"
+            }
+          },
+          "compute": "scripts.ddic.compute.json.Edit"
+        }
+      },
+      "模型": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "value": "id",
+                  "model": "ddic.model",
+                  "label": "name"
+                }
+              }
+            },
+            "itemProps": {
+              "rules": [
+                {
+                  "required": true
+                }
+              ],
+              "tooltip": "所属模型"
+            }
+          }
+        },
+        "bind": "model_id"
+      },
+      "名称": {
+        "bind": "name",
+        "edit": {
           "props": {
             "itemProps": {
               "rules": [
@@ -240,11 +252,11 @@
                   "required": true
                 }
               ],
-              "tooltip": "主键"
+              "tooltip": "定义关系名称"
             }
-          }
-        },
-        "bind": "key"
+          },
+          "type": "Input"
+        }
       }
     }
   }
