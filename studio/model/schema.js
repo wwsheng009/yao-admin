@@ -22,7 +22,6 @@ function GetTableName() {
 }
 /**
  * 分析关联关系处理器
- * @param {*} type
  * yao studio run model.schema.Relation
  */
 function Relation() {
@@ -68,7 +67,7 @@ function Relation() {
         }
         // 去除表前缀
         let name = ReplacePrefix(prefixList, tableName);
-        // name = Studio("model.relation.translate", name);
+        // name = Studio("model.translate.translate", name);
         table.name = name;
         table.description = name;
         table.comment = name;
@@ -83,7 +82,7 @@ function Relation() {
     }
     tableList = Studio("model.relation.other", tableList);
     //翻译字段
-    tableList = Studio("model.relation.BatchModel", tableList);
+    tableList = Studio("model.translate.BatchModel", tableList);
     return tableList;
 }
 function FieldHandle(labelin) {

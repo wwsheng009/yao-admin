@@ -35,6 +35,20 @@ function toList(modelDsl) {
         }
     });
     // listTemplate.action.bind.option.withs = Studio("model.relation.GetWiths", modelDsl);
+    listTemplate = mergeListTemplateFromModel(listTemplate, modelDsl);
+    return listTemplate;
+}
+function mergeListTemplateFromModel(listTemplate, modelDsl) {
+    if (!modelDsl || !modelDsl?.xgen || !modelDsl?.xgen.form) {
+        return listTemplate;
+    }
+    listTemplate = Studio("model.utils.MergeObject", listTemplate, modelDsl?.xgen.list);
+    for (const key in listTemplate.fields.list) {
+        const element = listTemplate.fields.list[key];
+        if (element?.edit?.props?.ddic_hide) {
+            delete listTemplate.fields.list[key];
+        }
+    }
     return listTemplate;
 }
 /**
@@ -149,13 +163,15 @@ function Cast(column, modelDsl) {
     if (component.is_image) {
         width = 24;
     }
-    res.layout.push({
-        name: title,
-        width: width,
-    });
     delete component.is_image;
     component = Studio("model.column.component.EditPropes", component, column);
     component = updateListCompFromModelXgen(component, column, modelDsl);
+    if (!component.edit?.props?.ddic_hide) {
+        res.layout.push({
+            name: title,
+            width: width,
+        });
+    }
     res.fields.push({
         name: title,
         component: component,

@@ -1,150 +1,50 @@
 {
-  "layout": {
-    "actions": [
-      {
-        "title": "重新生成代码",
-        "icon": "icon-layers",
-        "showWhenAdd": true,
-        "showWhenView": true,
-        "action": [
-          {
-            "type": "Studio.model",
-            "payload": {
-              "method": "CreateOne",
-              "args": [
-                "ddic.element"
-              ]
-            },
-            "name": "StudioModel"
-          },
-          {
-            "name": "Confirm",
-            "type": "Common.confirm",
-            "payload": {
-              "title": "提示",
-              "content": "处理完成"
-            }
-          }
-        ]
-      },
-      {
-        "action": [
-          {
-            "type": "Common.closeModal",
-            "payload": {},
-            "name": "CloseModal"
-          }
-        ],
-        "title": "返回",
-        "icon": "icon-arrow-left",
-        "showWhenAdd": true,
-        "showWhenView": true
-      },
-      {
-        "action": [
-          {
-            "name": "Submit",
-            "type": "Form.submit",
-            "payload": {}
-          },
-          {
-            "name": "Back",
-            "type": "Common.closeModal",
-            "payload": {}
-          }
-        ],
-        "title": "保存",
-        "icon": "icon-check",
-        "style": "primary",
-        "showWhenAdd": true
-      },
-      {
-        "icon": "icon-trash-2",
-        "style": "danger",
-        "title": "Delete",
-        "action": [
-          {
-            "name": "Confirm",
-            "type": "Common.confirm",
-            "payload": {
-              "title": "提示",
-              "content": "确认删除，删除后数据无法恢复？"
-            }
-          },
-          {
-            "type": "Form.delete",
-            "name": "Delete",
-            "payload": {
-              "model": "ddic.element"
-            }
-          },
-          {
-            "payload": {},
-            "name": "Back",
-            "type": "Common.closeModal"
-          }
-        ]
-      }
-    ],
-    "form": {
-      "sections": [
-        {
-          "columns": [
-            {
-              "width": 8,
-              "name": "描述"
-            },
-            {
-              "width": 8,
-              "name": "域"
-            },
-            {
-              "name": "字段类型",
-              "width": 8
-            },
-            {
-              "width": 8,
-              "name": "字段长度"
-            },
-            {
-              "name": "字段位数(含小数位)",
-              "width": 8
-            },
-            {
-              "name": "字段小数位位数",
-              "width": 8
-            },
-            {
-              "name": "是否为空",
-              "width": 8
-            },
-            {
-              "name": "字段默认值",
-              "width": 8
-            },
-            {
-              "width": 8,
-              "name": "加密方式"
-            }
-          ]
-        },
-        {
-          "columns": [
-            {
-              "name": "列表",
-              "tabs": [],
-              "width": 24
-            }
-          ]
-        }
-      ],
-      "props": {}
-    },
-    "primary": "id"
-  },
   "fields": {
     "form": {
+      "域": {
+        "edit": {
+          "type": "Select",
+          "props": {
+            "itemProps": {
+              "tooltip": "域定义"
+            },
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.domain",
+                  "label": "name",
+                  "value": "id"
+                }
+              }
+            }
+          }
+        },
+        "bind": "domain_id"
+      },
+      "字段类型": {
+        "bind": "type",
+        "edit": {
+          "props": {
+            "xProps": {
+              "$remote": {
+                "process": "yao.component.SelectOptions",
+                "query": {
+                  "model": "ddic.model.column.type",
+                  "label": "name",
+                  "value": "type"
+                }
+              }
+            },
+            "itemProps": {
+              "tooltip": "字段类型定义"
+            }
+          },
+          "type": "Select"
+        }
+      },
       "字段长度": {
+        "bind": "length",
         "edit": {
           "type": "InputNumber",
           "props": {
@@ -152,32 +52,10 @@
               "tooltip": "字段长度，对 `string` 等类型字段有效"
             }
           }
-        },
-        "bind": "length"
-      },
-      "是否为空": {
-        "edit": {
-          "type": "RadioGroup",
-          "props": {
-            "defaultValue": 0,
-            "options": [
-              {
-                "value": 1,
-                "label": "是"
-              },
-              {
-                "label": "否",
-                "value": 0
-              }
-            ],
-            "itemProps": {
-              "tooltip": "字段是否可以为空，默认为 false"
-            }
-          }
-        },
-        "bind": "nullable"
+        }
       },
       "字段位数(含小数位)": {
+        "bind": "precision",
         "edit": {
           "props": {
             "itemProps": {
@@ -185,94 +63,33 @@
             }
           },
           "type": "InputNumber"
-        },
-        "bind": "precision"
-      },
-      "域": {
-        "bind": "domain_id",
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "ddic.domain"
-                },
-                "process": "yao.component.SelectOptions"
-              }
-            },
-            "itemProps": {
-              "tooltip": "域定义"
-            }
-          }
         }
       },
-      "加密方式": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "placeholder": "请选择加密方式",
-            "itemProps": {
-              "tooltip": "字段加密存储方式。许可值 `AES(MySQL Only)`, `PASSWORD`"
-            },
-            "options": [
-              {
-                "label": "::PASSWORD",
-                "value": "PASSWORD"
-              },
-              {
-                "label": "::AES",
-                "value": "AES"
-              }
-            ]
-          }
-        },
-        "bind": "crypt"
-      },
       "字段小数位位数": {
+        "bind": "scale",
         "edit": {
+          "type": "InputNumber",
           "props": {
             "itemProps": {
               "tooltip": "字段小数位位数，对 `float`、`decimal` 等类型字段有效"
             }
-          },
-          "type": "InputNumber"
-        },
-        "bind": "scale"
-      },
-      "字段类型": {
-        "bind": "type",
-        "edit": {
-          "type": "Select",
-          "props": {
-            "itemProps": {
-              "tooltip": "字段类型定义"
-            },
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "value": "type",
-                  "model": "ddic.model.column.type",
-                  "label": "name"
-                }
-              }
-            }
           }
         }
       },
-      "字段默认值": {
+      "校验规则": {
+        "bind": "validations",
         "edit": {
-          "type": "Input",
+          "type": "List",
           "props": {
+            "name": "ddic.validation",
+            "showLabel": true,
+            "language": "json",
+            "height": 200,
             "itemProps": {
-              "tooltip": "string|number|float|字段默认值"
+              "tooltip": "字段校验规则"
             }
           }
-        },
-        "bind": "default"
+        }
       },
       "描述": {
         "bind": "name",
@@ -281,7 +98,10 @@
             "itemProps": {
               "rules": [
                 {
-                  "required": true
+                  "max": 80,
+                  "required": true,
+                  "min": 2,
+                  "type": "string"
                 }
               ]
             }
@@ -301,5 +121,167 @@
       },
       "model": "ddic.element"
     }
+  },
+  "layout": {
+    "form": {
+      "props": {
+        "reference": {
+          "flatContent": {
+            "defaultOpen": false,
+            "payload": {
+              "Form": {
+                "type": "edit",
+                "model": "ddic.domain",
+                "id": "{{domain_id}}"
+              }
+            },
+            "name": "域"
+          }
+        }
+      },
+      "sections": [
+        {
+          "columns": [
+            {
+              "name": "描述",
+              "width": 8
+            },
+            {
+              "name": "域",
+              "width": 8
+            },
+            {
+              "name": "字段类型",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "字段长度"
+            },
+            {
+              "name": "字段位数(含小数位)",
+              "width": 8
+            },
+            {
+              "width": 8,
+              "name": "字段小数位位数"
+            },
+            {
+              "width": 24,
+              "name": "校验规则"
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "width": 24,
+              "name": "列表",
+              "tabs": []
+            }
+          ]
+        }
+      ]
+    },
+    "primary": "id",
+    "actions": [
+      {
+        "title": "切换全屏",
+        "icon": "icon-maximize-2",
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "payload": {},
+            "name": "Fullscreen",
+            "type": "Form.fullscreen"
+          }
+        ]
+      },
+      {
+        "action": [
+          {
+            "type": "Studio.model",
+            "payload": {
+              "args": [
+                "ddic.element"
+              ],
+              "method": "CreateOne"
+            },
+            "name": "StudioModel"
+          },
+          {
+            "name": "Confirm",
+            "type": "Common.confirm",
+            "payload": {
+              "content": "处理完成",
+              "title": "提示"
+            }
+          }
+        ],
+        "title": "重新生成代码",
+        "icon": "icon-layers",
+        "showWhenAdd": true,
+        "showWhenView": true
+      },
+      {
+        "showWhenView": true,
+        "action": [
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "CloseModal"
+          }
+        ],
+        "title": "返回",
+        "icon": "icon-arrow-left",
+        "showWhenAdd": true
+      },
+      {
+        "title": "保存",
+        "icon": "icon-check",
+        "style": "primary",
+        "showWhenAdd": true,
+        "action": [
+          {
+            "name": "Submit",
+            "type": "Form.submit",
+            "payload": {}
+          },
+          {
+            "payload": {},
+            "name": "Back",
+            "type": "Common.closeModal"
+          }
+        ]
+      },
+      {
+        "icon": "icon-trash-2",
+        "style": "danger",
+        "title": "Delete",
+        "action": [
+          {
+            "type": "Common.confirm",
+            "payload": {
+              "title": "提示",
+              "content": "确认删除，删除后数据无法恢复？"
+            },
+            "name": "Confirm"
+          },
+          {
+            "name": "Delete",
+            "payload": {
+              "model": "ddic.element"
+            },
+            "type": "Form.delete"
+          },
+          {
+            "type": "Common.closeModal",
+            "payload": {},
+            "name": "Back"
+          }
+        ]
+      }
+    ]
   }
 }

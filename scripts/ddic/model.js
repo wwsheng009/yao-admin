@@ -1,7 +1,7 @@
 
 function Save(payload) {
-//先保存主表，获取id后再保存从表
-
+  //先保存主表，获取id后再保存从表
+  
   const t = new Query();
     t.Run({
       sql: {
@@ -9,29 +9,29 @@ function Save(payload) {
     },
   });
   
-let res = null
-try {
-  res = Process('models.ddic.model.Save', payload);
-  if (res.code && res.code > 300) {
-    throw new Exception(res.message, res.code);
-  }
-  SaveRelations(res, payload);
-} catch (error) {
-  console.log("Data Save Failed")
-  console.log(error)
-  
+  let res = null
+  try {
+    res = Process('models.ddic.model.Save', payload);
+    if (res.code && res.code > 300) {
+      throw new Exception(res.message, res.code);
+    }
+    SaveRelations(res, payload);
+  } catch (error) {
+    console.log("Data Save Failed")
+    console.log(error)
+    
   t.Run({
     sql: {
       stmt: 'ROLLBACK;',
     },
   });
   
-  if(error.message,error.code){
-    throw new Exception(error.message,error.code)
-  }else{
-    throw error
+    if(error.message,error.code){
+      throw new Exception(error.message,error.code)
+    }else{
+      throw error
+    }
   }
-}
 
   t.Run({
     sql: {
@@ -43,13 +43,13 @@ return res
 }
 //保存关联表数据
 function SaveRelations(id, payload) {
-Save_columns(id,payload);
-return id;
+  Save_columns(id,payload);
+  return id;
 }
 
 //删除关联表数据
 function BeforeDelete(id){
-Delete_columns(id);
+  Delete_columns(id);
 }
 
 

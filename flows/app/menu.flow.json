@@ -15,171 +15,218 @@
       {
         "name": "域",
         "path": "/x/Table/ddic.domain",
-        "icon": "icon-align-justify",
-        "rank": 1,
-        "status": "enabled",
-        "visible_menu": 1,
-        "extra": "ddic_domain",
-        "blocks": 0,
-        "id": 10,
         "children": [
+          {
+            "name": "域",
+            "path": "/x/Table/ddic.domain",
+            "children": [],
+            "icon": "icon-box",
+            "rank": 1,
+            "status": "enabled",
+            "extra": "ddic_domain",
+            "visible_menu": 0,
+            "id": 10
+          },
           {
             "name": "数据元素",
             "path": "/x/Table/ddic.element",
+            "children": [],
             "icon": "icon-box",
             "rank": 2,
             "status": "enabled",
-            "visible_menu": 1,
             "extra": "ddic_element",
-            "blocks": 0,
-            "id": 20,
-            "children": []
-          },
-          {
-            "name": "表单动作",
-            "path": "/x/Table/ddic.form.action",
-            "icon": "icon-box",
-            "rank": 3,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_form_action",
-            "blocks": 0,
-            "id": 30,
-            "children": []
-          },
-          {
-            "name": "表单字段列表",
-            "path": "/x/Table/ddic.form.field",
-            "icon": "icon-box",
-            "rank": 4,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_form_field",
-            "blocks": 0,
-            "id": 40,
-            "children": []
+            "visible_menu": 0,
+            "id": 20
           },
           {
             "name": "表单定义",
-            "path": "/x/Table/ddic.form",
+            "path": "/x/Table/ddic.form_folder",
+            "children": [
+              {
+                "name": "表单定义",
+                "path": "/x/Table/ddic.form",
+                "icon": "icon-box",
+                "rank": 6,
+                "status": "enabled",
+                "visible_menu": 0,
+                "id": 51
+              },
+              {
+                "name": "表单动作",
+                "path": "/x/Table/ddic.form.action",
+                "children": [],
+                "icon": "icon-box",
+                "rank": 3,
+                "status": "enabled",
+                "extra": "ddic_form_action",
+                "visible_menu": 0,
+                "id": 30
+              },
+              {
+                "name": "表单字段列表",
+                "path": "/x/Table/ddic.form.field",
+                "children": [],
+                "icon": "icon-box",
+                "rank": 4,
+                "status": "enabled",
+                "extra": "ddic_form_field",
+                "visible_menu": 0,
+                "id": 40
+              }
+            ],
             "icon": "icon-box",
             "rank": 5,
             "status": "enabled",
-            "visible_menu": 1,
             "extra": "ddic_form",
-            "blocks": 0,
-            "id": 50,
-            "children": []
-          },
-          {
-            "name": "模型字段类型",
-            "path": "/x/Table/ddic.model.column.type",
-            "icon": "icon-box",
-            "rank": 6,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_model_column_type",
-            "blocks": 0,
-            "id": 60,
-            "children": []
-          },
-          {
-            "name": "模型字段列表",
-            "path": "/x/Table/ddic.model.column",
-            "icon": "icon-box",
-            "rank": 7,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_model_column",
-            "blocks": 0,
-            "id": 70,
-            "children": []
-          },
-          {
-            "name": "模型关联关系",
-            "path": "/x/Table/ddic.model.relation",
-            "icon": "icon-box",
-            "rank": 8,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_model_relation",
-            "blocks": 0,
-            "id": 80,
-            "children": []
+            "visible_menu": 0,
+            "id": 50
           },
           {
             "name": "业务模型",
-            "path": "/x/Table/ddic.model",
+            "path": "/x/Table/ddic.model_folder",
+            "children": [
+              {
+                "name": "业务模型",
+                "path": "/x/Table/ddic.model",
+                "icon": "icon-box",
+                "rank": 10,
+                "status": "enabled",
+                "visible_menu": 0,
+                "id": 91
+              },
+              {
+                "name": "模型字段列表",
+                "path": "/x/Table/ddic.model.column_folder",
+                "children": [
+                  {
+                    "name": "模型字段列表",
+                    "path": "/x/Table/ddic.model.column",
+                    "icon": "icon-box",
+                    "rank": 8,
+                    "status": "enabled",
+                    "visible_menu": 0,
+                    "id": 71
+                  },
+                  {
+                    "name": "模型字段类型",
+                    "path": "/x/Table/ddic.model.column.type",
+                    "children": [],
+                    "icon": "icon-box",
+                    "rank": 6,
+                    "status": "enabled",
+                    "extra": "ddic_model_column_type",
+                    "visible_menu": 0,
+                    "id": 60
+                  }
+                ],
+                "icon": "icon-box",
+                "rank": 7,
+                "status": "enabled",
+                "extra": "ddic_model_column",
+                "visible_menu": 0,
+                "id": 70
+              },
+              {
+                "name": "模型关联关系",
+                "path": "/x/Table/ddic.model.relation",
+                "children": [],
+                "icon": "icon-box",
+                "rank": 8,
+                "status": "enabled",
+                "extra": "ddic_model_relation",
+                "visible_menu": 0,
+                "id": 80
+              }
+            ],
             "icon": "icon-box",
             "rank": 9,
             "status": "enabled",
-            "visible_menu": 1,
             "extra": "ddic_model",
-            "blocks": 0,
-            "id": 90,
-            "children": []
-          },
-          {
-            "name": "表格动作",
-            "path": "/x/Table/ddic.table.action",
-            "icon": "icon-box",
-            "rank": 10,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_table_action",
-            "blocks": 0,
-            "id": 100,
-            "children": []
-          },
-          {
-            "name": "表格字段列表",
-            "path": "/x/Table/ddic.table.field",
-            "icon": "icon-box",
-            "rank": 11,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_table_field",
-            "blocks": 0,
-            "id": 110,
-            "children": []
-          },
-          {
-            "name": "表格筛选字段列表",
-            "path": "/x/Table/ddic.table.filter",
-            "icon": "icon-box",
-            "rank": 12,
-            "status": "enabled",
-            "visible_menu": 1,
-            "extra": "ddic_table_filter",
-            "blocks": 0,
-            "id": 120,
-            "children": []
+            "visible_menu": 0,
+            "id": 90
           },
           {
             "name": "表格定义",
-            "path": "/x/Table/ddic.table",
+            "path": "/x/Table/ddic.table_folder",
+            "children": [
+              {
+                "name": "表格定义",
+                "path": "/x/Table/ddic.table",
+                "icon": "icon-box",
+                "rank": 14,
+                "status": "enabled",
+                "visible_menu": 0,
+                "id": 131
+              },
+              {
+                "name": "表格动作",
+                "path": "/x/Table/ddic.table.action",
+                "children": [],
+                "icon": "icon-box",
+                "rank": 10,
+                "status": "enabled",
+                "extra": "ddic_table_action",
+                "visible_menu": 0,
+                "id": 100
+              },
+              {
+                "name": "表格字段列表",
+                "path": "/x/Table/ddic.table.field",
+                "children": [],
+                "icon": "icon-box",
+                "rank": 11,
+                "status": "enabled",
+                "extra": "ddic_table_field",
+                "visible_menu": 0,
+                "id": 110
+              },
+              {
+                "name": "表格筛选字段列表",
+                "path": "/x/Table/ddic.table.filter",
+                "children": [],
+                "icon": "icon-box",
+                "rank": 12,
+                "status": "enabled",
+                "extra": "ddic_table_filter",
+                "visible_menu": 0,
+                "id": 120
+              }
+            ],
             "icon": "icon-box",
             "rank": 13,
             "status": "enabled",
-            "visible_menu": 1,
             "extra": "ddic_table",
-            "blocks": 0,
-            "id": 130,
-            "children": []
-          },
+            "visible_menu": 0,
+            "id": 130
+          }
+        ],
+        "icon": "icon-box",
+        "rank": 1,
+        "status": "enabled",
+        "visible_menu": 0,
+        "id": 11
+      },
+      {
+        "name": "宠物表",
+        "path": "/x/Table/demo.pet",
+        "children": [
           {
             "name": "宠物表",
             "path": "/x/Table/demo.pet",
+            "children": [],
             "icon": "icon-box",
             "rank": 14,
             "status": "enabled",
-            "visible_menu": 1,
             "extra": "demo_pet",
-            "blocks": 0,
-            "id": 140,
-            "children": []
+            "visible_menu": 0,
+            "id": 140
           }
-        ]
+        ],
+        "icon": "icon-box",
+        "rank": 14,
+        "status": "enabled",
+        "visible_menu": 0,
+        "id": 141
       }
     ],
     "setting": [

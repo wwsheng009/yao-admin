@@ -1,43 +1,46 @@
 {
-  "action": {
-    "bind": {
-      "model": "ddic.model.column.type",
-      "option": {
-        "withs": {}
-      }
-    }
-  },
   "layout": {
-    "primary": "id",
     "actions": [
       {
         "showWhenAdd": true,
         "showWhenView": true,
         "action": [
           {
+            "name": "Fullscreen",
+            "type": "Form.fullscreen",
+            "payload": {}
+          }
+        ],
+        "title": "切换全屏",
+        "icon": "icon-maximize-2"
+      },
+      {
+        "showWhenAdd": true,
+        "showWhenView": true,
+        "action": [
+          {
+            "name": "StudioModel",
+            "type": "Studio.model",
             "payload": {
               "method": "CreateOne",
               "args": [
                 "ddic.model.column.type"
               ]
-            },
-            "name": "StudioModel",
-            "type": "Studio.model"
+            }
           },
           {
-            "type": "Common.confirm",
             "payload": {
-              "content": "处理完成",
-              "title": "提示"
+              "title": "提示",
+              "content": "处理完成"
             },
-            "name": "Confirm"
+            "name": "Confirm",
+            "type": "Common.confirm"
           }
         ],
         "title": "重新生成代码",
         "icon": "icon-layers"
       },
       {
-        "title": "返回",
         "icon": "icon-arrow-left",
         "showWhenAdd": true,
         "showWhenView": true,
@@ -47,37 +50,39 @@
             "type": "Common.closeModal",
             "payload": {}
           }
-        ]
+        ],
+        "title": "返回"
       },
       {
+        "showWhenAdd": true,
         "action": [
           {
+            "name": "Submit",
             "type": "Form.submit",
-            "payload": {},
-            "name": "Submit"
+            "payload": {}
           },
           {
+            "name": "Back",
             "type": "Common.closeModal",
-            "payload": {},
-            "name": "Back"
+            "payload": {}
           }
         ],
         "title": "保存",
         "icon": "icon-check",
-        "style": "primary",
-        "showWhenAdd": true
+        "style": "primary"
       },
       {
+        "icon": "icon-trash-2",
         "style": "danger",
         "title": "Delete",
         "action": [
           {
-            "type": "Common.confirm",
             "payload": {
               "title": "提示",
               "content": "确认删除，删除后数据无法恢复？"
             },
-            "name": "Confirm"
+            "name": "Confirm",
+            "type": "Common.confirm"
           },
           {
             "payload": {
@@ -87,25 +92,25 @@
             "name": "Delete"
           },
           {
-            "type": "Common.closeModal",
             "payload": {},
-            "name": "Back"
+            "name": "Back",
+            "type": "Common.closeModal"
           }
-        ],
-        "icon": "icon-trash-2"
+        ]
       }
     ],
     "form": {
+      "props": {},
       "sections": [
         {
           "columns": [
             {
-              "width": 8,
-              "name": "字段类型"
+              "name": "字段类型",
+              "width": 8
             },
             {
-              "name": "字段描述",
-              "width": 8
+              "width": 8,
+              "name": "字段描述"
             },
             {
               "name": "注释",
@@ -116,45 +121,29 @@
         {
           "columns": [
             {
-              "name": "列表",
               "tabs": [],
-              "width": 24
+              "width": 24,
+              "name": "列表"
             }
           ]
         }
-      ],
-      "props": {}
-    }
+      ]
+    },
+    "primary": "id"
   },
   "fields": {
     "form": {
       "字段类型": {
-        "bind": "type",
         "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
-          "type": "Input"
-        }
+          "type": "Input",
+          "props": {}
+        },
+        "bind": "type"
       },
       "字段描述": {
         "bind": "name",
         "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          },
+          "props": {},
           "type": "Input"
         }
       },
@@ -171,5 +160,13 @@
       }
     }
   },
-  "name": "::Model Column Type"
+  "name": "::Model Column Type",
+  "action": {
+    "bind": {
+      "model": "ddic.model.column.type",
+      "option": {
+        "withs": {}
+      }
+    }
+  }
 }

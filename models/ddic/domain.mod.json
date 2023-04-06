@@ -1,4 +1,5 @@
 {
+  "$schema": "/data/projects/yao/demos-v1.0/yao-node-projects/packages/yao-app-ts-types/json-schemas/0.10.3/model.json",
   "description": "Domain",
   "name": "::Domain",
   "option": {},
@@ -57,13 +58,6 @@
       "name": "options",
       "type": "json",
       "nullable": true
-    },
-    {
-      "label": "校验规则",
-      "name": "validations",
-      "type": "json",
-      "comment": "字段校验规则",
-      "nullable": true
     }
   ],
   "relations": {},
@@ -116,92 +110,73 @@
     }
   ],
   "xgen": {
-    "type": {
-      "form": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+    "table": {
+      "fields": {
+        "table": {
+          "字段类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
                 }
               }
             },
-            "itemProps": { "tooltip": "字段类型定义" }
-          }
-        }
-      },
-      "table": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+            "view": {
+              "type": "Tag",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
                 }
               }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
-          }
-        },
-        "view": {
-          "type": "Tag",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
-                }
-              }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
+            }
           }
         }
       }
     },
-    "options": {
-      "form": {
-        "edit": {
-          "type": "List",
-          "props": {
-            "name": "ddic.option",
-            "showLabel": true
-          }
-        }
-      },
-      "table": {
-        "view": {
-          "props": {
-            "ddic_hide": true
-          }
-        }
-      }
-    },
-    "validations": {
-      "form": {
-        "edit": {
-          "type": "List",
-          "props": {
-            "name": "ddic.validation",
-            "showLabel": true
-          }
-        }
-      },
-      "table": {
-        "view": {
-          "props": {
-            "ddic_hide": true
+    "form": {
+      "fields": {
+        "form": {
+          "可选项": {
+            "edit": {
+              "type": "List",
+              "props": {
+                "name": "ddic.option",
+                "showLabel": true
+              }
+            }
+          },
+          "字段类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
+                },
+                "itemProps": { "tooltip": "字段类型定义" }
+              }
+            }
           }
         }
       }

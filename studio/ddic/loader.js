@@ -47,6 +47,8 @@ function UpdateColumnFromDsl(modeCol) {
 function UpdateRelationFromDsl(key, rel) {
     let data = rel;
     data.name = key;
+    //must do this in case xgen will dump
+    data.query = JSON.stringify(rel.query);
     return data;
 }
 /**

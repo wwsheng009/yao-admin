@@ -13,7 +13,24 @@
       "name": "name",
       "type": "string",
       "length": 80,
-      "unique": true
+      "unique": true,
+      "validations": [
+        {
+          "method": "minLength",
+          "args": [6],
+          "message": "{{label}}应该由6-18位，大小写字母、数字构成"
+        },
+        {
+          "method": "maxLength",
+          "args": [18],
+          "message": "{{label}}应该由6-18位，大小写字母、数字构成"
+        },
+        {
+          "method": "pattern",
+          "args": ["^[a-zA-Z.]+$"],
+          "message": "{{label}}应该由6-18位，大小写字母、数字构成"
+        }
+      ]
     },
     {
       "label": "模型备注",
@@ -72,20 +89,30 @@
   },
   "option": {},
   "xgen": {
-    "relations": {
-      "form": {
-        "edit": {
-          "type": "List",
-          "props": {
-            "name": "ddic.model.relation",
-            "showLabel": true
+    "form": {
+      "fields": {
+        "form": {
+          "关联关系": {
+            "edit": {
+              "type": "List",
+              "props": {
+                "name": "ddic.model.relation",
+                "showLabel": true
+              }
+            }
           }
         }
-      },
-      "table": {
-        "view": {
-          "props": {
-            "ddic_hide": true
+      }
+    },
+    "table": {
+      "fields": {
+        "table": {
+          "关联关系": {
+            "view": {
+              "props": {
+                "ddic_hide": true
+              }
+            }
           }
         }
       }

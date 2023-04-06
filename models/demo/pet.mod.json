@@ -9,7 +9,44 @@
       "type": "string",
       "length": 80,
       "index": true,
-      "nullable": true
+      "nullable": true,
+      "validations": [
+        {
+          "method": "typeof",
+          "args": ["string"],
+          "message": "{{input}}类型错误, {{label}}应该为字符串"
+        },
+        {
+          "method": "minLength",
+          "args": [6],
+          "message": "{{label}}应该由6-18位，大小写字母、数字和符号构成"
+        },
+        {
+          "method": "maxLength",
+          "args": [18],
+          "message": "{{label}}应该由6-18位，大小写字母、数字和符号构成"
+        },
+        {
+          "method": "pattern",
+          "args": ["[0-9]+"],
+          "message": "{{label}}应该至少包含一个数字"
+        },
+        {
+          "method": "pattern",
+          "args": ["[A-Z]+"],
+          "message": "{{label}}应该至少包含一个大写字母"
+        },
+        {
+          "method": "pattern",
+          "args": ["[a-z]+"],
+          "message": "{{label}}应该至少包含一个小写字母"
+        },
+        {
+          "method": "pattern",
+          "args": ["[@#$&*]+"],
+          "message": "{{label}}应该至少包含一个符号"
+        }
+      ]
     },
     {
       "name": "type",

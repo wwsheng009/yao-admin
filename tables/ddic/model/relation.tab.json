@@ -1,52 +1,46 @@
 {
-  "name": "::Model Relation",
   "action": {
     "bind": {
       "model": "ddic.model.relation",
       "option": {
-        "withs": {
-          "model": {}
-        },
         "option": {
           "form": "ddic.model.relation"
+        },
+        "withs": {
+          "model": {}
         }
       }
     }
   },
   "layout": {
-    "primary": "id",
-    "header": {
-      "preset": {},
-      "actions": []
-    },
     "filter": {
-      "columns": [
-        {
-          "width": 4,
-          "name": "模型"
-        },
-        {
-          "name": "名称",
-          "width": 4
-        }
-      ],
       "actions": [
         {
-          "title": "添加",
-          "icon": "icon-plus",
           "width": 3,
           "action": [
             {
-              "name": "OpenModal",
               "type": "Common.openModal",
               "payload": {
                 "Form": {
                   "type": "edit",
                   "model": "ddic.model.relation"
                 }
-              }
+              },
+              "name": "OpenModal"
             }
-          ]
+          ],
+          "title": "添加",
+          "icon": "icon-plus"
+        }
+      ],
+      "columns": [
+        {
+          "name": "模型",
+          "width": 4
+        },
+        {
+          "name": "名称",
+          "width": 4
         }
       ]
     },
@@ -74,10 +68,6 @@
         },
         {
           "name": "主键",
-          "width": 160
-        },
-        {
-          "name": "关联条件",
           "width": 160
         }
       ],
@@ -119,12 +109,12 @@
           {
             "action": [
               {
-                "name": "Confirm",
                 "type": "Common.confirm",
                 "payload": {
                   "title": "确认删除",
                   "content": "删除后不可撤销！"
-                }
+                },
+                "name": "Confirm"
               },
               {
                 "name": "Delete",
@@ -139,10 +129,25 @@
           }
         ]
       }
+    },
+    "primary": "id",
+    "header": {
+      "actions": [],
+      "preset": {}
     }
   },
   "fields": {
     "filter": {
+      "名称": {
+        "bind": "where.name.match",
+        "edit": {
+          "props": {
+            "placeholder": "请输入名称"
+          },
+          "type": "Input",
+          "compute": "Trim"
+        }
+      },
       "模型": {
         "bind": "where.model_id.in",
         "edit": {
@@ -157,173 +162,30 @@
                   "value": "id"
                 }
               }
-            },
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "所属模型"
             }
           }
         }
-      },
-      "名称": {
-        "edit": {
-          "type": "Input",
-          "compute": "Trim",
-          "props": {
-            "placeholder": "请输入名称"
-          }
-        },
-        "bind": "where.name.match"
       }
     },
     "table": {
-      "主键": {
-        "bind": "key",
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
-        "edit": {
-          "bind": "key",
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "主键"
-            }
-          },
-          "type": "Input"
-        }
-      },
-      "关联条件": {
-        "bind": "query",
-        "view": {
-          "compute": "scripts.ddic.compute.json.View",
-          "props": {},
-          "type": "Tooltip"
-        },
-        "edit": {
-          "type": "TextArea",
-          "props": {
-            "itemProps": {
-              "tooltip": "关联条件"
-            }
-          },
-          "compute": "scripts.ddic.compute.json.Edit"
-        }
-      },
-      "ID": {
-        "view": {
-          "props": {},
-          "type": "Text"
-        },
-        "edit": {
-          "bind": "id",
-          "props": {
-            "itemProps": {
-              "tooltip": "表名"
-            }
-          },
-          "type": "Input"
-        },
-        "bind": "id"
-      },
-      "模型": {
-        "view": {
-          "type": "Tag",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "label": "name",
-                  "value": "id",
-                  "model": "ddic.model"
-                }
-              }
-            }
-          }
-        },
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model",
-                  "label": "name",
-                  "value": "id"
-                }
-              }
-            },
-            "itemProps": {
-              "tooltip": "所属模型",
-              "rules": [
-                {
-                  "required": true
-                }
-              ]
-            }
-          }
-        },
-        "bind": "model_id"
-      },
       "名称": {
-        "view": {
-          "type": "Text",
-          "props": {}
-        },
         "edit": {
-          "type": "Input",
           "bind": "name",
           "props": {
             "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
               "tooltip": "定义关系名称"
             }
-          }
+          },
+          "type": "Input"
         },
-        "bind": "name"
+        "bind": "name",
+        "view": {
+          "props": {},
+          "type": "Text"
+        }
       },
       "关联关系": {
         "edit": {
-          "props": {
-            "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
-              "tooltip": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。"
-            },
-            "placeholder": "请选择关联关系",
-            "options": [
-              {
-                "label": "::hasOne",
-                "value": "hasOne"
-              },
-              {
-                "label": "::hasMany",
-                "value": "hasMany"
-              }
-            ]
-          },
-          "type": "Select"
-        },
-        "view": {
-          "type": "Tag",
           "props": {
             "options": [
               {
@@ -335,32 +197,131 @@
                 "value": "hasMany"
               }
             ],
+            "placeholder": "请选择关联关系",
+            "itemProps": {
+              "tooltip": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。"
+            }
+          },
+          "type": "Select"
+        },
+        "view": {
+          "props": {
+            "options": [
+              {
+                "value": "hasOne",
+                "label": "::hasOne"
+              },
+              {
+                "value": "hasMany",
+                "label": "::hasMany"
+              }
+            ],
             "placeholder": "请选择关联关系"
-          }
+          },
+          "type": "Tag"
         },
         "bind": "type"
       },
       "外键": {
         "bind": "foreign",
         "view": {
-          "props": {},
-          "type": "Text"
+          "type": "Text",
+          "props": {}
         },
         "edit": {
           "bind": "foreign",
           "props": {
             "itemProps": {
-              "rules": [
-                {
-                  "required": true
-                }
-              ],
               "tooltip": "外键"
             }
           },
           "type": "Input"
         }
+      },
+      "主键": {
+        "view": {
+          "props": {},
+          "type": "Text"
+        },
+        "edit": {
+          "bind": "key",
+          "props": {
+            "itemProps": {
+              "tooltip": "主键"
+            }
+          },
+          "type": "Input"
+        },
+        "bind": "key"
+      },
+      "关联条件": {
+        "edit": {
+          "props": {
+            "itemProps": {
+              "tooltip": "关联条件"
+            }
+          },
+          "type": "TextArea"
+        },
+        "bind": "query",
+        "view": {
+          "props": {},
+          "type": "Tooltip"
+        }
+      },
+      "ID": {
+        "bind": "id",
+        "view": {
+          "type": "Text",
+          "props": {}
+        },
+        "edit": {
+          "type": "Input",
+          "bind": "id",
+          "props": {
+            "itemProps": {
+              "tooltip": "表名"
+            }
+          }
+        }
+      },
+      "模型": {
+        "bind": "model_id",
+        "view": {
+          "type": "Tag",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "value": "id",
+                  "model": "ddic.model",
+                  "label": "name"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            }
+          }
+        },
+        "edit": {
+          "type": "Select",
+          "props": {
+            "xProps": {
+              "$remote": {
+                "query": {
+                  "label": "name",
+                  "value": "id",
+                  "model": "ddic.model"
+                },
+                "process": "yao.component.SelectOptions"
+              }
+            },
+            "itemProps": {
+              "tooltip": "所属模型"
+            }
+          }
+        }
       }
     }
-  }
+  },
+  "name": "::Model Relation"
 }

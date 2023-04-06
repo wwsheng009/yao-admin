@@ -97,7 +97,7 @@ function toForm(modelDsl) {
             ],
         },
     ];
-    let tableTemplate = {
+    let formTemplate = {
         name: modelDsl.name || "表单",
         action: {
             bind: {
@@ -126,16 +126,78 @@ function toForm(modelDsl) {
         let form = Cast(column, modelDsl);
         if (form) {
             form.layout.forEach((tc) => {
-                tableTemplate.layout.form.sections[0].columns.push(tc);
+                formTemplate.layout.form.sections[0].columns.push(tc);
             });
             form.fields.forEach((ft) => {
-                tableTemplate.fields.form[ft.name] = ft.component;
+                formTemplate.fields.form[ft.name] = ft.component;
             });
         }
     });
-    tableTemplate.action.bind.option.withs = Studio("model.relation.GetWiths", modelDsl);
-    tableTemplate = Studio("model.relation.List", tableTemplate, modelDsl);
-    return tableTemplate;
+    formTemplate.action.bind.option.withs = Studio("model.relation.GetWiths", modelDsl);
+    formTemplate = updateReference(formTemplate, modelDsl);
+    formTemplate = Studio("model.relation.List", formTemplate, modelDsl);
+    formTemplate = mergeFormTemplateFromModel(formTemplate, modelDsl);
+    return formTemplate;
+}
+function mergeFormTemplateFromModel(formTemplate, modelDsl) {
+    if (!modelDsl || !modelDsl?.xgen || !modelDsl?.xgen.form) {
+        return formTemplate;
+    }
+    formTemplate = Studio("model.utils.MergeObject", formTemplate, modelDsl?.xgen.form);
+    for (const key in formTemplate.fields.form) {
+        const element = formTemplate.fields.form[key];
+        if (element?.edit?.props?.ddic_hide) {
+            delete formTemplate.fields.form[key];
+        }
+    }
+    return formTemplate;
+}
+function updateReference(formTemplate, modelDsl) {
+    const hasCount = Object.values(modelDsl.relations).filter((rel) => rel.type === "hasOne").length;
+    if (hasCount === 0) {
+        return formTemplate; // no need to modify the form if there are no 'hasOne' relations
+    }
+    formTemplate = Studio("model.utils.MergeObject", formTemplate, {
+        layout: {
+            form: {
+                props: {
+                    reference: {},
+                },
+            },
+        },
+    });
+    const referenceContent = [];
+    for (const rel in modelDsl.relations) {
+        if (modelDsl.relations[rel].type === "hasOne") {
+            referenceContent.push({
+                name: modelDsl.relations[rel].label || rel,
+                payload: {
+                    Form: {
+                        type: "edit",
+                        model: modelDsl.relations[rel].model,
+                        id: `{{${modelDsl.relations[rel].foreign}}}`,
+                    },
+                },
+            });
+        }
+    }
+    if (hasCount === 1) {
+        formTemplate.layout.form.props.reference.flatContent = {
+            name: referenceContent[0].name,
+            defaultOpen: false,
+            payload: {
+                Form: {
+                    type: "edit",
+                    model: referenceContent[0].payload.Form.model,
+                    id: `${referenceContent[0].payload.Form.id}`,
+                },
+            },
+        };
+    }
+    else {
+        formTemplate.layout.form.props.reference.floatContents = referenceContent;
+    }
+    return formTemplate;
 }
 /**
  *根据模型定义生成Form定义
@@ -185,7 +247,6 @@ function Cast(column, modelDsl) {
                         language: "json",
                         height: 200,
                     },
-                    compute: "scripts.ddic.compute.json.Edit",
                     type: "CodeEditor",
                 },
             };
@@ -254,13 +315,15 @@ function Cast(column, modelDsl) {
     if (component.is_image) {
         width = 24;
     }
-    res.layout.push({
-        name: title,
-        width: width,
-    });
     delete component.is_image;
     component = Studio("model.column.component.EditPropes", component, column);
     component = updateFormCompModelXgen(component, column, modelDsl);
+    if (!component.edit?.props?.ddic_hide) {
+        res.layout.push({
+            name: title,
+            width: width,
+        });
+    }
     res.fields.push({
         name: title,
         component: component,

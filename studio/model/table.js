@@ -8,9 +8,8 @@ function Create(modelDsl) {
     for (const i in modelDsl) {
         let tableName = Studio("model.file.SlashName", modelDsl[i].table.name);
         let tableFileName = tableName + ".tab.json";
-        let tableDsl = Studio("model.colunm.toTable", modelDsl[i]); //这里有studio js读取操作
-        let table = JSON.stringify(tableDsl);
-        //如果在这个位置调用写文件操作会导致js脚本重加载。
+        let tableDsl = Studio("model.column.table.toTable", modelDsl[i]); //这里有studio js读取操作
+        // let table = JSON.stringify(tableDsl);
         //使用studio最好使用production mode
         //比如调用fs.WriteFile("/tables/" + table_file_name, table);
         //会导致后面的脚本报错： The %s does not loaded (%d)
@@ -19,12 +18,12 @@ function Create(modelDsl) {
         //yao.rootScripts被清空
         ///
         let formFileName = tableName + ".form.json";
-        let formDsl = Studio("model.colunm.toForm", modelDsl[i]); //这里有studio js读取操作
-        let formJson = JSON.stringify(formDsl);
-        Studio("model.move.Move", "forms", formFileName);
-        fs.WriteFile("/forms/" + formFileName, formJson);
-        //需要把写操作入在最后面操作。在开发环境中，对dsl文件的修改会导致脚本重加载，如果在studio.service写操作的过程中去执行js文件会报错。
-        Studio("model.move.Move", "tables", tableFileName);
-        fs.WriteFile("/tables/" + tableFileName, table);
+        let formDsl = Studio("model.column.form.toForm", modelDsl[i]); //这里有studio js读取操作
+        // let formJson = JSON.stringify(formDsl);
+        Studio("model.file.MoveAndWrite", "forms", formFileName, formDsl);
+        // fs.WriteFile("/forms/" + formFileName, formJson);
+        //在开发环境中，对dsl文件的修改会导致脚本重加载，如果在studio.service写操作的过程中去执行js文件会报错。
+        Studio("model.file.MoveAndWrite", "tables", tableFileName, tableDsl);
+        // fs.WriteFile("/tables/" + tableFileName, table);
     }
 }

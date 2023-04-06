@@ -1,4 +1,4 @@
-// import { FS, Process, Studio } from "yao-node-client";
+// import { Process, Studio } from "yao-node-client";
 /**
  * //根据关联关系找到列，并查找列对应的模型
  * yao studio run model.remote.select
@@ -57,7 +57,7 @@ function Other(columns) {
  */
 function CreateScripts(relation_name, name, relation) {
     const field_name = relation_name + ".js";
-    const fs = new FS("script");
+    // const fs = new FS("script");
     const formDsl = `export function GetSelect() {
     let query = new Query();
     let res = query.Get({
@@ -67,10 +67,10 @@ function CreateScripts(relation_name, name, relation) {
     return res;
   }
   `;
-    const dir = relation.model + "/" + field_name;
+    // const dir = relation.model + "/" + field_name;
     //console.log(formDsl);
-    Studio("model.move.Move", "scripts", field_name);
-    fs.WriteFile("/" + dir, formDsl);
+    Studio("model.file.MoveAndWrite", `scripts`, `${relation.model}/${field_name}`, formDsl);
+    // fs.WriteFile("/" + dir, formDsl);
 }
 // export function GetSelect() {
 //   let query = new Query();

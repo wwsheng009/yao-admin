@@ -31,6 +31,14 @@ function CreateFromFile() {
     Studio("model.menu.Create", modelDsls);
     Studio("model.ts.CreatTypes", modelDsls);
 }
+function CreateMenuFromFile() {
+    const files = GetModelFnameList();
+    const fs = new FS("dsl");
+    const modelDsls = files.map((file) => {
+        return JSON.parse(fs.ReadFile("models/" + file));
+    });
+    Studio("model.menu.Create", modelDsls);
+}
 /**
  * create model from tables
  * yao studio run model.cmd.GetModelsFromDB
@@ -38,14 +46,14 @@ function CreateFromFile() {
  */
 function GetModelsFromDB() {
     const modelDsl = Studio("model.schema.Relation");
-    const fs = new FS("dsl");
+    // const fs = new FS("dsl");
     for (const i in modelDsl) {
         let table_name = Studio("model.file.SlashName", modelDsl[i].table.name);
         const table_file_name = table_name + ".mod.json";
         const table = JSON.stringify(modelDsl[i]);
-        Studio("model.move.Move", "models", table_file_name);
+        Studio("model.file.MoveAndWrite", "models", table_file_name, table);
         //console.log(`create model:/models/"${table_file_name}.mod.json`);
-        fs.WriteFile("/models/" + table_file_name, table);
+        // fs.WriteFile("/models/" + table_file_name, table);
     }
     return modelDsl;
 }
@@ -115,11 +123,11 @@ function CreateList(modelName) {
 function CreateListByModel(modelDsl) {
     let tableName = Studio("model.file.SlashName", modelDsl.table.name);
     let listFileName = tableName + ".list.json";
-    let listDsl = Studio("model.colunm.toList", modelDsl); //这里有studio js读取操作
-    let listJson = JSON.stringify(listDsl);
-    let fs = new FS("dsl");
-    Studio("model.move.Move", "lists", listFileName);
-    fs.WriteFile("/lists/" + listFileName, listJson);
+    let listDsl = Studio("model.column.list.toList", modelDsl); //这里有studio js读取操作
+    // let listJson = JSON.stringify(listDsl);
+    // let fs = new FS("dsl");
+    Studio("model.file.MoveAndWrite", "lists", listFileName, listDsl);
+    // fs.WriteFile("/lists/" + listFileName, listJson);
 }
 /**
  * 写入10.3版本的
@@ -164,6 +172,6 @@ function CreateLoginDsl() {
             site: "https://yaoapps.com?from=yao-admin",
         },
     });
-    Studio("model.move.Move", "logins", fname);
-    fs.WriteFile("/logins/" + fname, table);
+    Studio("model.file.MoveAndWrite", "logins", fname, table);
+    // fs.WriteFile("/logins/" + fname, table);
 }

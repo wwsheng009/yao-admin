@@ -123,6 +123,20 @@ function toTable(modelDsl) {
         }
     });
     tableTemplate.action.bind.option.withs = Studio("model.relation.GetWiths", modelDsl);
+    tableTemplate = mergeTableTemplateFromModel(tableTemplate, modelDsl);
+    return tableTemplate;
+}
+function mergeTableTemplateFromModel(tableTemplate, modelDsl) {
+    if (!modelDsl || !modelDsl?.xgen || !modelDsl?.xgen.form) {
+        return tableTemplate;
+    }
+    tableTemplate = Studio("model.utils.MergeObject", tableTemplate, modelDsl?.xgen.table);
+    for (const key in tableTemplate.fields.table) {
+        const element = tableTemplate.fields.table[key];
+        if (element?.view?.props?.ddic_hide) {
+            delete tableTemplate.fields.table[key];
+        }
+    }
     return tableTemplate;
 }
 /**
@@ -286,9 +300,7 @@ function Cast(column, modelDsl) {
     component = Studio("model.column.component.EditPropes", component, column);
     component = updateViewSwitchPropes(component, column);
     component = updateCompFromModelXgen(component, column, modelDsl);
-    if (!component.view ||
-        !component.view?.props ||
-        !component.view?.props?.ddic_hide) {
+    if (column.type !== "json" && !component.view?.props?.ddic_hide) {
         res.layout.table.columns.push({
             name: title,
             width: width,
@@ -307,7 +319,7 @@ function Cast(column, modelDsl) {
  * @param column
  */
 function updateViewSwitchPropes(component, column) {
-    if (!component.view) {
+    if (!component || !component?.view) {
         return component;
     }
     if (column.type !== "Switch") {

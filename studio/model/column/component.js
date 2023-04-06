@@ -101,56 +101,34 @@ function Enum(option) {
  * @returns
  */
 function ModelXgen(component, column, modelDsl, type) {
-    if (!component ||
-        !modelDsl ||
-        !modelDsl?.xgen ||
-        !(column.name in modelDsl?.xgen)) {
+    if (!component || !modelDsl || !modelDsl?.xgen) {
         return component;
     }
-    const config = modelDsl?.xgen[column.name];
+    let config = null;
     switch (type) {
         case "form":
-            component.edit = mergeObjects(component.edit, config.form?.edit);
+            config = modelDsl?.xgen?.form?.fields?.form[column.label];
+            if (config) {
+                component.edit = Studio("model.utils.MergeObject", component.edit, config?.edit);
+            }
             break;
         case "table":
-            component.view = mergeObjects(component.view, config.table?.view);
-            component.edit = mergeObjects(component.edit, config.table?.edit);
+            config = modelDsl?.xgen?.table?.fields?.table[column.label];
+            if (config) {
+                component.view = Studio("model.utils.MergeObject", component.view, config?.view);
+                component.edit = Studio("model.utils.MergeObject", component.edit, config?.edit);
+            }
             break;
         case "list":
-            component.edit = mergeObjects(component.edit, config.list?.edit);
+            config = modelDsl?.xgen?.list?.fields?.list[column.label];
+            if (config) {
+                component.edit = Studio("model.utils.MergeObject", component.edit, config?.edit);
+            }
             break;
         default:
             break;
     }
     return component;
-}
-/**
- * 合并两个js对象，并返回新对象。
- * @param target 目标对象
- * @param source 源对象
- * @returns
- */
-function mergeObjects(target, source) {
-    if (typeof target !== "object" ||
-        target == null || //mybe undefined
-        typeof source !== "object" ||
-        source == null //mybe undefined
-    ) {
-        return target;
-    }
-    for (let key in source) {
-        if (source.hasOwnProperty(key)) {
-            if (target[key] &&
-                typeof target[key] === "object" &&
-                typeof source[key] === "object") {
-                target[key] = mergeObjects(target[key], source[key]);
-            }
-            else {
-                target[key] = source[key];
-            }
-        }
-    }
-    return target;
 }
 /**
  * yao run studio model.column.component.EditPropes
@@ -159,32 +137,141 @@ function mergeObjects(target, source) {
  * @param column
  */
 function EditPropes(component, column) {
-    if (!component.edit) {
+    if (!component || !component.edit) {
         return component;
     }
     component.edit.props = component.edit.props || {};
-    const { unique, nullable, default: columnDefault, type } = column;
-    if (/^id$/i.test(type)) {
-        component.edit.props.itemProps = {};
-    }
-    else if (unique || (columnDefault == null && !nullable)) {
-        //这里不要判断同时 == null || == undefined
-        component.edit.props.itemProps = { rules: [{ required: true }] };
-    }
     if (column.comment) {
-        component.edit.props["itemProps"] = component.edit.props["itemProps"] || {};
-        component.edit.props["itemProps"]["tooltip"] = column.comment;
+        component.edit.props.itemProps = component.edit.props.itemProps || {};
+        component.edit.props.itemProps.tooltip = column.comment;
     }
+    const rules = GetRules(column);
+    if (rules?.length) {
+        component.edit.props.itemProps = {
+            ...component.edit.props.itemProps,
+            rules: [
+                ...(component.edit.props.itemProps?.rules || []),
+                ...(rules.length === 1 &&
+                    component.edit.props.itemProps?.rules?.length === 1
+                    ? [Object.assign(component.edit.props.itemProps.rules[0], rules[0])]
+                    : rules),
+            ],
+        };
+    }
+    // 默认值
     if (column.default != null) {
         const ismysql = Studio("model.utils.IsMysql");
-        const defaultValue = ismysql && type === "boolean" ? (column.default ? 1 : 0) : column.default;
-        component.edit.props["defaultValue"] = defaultValue;
-        if (["RadioGroup", "Select"].includes(column.type)) {
-            component.edit.props["value"] = defaultValue;
+        const defaultValue = ismysql && column.type === "boolean"
+            ? column.default
+                ? 1
+                : 0
+            : column.default;
+        component.edit.props.defaultValue = defaultValue;
+        if (["RadioGroup", "Select"].includes(component.edit.type)) {
+            component.edit.props.value = defaultValue;
         }
-        if (component.view && ["Switch"].includes(column.type)) {
-            component.view.props["value"] = defaultValue;
+        if (component.view && ["Switch"].includes(component.view.type)) {
+            component.view.props.value = defaultValue;
         }
     }
     return component;
+}
+function GetRules(column) {
+    const validationTypeMap = {
+        string: "string",
+        integer: "integer",
+        float: "float",
+        number: "number",
+        datetime: "date",
+        bool: "number",
+    };
+    const dbTypeToAntd = {
+        string: "string",
+        char: "string",
+        text: "string",
+        mediumText: "string",
+        longText: "string",
+        date: "date",
+        datetime: "date",
+        datetimeTz: "date",
+        time: "date",
+        timeTz: "date",
+        timestamp: "date",
+        timestampTz: "date",
+        tinyInteger: "integer",
+        tinyIncrements: "integer",
+        unsignedTinyInteger: "integer",
+        smallInteger: "integer",
+        unsignedSmallInteger: "integer",
+        integer: "integer",
+        bigInteger: "integer",
+        decimal: "float",
+        unsignedDecimal: "float",
+        float: "float",
+        boolean: "boolean",
+        enum: "enum",
+    };
+    const rules = [];
+    let rule = {};
+    const { unique, nullable, default: columnDefault, type: dbColumnType, } = column;
+    if (dbColumnType in dbTypeToAntd) {
+        const antdType = dbTypeToAntd[dbColumnType];
+        if (antdType === "enum" //&&      !["RadioGroup", "Select"].includes(component.edit.type)
+        ) {
+            rule.type = antdType;
+            rule.enum = column.option;
+        }
+        else if (antdType) {
+            rule.type = antdType;
+        }
+        if (["string", "number"].includes(antdType) && column.length) {
+            //MAX Length
+            rule.max = column.length;
+        }
+    }
+    if (!/^id$/i.test(dbColumnType) ||
+        unique ||
+        ((columnDefault === null || columnDefault === undefined) && !nullable)) {
+        rule.required = true;
+    }
+    const validations = column.validations;
+    if (!validations || !validations.length)
+        return rules;
+    validations.forEach((validation) => {
+        switch (validation.method) {
+            case "typeof":
+                rule.type = validation.args.find((arg) => validationTypeMap[arg]);
+                break;
+            case "maxLength":
+                if (validation.args && validation.args.length) {
+                    rule.max = validation.args[0];
+                }
+                break;
+            case "minLength":
+                if (validation.args && validation.args.length) {
+                    rule.min = validation.args[0];
+                }
+                break;
+            case "enum":
+                if (validation.args && validation.args.length) {
+                    rule.type = "enum";
+                    rule.enum = validation.args;
+                }
+                break;
+            case "pattern":
+                if (validation.args && validation.args.length) {
+                    rules.push({
+                        pattern: validation.args[0],
+                        message: validation.message,
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+    });
+    if (rule.type.length > 0 || rule.required) {
+        rules.push(rule);
+    }
+    return rules;
 }

@@ -18,7 +18,14 @@
       "length": 80,
       "name": "name",
       "type": "string",
-      "unique": true
+      "unique": true,
+      "validations": [
+        {
+          "method": "minLength",
+          "args": [2],
+          "message": "{{label}}最小长度为2"
+        }
+      ]
     },
     {
       "label": "域",
@@ -57,6 +64,13 @@
       "type": "integer",
       "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
       "nullable": true
+    },
+    {
+      "label": "校验规则",
+      "name": "validations",
+      "type": "json",
+      "comment": "字段校验规则",
+      "nullable": true
     }
   ],
   "relations": {
@@ -70,56 +84,72 @@
     }
   },
   "xgen": {
-    "type": {
-      "form": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+    "table": {
+      "fields": {
+        "table": {
+          "字段类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
                 }
               }
             },
-            "itemProps": { "tooltip": "字段类型定义" }
+            "view": {
+              "type": "Tag",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      },
-      "table": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+      }
+    },
+    "form": {
+      "fields": {
+        "form": {
+          "校验规则": {
+            "edit": {
+              "type": "List",
+              "props": {
+                "name": "ddic.validation",
+                "showLabel": true
+              }
+            }
+          },
+          "字段类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
                 }
               }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
-          }
-        },
-        "view": {
-          "type": "Tag",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
-                }
-              }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
+            }
           }
         }
       }

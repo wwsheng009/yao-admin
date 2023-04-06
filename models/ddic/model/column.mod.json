@@ -127,74 +127,63 @@
   },
   "option": {},
   "xgen": {
-    "type": {
-      "list": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+    "table": {
+      "fields": {
+        "table": {
+          "字段类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
                 }
               }
             },
-            "itemProps": { "tooltip": "字段类型定义" }
+            "view": {
+              "type": "Tag",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      },
-      "form": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
+      }
+    },
+    "form": {
+      "fields": {
+        "form": {
+          "字段类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
                 }
               }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
-          }
-        }
-      },
-      "table": {
-        "edit": {
-          "type": "Select",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
-                }
-              }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
-          }
-        },
-        "view": {
-          "type": "Tag",
-          "props": {
-            "xProps": {
-              "$remote": {
-                "process": "yao.component.SelectOptions",
-                "query": {
-                  "model": "ddic.model.column.type",
-                  "label": "name",
-                  "value": "type"
-                }
-              }
-            },
-            "itemProps": { "tooltip": "字段类型定义" }
+            }
           }
         }
       }
