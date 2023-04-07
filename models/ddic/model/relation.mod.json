@@ -9,13 +9,6 @@
       "comment": "表名"
     },
     {
-      "name": "model_id",
-      "type": "integer",
-      "label": "模型",
-      "comment": "所属模型",
-      "nullable": false
-    },
-    {
       "label": "名称",
       "name": "name",
       "type": "string",
@@ -24,11 +17,26 @@
       "comment": "定义关系名称"
     },
     {
+      "label": "关系描述",
+      "name": "label",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "关系描述"
+    },
+    {
       "name": "type",
       "type": "enum",
       "option": ["hasOne", "hasMany"],
       "label": "关联关系",
       "comment": "与当前数据模型的关系类型. `hasOne` 一对一, `hasMany` 一对多。",
+      "nullable": false
+    },
+    {
+      "name": "model",
+      "type": "string",
+      "label": "关联模型",
+      "comment": "关联的模型",
       "nullable": false
     },
     {
@@ -41,8 +49,8 @@
     {
       "name": "key",
       "type": "string",
-      "label": "主键",
-      "comment": "主键",
+      "label": "关联模型主键",
+      "comment": "关联模型主键",
       "nullable": false
     },
     {
@@ -53,13 +61,6 @@
       "nullable": true
     }
   ],
-  "relations": {
-    "model": {
-      "type": "hasOne",
-      "model": "ddic.model",
-      "key": "id",
-      "foreign": "model_id"
-    }
-  },
+  "relations": {},
   "option": {}
 }

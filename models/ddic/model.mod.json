@@ -12,23 +12,18 @@
       "label": "模型名称",
       "name": "name",
       "type": "string",
-      "length": 80,
+      "length": 64,
       "unique": true,
       "validations": [
         {
-          "method": "minLength",
-          "args": [6],
-          "message": "{{label}}应该由6-18位，大小写字母、数字构成"
-        },
-        {
           "method": "maxLength",
-          "args": [18],
-          "message": "{{label}}应该由6-18位，大小写字母、数字构成"
+          "args": [64],
+          "message": "{{label}}最大长度64"
         },
         {
           "method": "pattern",
-          "args": ["^[a-zA-Z.]+$"],
-          "message": "{{label}}应该由6-18位，大小写字母、数字构成"
+          "args": ["^[a-zA-Z.][a-zA-Z0-9.]*$"],
+          "message": "{{label}}应该由2-40位，大小写字母、数字、点号构成"
         }
       ]
     },
@@ -44,8 +39,20 @@
       "label": "数据库表名",
       "name": "table_name",
       "type": "string",
-      "length": 80,
-      "unique": true
+      "length": 64,
+      "nullable": true,
+      "validations": [
+        {
+          "method": "maxLength",
+          "args": [64],
+          "message": "{{label}}最大长度64"
+        },
+        {
+          "method": "pattern",
+          "args": ["^[a-zA-Z_][a-zA-Z0-9_]*$"],
+          "message": "{{label}}请输入有效的数据库表名，只允许数字与字母，下划线，划线"
+        }
+      ]
     },
     {
       "label": "数据库表备注",
@@ -105,6 +112,26 @@
       }
     },
     "table": {
+      "layout": {
+        "filter": {
+          "actions": [
+            {
+              "icon": "icon-plus",
+              "width": 3,
+              "action": [
+                {
+                  "name": "HistoryPush",
+                  "type": "Common.historyPush",
+                  "payload": {
+                    "pathname": "/x/Form/ddic.model/0/edit"
+                  }
+                }
+              ],
+              "title": "创建"
+            }
+          ]
+        }
+      },
       "fields": {
         "table": {
           "关联关系": {

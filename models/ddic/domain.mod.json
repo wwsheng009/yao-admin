@@ -24,12 +24,12 @@
       "nullable": false
     },
     {
-      "label": "字段类型",
+      "label": "数据类型",
       "name": "type",
       "nullable": true,
       "type": "string",
       "length": 80,
-      "comment": "字段类型定义"
+      "comment": "数据类型定义"
     },
     {
       "comment": "字段长度，对string等类型字段有效",
@@ -113,7 +113,7 @@
     "table": {
       "fields": {
         "table": {
-          "字段类型": {
+          "数据类型": {
             "edit": {
               "type": "Select",
               "props": {
@@ -160,7 +160,7 @@
               }
             }
           },
-          "字段类型": {
+          "数据类型": {
             "edit": {
               "type": "Select",
               "props": {
@@ -173,8 +173,7 @@
                       "value": "type"
                     }
                   }
-                },
-                "itemProps": { "tooltip": "字段类型定义" }
+                }
               }
             }
           }

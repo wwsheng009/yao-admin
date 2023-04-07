@@ -24,6 +24,28 @@
       "comment": "数据库表的字段名name"
     },
     {
+      "label": "标签",
+      "name": "label",
+      "type": "string",
+      "length": 80,
+      "nullable": false,
+      "comment": "字段显示名称label，用于在管理表单，开发平台等成场景下呈现"
+    },
+    {
+      "label": "是否索引",
+      "name": "index",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否为索引index，默认为 false"
+    },
+    {
+      "label": "唯一索引",
+      "name": "unique",
+      "type": "boolean",
+      "default": false,
+      "comment": "字段是否为唯一索引unique，默认为 false , 如为 true 无需同时将 `index` 设置为 true"
+    },
+    {
       "name": "element_id",
       "type": "integer",
       "label": "数据元素",
@@ -31,19 +53,11 @@
       "nullable": true
     },
     {
-      "label": "标签",
-      "name": "label",
-      "type": "string",
-      "length": 80,
-      "nullable": true,
-      "comment": "字段显示名称label，用于在管理表单，开发平台等成场景下呈现"
-    },
-    {
-      "label": "字段类型",
+      "label": "数据类型",
       "name": "type",
       "nullable": true,
       "type": "string",
-      "comment": "字段类型定义type"
+      "comment": "数据类型定义type"
     },
     {
       "label": "长度",
@@ -52,6 +66,7 @@
       "comment": "字段长度length，对 `string` 等类型字段有效",
       "nullable": true
     },
+
     {
       "label": "位数(含小数位)",
       "name": "precision",
@@ -89,20 +104,6 @@
       "nullable": true
     },
     {
-      "label": "是否索引",
-      "name": "index",
-      "type": "boolean",
-      "default": false,
-      "comment": "字段是否为索引index，默认为 false"
-    },
-    {
-      "label": "唯一索引",
-      "name": "unique",
-      "type": "boolean",
-      "default": false,
-      "comment": "字段是否为唯一索引unique，默认为 false , 如为 true 无需同时将 `index` 设置为 true"
-    },
-    {
       "label": "注释",
       "name": "comment",
       "type": "string",
@@ -127,10 +128,33 @@
   },
   "option": {},
   "xgen": {
+    "list": {
+      "fields": {
+        "list": {
+          "数据类型": {
+            "edit": {
+              "type": "Select",
+              "props": {
+                "xProps": {
+                  "$remote": {
+                    "process": "yao.component.SelectOptions",
+                    "query": {
+                      "model": "ddic.model.column.type",
+                      "label": "name",
+                      "value": "type"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "table": {
       "fields": {
         "table": {
-          "字段类型": {
+          "数据类型": {
             "edit": {
               "type": "Select",
               "props": {
@@ -168,7 +192,7 @@
     "form": {
       "fields": {
         "form": {
-          "字段类型": {
+          "数据类型": {
             "edit": {
               "type": "Select",
               "props": {

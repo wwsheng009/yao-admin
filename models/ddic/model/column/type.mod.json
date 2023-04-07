@@ -1,8 +1,8 @@
 {
   "name": "::Model Column Type",
-  "comment": "数据字段类型",
+  "comment": "数据类型",
   "option": {},
-  "table": { "name": "ddic_model_column_type", "comment": "模型字段类型" },
+  "table": { "name": "ddic_model_column_type", "comment": "模型数据类型" },
   "columns": [
     {
       "name": "id",
@@ -11,7 +11,7 @@
       "comment": "标识"
     },
     {
-      "label": "字段类型",
+      "label": "数据类型",
       "length": 80,
       "name": "type",
       "type": "string",

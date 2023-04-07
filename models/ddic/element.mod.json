@@ -21,28 +21,29 @@
       "unique": true,
       "validations": [
         {
-          "method": "minLength",
-          "args": [2],
-          "message": "{{label}}最小长度为2"
+          "method": "maxLength",
+          "args": [80],
+          "message": "{{label}}最大长度为80"
         }
       ]
     },
     {
-      "label": "域",
-      "name": "domain_id",
-      "nullable": true,
-      "type": "integer",
-      "comment": "域定义"
-    },
-    {
-      "label": "字段类型",
+      "label": "数据类型",
       "name": "type",
       "nullable": true,
       "type": "string",
-      "comment": "字段类型定义"
+      "length": 80,
+      "comment": "数据类型定义",
+      "validations": [
+        {
+          "method": "maxLength",
+          "args": [80],
+          "message": "{{label}}最大长度为80"
+        }
+      ]
     },
     {
-      "comment": "字段长度，对 `string` 等类型字段有效",
+      "comment": "字段长度，对文本类型字段有效",
       "label": "字段长度",
       "name": "length",
       "precision": 10,
@@ -50,19 +51,26 @@
       "nullable": true
     },
     {
-      "comment": "字段位数(含小数位)，对 `float`、`decimal` 等类型字段有效",
-      "label": "字段位数(含小数位)",
+      "comment": "位数(含小数位)，对float、decimal类型字段有效",
+      "label": "位数(含小数位)",
       "name": "precision",
       "precision": 10,
       "type": "integer",
       "nullable": true
     },
     {
-      "label": "字段小数位位数",
+      "label": "小数位位数",
       "name": "scale",
       "precision": 10,
       "type": "integer",
-      "comment": "字段小数位位数，对 `float`、`decimal` 等类型字段有效",
+      "comment": "字段小数位位数，对float、decimal类型字段有效",
+      "nullable": true
+    },
+    {
+      "comment": "字段的可选项，对enum类型字段有效",
+      "label": "可选项",
+      "name": "options",
+      "type": "json",
       "nullable": true
     },
     {
@@ -73,21 +81,60 @@
       "nullable": true
     }
   ],
-  "relations": {
-    "domain": {
-      "label": "域",
-      "type": "hasOne",
-      "foreign": "domain_id",
-      "key": "id",
-      "model": "ddic.domain",
-      "query": {}
+  "relations": {},
+  "values": [
+    {
+      "name": "电话号码",
+      "type": "string",
+      "length": "10",
+      "validations": [
+        {
+          "method": "mobile",
+          "args": [],
+          "message": "::{{input}} should be mobile"
+        }
+      ]
+    },
+    {
+      "name": "邮件地址",
+      "type": "string",
+      "length": "50",
+      "validations": [
+        {
+          "method": "email",
+          "args": [],
+          "message": "::{{input}} should be email"
+        }
+      ]
+    },
+    {
+      "name": "状态",
+      "type": "enum",
+      "length": "10",
+      "options": [
+        {
+          "label": "启用",
+          "value": "enabled"
+        },
+        {
+          "label": "禁用",
+          "value": "disabled"
+        }
+      ],
+      "validations": [
+        {
+          "method": "enum",
+          "args": ["enabled", "disabled"],
+          "message": "::{{input}} Error, {{label}} should be enabled/disabled"
+        }
+      ]
     }
-  },
+  ],
   "xgen": {
     "table": {
       "fields": {
         "table": {
-          "字段类型": {
+          "数据类型": {
             "edit": {
               "type": "Select",
               "props": {
@@ -125,6 +172,15 @@
     "form": {
       "fields": {
         "form": {
+          "可选项": {
+            "edit": {
+              "type": "List",
+              "props": {
+                "name": "ddic.option",
+                "showLabel": true
+              }
+            }
+          },
           "校验规则": {
             "edit": {
               "type": "List",
@@ -134,7 +190,7 @@
               }
             }
           },
-          "字段类型": {
+          "数据类型": {
             "edit": {
               "type": "Select",
               "props": {
@@ -147,6 +203,9 @@
                       "value": "type"
                     }
                   }
+                },
+                "$on:change": {
+                  "process": "scripts.ddic.xgen.element.onChange"
                 }
               }
             }
