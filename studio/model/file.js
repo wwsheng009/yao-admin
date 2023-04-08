@@ -31,6 +31,21 @@ function SlashName(pathname) {
     return newStr;
 }
 /**
+ * yao studio run model.file.UnderscoreName crm.help
+ * @param {string} pathname
+ * @returns pathname
+ */
+function UnderscoreName(pathname) {
+    let str = pathname;
+    str = str.replace(/\\/g, "/");
+    str = str.replace(/\/\//g, "/");
+    str = str.replace(/\//g, "_");
+    str = str.replace(/-/g, "_");
+    str = str.replace(/\./g, "_");
+    let newStr = str.replace(/^_+|_+$/g, "");
+    return newStr;
+}
+/**
  * yao studio run model.file.FileNameConvert "/models/cms__help.mod.json"
  * yao studio run model.file.FileNameConvert "/models/cms.help.mod.json"
  * yao studio run model.file.FileNameConvert "/models/cms.json"

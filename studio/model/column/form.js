@@ -126,7 +126,12 @@ function toForm(modelDsl) {
         let form = Cast(column, modelDsl);
         if (form) {
             form.layout.forEach((tc) => {
-                formTemplate.layout.form.sections[0].columns.push(tc);
+                if (tc.width < 24) {
+                    formTemplate.layout.form.sections[0].columns.push(tc);
+                }
+                else {
+                    formTemplate = AddTabColumn(formTemplate, tc);
+                }
             });
             form.fields.forEach((ft) => {
                 formTemplate.fields.form[ft.name] = ft.component;
@@ -137,6 +142,34 @@ function toForm(modelDsl) {
     formTemplate = updateReference(formTemplate, modelDsl);
     formTemplate = Studio("model.relation.List", formTemplate, modelDsl);
     formTemplate = mergeFormTemplateFromModel(formTemplate, modelDsl);
+    return formTemplate;
+}
+/**
+ * yao studio run model.column.form.AddTabColumn
+ * @param formTemplate form template
+ * @param column column
+ * @returns new form template
+ */
+function AddTabColumn(formTemplate, column) {
+    let section = formTemplate.layout.form.sections.find((sec) => sec.columns?.find((col) => col.tabs != null));
+    if (section) {
+        let col = section.columns.find((col) => col.tabs != null);
+        col.tabs.push({
+            title: column.name,
+            columns: [column],
+        });
+    }
+    else {
+        formTemplate.layout.form.sections.push({
+            columns: [
+                {
+                    name: "列表",
+                    tabs: [{ title: column.name, columns: [column] }],
+                    width: 24,
+                },
+            ],
+        });
+    }
     return formTemplate;
 }
 function mergeFormTemplateFromModel(formTemplate, modelDsl) {

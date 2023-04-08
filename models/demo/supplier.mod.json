@@ -1,0 +1,33 @@
+{
+  "option": {
+    "timestamps": false,
+    "soft_deletes": false
+  },
+  "relations": {},
+  "columns": [
+    {
+      "comment": "主键",
+      "unique": false,
+      "label": "标识",
+      "nullable": false,
+      "index": false,
+      "name": "id",
+      "type": "ID"
+    },
+    {
+      "type": "string",
+      "label": "名称",
+      "length": 20,
+      "unique": true,
+      "nullable": false,
+      "name": "name",
+      "index": true
+    }
+  ],
+  "name": "demo.supplier",
+  "comment": "供应商表",
+  "table": {
+    "name": "demo_supplier",
+    "comment": "供应商表"
+  }
+}

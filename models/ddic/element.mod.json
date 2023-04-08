@@ -79,14 +79,35 @@
       "type": "json",
       "comment": "字段校验规则",
       "nullable": true
+    },
+    {
+      "label": "备注",
+      "name": "comment",
+      "type": "string",
+      "length": 100,
+      "comment": "数据元素注释",
+      "nullable": true,
+      "validations": [
+        {
+          "method": "maxLength",
+          "args": [100],
+          "message": "{{label}}最大长度为80"
+        }
+      ]
     }
   ],
   "relations": {},
   "values": [
     {
+      "name": "ID",
+      "type": "ID",
+      "comment": "主键"
+    },
+    {
       "name": "电话号码",
       "type": "string",
       "length": "10",
+      "comment": "电话号码",
       "validations": [
         {
           "method": "mobile",
@@ -99,6 +120,7 @@
       "name": "邮件地址",
       "type": "string",
       "length": "50",
+      "comment": "邮件地址",
       "validations": [
         {
           "method": "email",
@@ -111,6 +133,7 @@
       "name": "状态",
       "type": "enum",
       "length": "10",
+      "comment": "状态",
       "options": [
         {
           "label": "启用",

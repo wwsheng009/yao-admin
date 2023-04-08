@@ -290,18 +290,22 @@ function List(formDsl, modelDsl) {
                 },
             },
         };
-        tabs.push({
-            // Tab一定要有标题，要不然不会显示
-            title: label,
-            // desc: "表格" + translate + "信息",
-            columns: [{ name: label, width: 24 }],
+        // tabs.push({
+        //   // Tab一定要有标题，要不然不会显示
+        //   title: label,
+        //   // desc: "表格" + translate + "信息",
+        //   columns: [{ name: label, width: 24 }],
+        // });
+        formDsl = Studio("model.column.form.AddTabColumn", formDsl, {
+            name: label,
+            width: 24,
         });
     }
-    formDsl.layout.form.sections.push({
-        // title: "关联表",
-        // desc: "表格信息",
-        columns: [{ name: "列表", tabs, width: 24 }],
-    });
+    // formDsl.layout.form.sections.push({
+    //   // title: "关联表",
+    //   // desc: "表格信息",
+    //   columns: [{ name: "列表", tabs, width: 24 }],
+    // });
     const tabName = modelDsl.table.name;
     let funtionName = Studio("model.file.SlashName", tabName);
     let modelName = Studio("model.file.DotName", tabName);

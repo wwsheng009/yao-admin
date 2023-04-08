@@ -29,7 +29,8 @@ function UpdateTableFromDsl(model, modelDsl) {
     model.name = tableName;
     model.soft_deletes = modelDsl.option?.soft_deletes ? true : false;
     model.timestamps = modelDsl.option?.timestamps ? true : false;
-    model.columns = modelDsl.columns.map((item) => UpdateColumnFromDsl(item));
+    model.columns = modelDsl.columns.map((item) => UpdateColumnFromDsl(model, item));
+    //关联关系
     if (modelDsl.relations) {
         model.relations = [];
     }
@@ -40,8 +41,35 @@ function UpdateTableFromDsl(model, modelDsl) {
     model.relations = relations;
     return model;
 }
-function UpdateColumnFromDsl(modeCol) {
-    return modeCol;
+function UpdateColumnFromDsl(model, modelCol) {
+    let col = modelCol;
+    if (modelCol.option || modelCol.validations) {
+        let element = {
+            name: model.name + "_" + modelCol.name,
+        };
+        element.type = modelCol.type;
+        element.comment = modelCol.comment;
+        element.length = modelCol.length;
+        element.precision = modelCol.precision;
+        element.scale = modelCol.scale;
+        element.options = modelCol.option?.map((item) => {
+            return { label: item, value: item };
+        });
+        element.validations = modelCol.validations;
+        //查找是否存在相同的对象
+        const { data } = Process("models.ddic.element.Paginate", {
+            wheres: [{ column: "name", value: element.name }],
+            with: {},
+        }, 1, 1);
+        let id = data?.id;
+        let data1 = {
+            id,
+            ...element,
+        };
+        id = Process("models.ddic.element.Save", data1);
+        col.element_id = id;
+    }
+    return col;
 }
 function UpdateRelationFromDsl(key, rel) {
     let data = rel;

@@ -216,16 +216,11 @@ function GetRules(column, component) {
     const rules = [];
     let rule = {};
     const { index, unique, nullable, default: columnDefault, type: dbColumnType, } = column;
+    const antdType = dbTypeToAntd[dbColumnType];
     if (dbColumnType in dbTypeToAntd) {
-        const antdType = dbTypeToAntd[dbColumnType];
-        if (antdType === "enum" //&&      !["RadioGroup", "Select"].includes(component.edit.type)
-        ) {
+        if (antdType === "enum") {
             rule.type = antdType;
             rule.enum = column.option;
-        }
-        else if (antdType === "boolean" &&
-            ["RadioGroup", "Switch", "Select"].includes(component.type)) {
-            //控件值跟数据库有关,不能使用boolean类型验证
         }
         else if (antdType) {
             rule.type = antdType;
@@ -242,47 +237,50 @@ function GetRules(column, component) {
         rule.required = true;
     }
     const validations = column.validations;
-    if (!validations || !validations.length) {
-        if (rule?.type?.length > 0 || rule.required) {
-            rules.push(rule);
-        }
-        return rules;
+    if (validations && !validations.length) {
+        validations.forEach((validation) => {
+            switch (validation.method) {
+                case "typeof":
+                    rule.type = validation.args.find((arg) => validationTypeMap[arg]);
+                    break;
+                case "maxLength":
+                    if (validation.args && validation.args.length) {
+                        rule.max = validation.args[0];
+                    }
+                    break;
+                case "minLength":
+                    if (validation.args && validation.args.length) {
+                        rule.min = validation.args[0];
+                    }
+                    break;
+                case "enum":
+                    if (validation.args && validation.args.length) {
+                        rule.type = "enum";
+                        rule.enum = validation.args;
+                    }
+                    break;
+                case "pattern":
+                    if (validation.args && validation.args.length) {
+                        rules.push({
+                            pattern: validation.args[0],
+                            message: validation.message,
+                        });
+                    }
+                    break;
+                default:
+                    break;
+            }
+        });
     }
-    validations.forEach((validation) => {
-        switch (validation.method) {
-            case "typeof":
-                rule.type = validation.args.find((arg) => validationTypeMap[arg]);
-                break;
-            case "maxLength":
-                if (validation.args && validation.args.length) {
-                    rule.max = validation.args[0];
-                }
-                break;
-            case "minLength":
-                if (validation.args && validation.args.length) {
-                    rule.min = validation.args[0];
-                }
-                break;
-            case "enum":
-                if (validation.args && validation.args.length) {
-                    rule.type = "enum";
-                    rule.enum = validation.args;
-                }
-                break;
-            case "pattern":
-                if (validation.args && validation.args.length) {
-                    rules.push({
-                        pattern: validation.args[0],
-                        message: validation.message,
-                    });
-                }
-                break;
-            default:
-                break;
-        }
-    });
-    if (rule?.type?.length > 0 || rule.required) {
+    //控件值跟数据库有关,不能使用boolean类型验证
+    if (antdType === "boolean" &&
+        ["RadioGroup", "Switch", "Select"].includes(component.edit.type)) {
+        delete rule.type;
+    }
+    // if (rule?.type?.length > 0 || rule.required) {
+    if (Object.keys(rule).length !== 0) {
         rules.push(rule);
     }
+    // }
     return rules;
 }

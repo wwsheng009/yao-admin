@@ -26,7 +26,7 @@ function CreatTypes(models) {
         const fields = model.columns
             .map((item) => {
             return `    /**${item.comment} */
-    ${item.name}${isOption(item) ? "?" : ""}: ${getTsType(item, typeMapping)};`;
+    ${item.name}${isOption(item) ? "?" : ""}: ${getTsType(tabName, item, typeMapping)};`;
         }, [])
             .join("\n");
         let rels = [];
@@ -46,6 +46,7 @@ function CreatTypes(models) {
    * Table=> ${model.table.name} ${model.table.comment ? "(" + model.table.comment + ")" : ""}
   */
   export interface ${last} {
+    [key: string]: any;
 ${fields}
 ${rels.join("\n")}
   }
@@ -67,10 +68,15 @@ function isOption(column) {
     }
     return true;
 }
-function getTsType(column, typeMapping) {
+function getTsType(tabName, column, typeMapping) {
     let type = "any";
     if (column.type === "enum") {
-        type = column.option.map((item) => `"${item}"`).join(" | ");
+        if (!column.option) {
+            console.log(`column: ${column.name} in ${tabName} type is enum,but no options, is not valid`);
+        }
+        else {
+            type = column.option?.map((item) => `"${item}"`).join(" | ");
+        }
     }
     else if (column.type in typeMapping) {
         type = typeMapping[column.type];
@@ -104,6 +110,6 @@ function getTSTypeMapping() {
         float: "number",
         boolean: "boolean",
         enum: "Select",
-        json: "string",
+        json: "any[]",
     };
 }

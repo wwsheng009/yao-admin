@@ -4,7 +4,11 @@
  * @param modelid model id
  */
 function GenerateModelFile(modelid) {
-    const model = Process("yao.table.Find", "ddic.model", modelid);
+    const model = Process("models.ddic.model.Find", modelid, {
+        withs: {
+            columns: { withs: { element: {} } },
+        },
+    });
     // console.log(model);
     const m = DBModelToYaoModel(model);
     return SaveModelToFile(m);
@@ -23,6 +27,12 @@ function DBModelToYaoModel(model_ddic) {
     if (model_ddic.table_name != null) {
         model.table.name = model_ddic.table_name;
     }
+    if (!model.table.name) {
+        model.table.name = Studio("model.file.UnderscoreName", model.name);
+    }
+    if (!model.table.comment) {
+        model.table.comment = model.comment;
+    }
     if (model_ddic.table_comment != null) {
         model.table.comment = model_ddic.table_comment;
     }
@@ -32,20 +42,38 @@ function DBModelToYaoModel(model_ddic) {
     if (model_ddic.timestamps != null) {
         model.option.timestamps = model_ddic.timestamps ? true : false;
     }
-    model_ddic.relations.forEach((rel) => {
+    model_ddic.relations?.forEach((rel) => {
         model.relations[rel.name] = rel;
         model.relations[rel.name].query = JSON.parse(rel.query);
     });
-    model_ddic.columns.forEach((col) => {
+    model_ddic.columns?.forEach((col) => {
         delete col.id;
         delete col.model_id;
-        if (col.index != null) {
-            col.index = col.index ? true : false;
+        ["index", "nullable", "unique"].forEach((key) => {
+            if (col[key] != null) {
+                col[key] = col[key] ? true : false;
+            }
+        });
+        let col1 = col;
+        if (col.element_id) {
+            col.element = Process("models.ddic.element.Find", col.element_id, {});
+            ["type", "length", "scale", "precision", "comment"].forEach((field) => {
+                if (!col[field] && col.element[field]) {
+                    col[field] = col.element[field];
+                }
+            });
+            col1.validations = col.element?.validations;
+            if (col.element?.options) {
+                col1.option = [];
+                col.element.options.forEach((opt) => {
+                    col1.option.push(opt.value);
+                });
+                delete col.element?.options;
+            }
+            delete col.element;
+            delete col.element_id;
         }
-        if (col.nullable != null) {
-            col.nullable = col.nullable ? true : false;
-        }
-        model.columns.push(col);
+        model.columns.push(col1);
     });
     model = ClearFalsyKeys(model);
     return model;
