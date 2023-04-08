@@ -60,7 +60,7 @@ function mergeListTemplateFromModel(listTemplate, modelDsl) {
  * @returns
  */
 function Cast(column, modelDsl) {
-    const types = Studio("model.column.component.GetTypes");
+    const types = Studio("model.column.component.GetDBTypeMap");
     const title = column.label || column.name;
     const name = column.name;
     if (!name) {
@@ -179,5 +179,5 @@ function Cast(column, modelDsl) {
     return res;
 }
 function updateListCompFromModelXgen(component, column, modelDsl) {
-    return Studio("model.column.component.ModelXgen", component, column, modelDsl, "list");
+    return Studio("model.column.component.UpdateModelXgenComp", component, column, modelDsl, "list");
 }

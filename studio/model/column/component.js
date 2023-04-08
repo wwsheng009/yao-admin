@@ -1,10 +1,10 @@
 // import { Studio } from "yao-node-client";
 /**
  * 数据库类型与控件类型对应字段
- * yao studio run model.column.component.GetTypes
+ * yao studio run model.column.component.GetDBTypeMap
  * @returns
  */
-function GetTypes() {
+function GetDBTypeMap() {
     return {
         string: "Input",
         char: "Input",
@@ -92,15 +92,16 @@ function Enum(option) {
     return res;
 }
 /**
+ * 更新model xgen 设置中的组件设置
  *updateComponentFromModel
- * yao studio run model.column.component.ModelXgen
+ * yao studio run model.column.component.UpdateModelXgenComp
  * @param component 更新组件
  * @param column 模型定义列
  * @param modelDsl 模型定义
  * @param type 更新类型
  * @returns
  */
-function ModelXgen(component, column, modelDsl, type) {
+function UpdateModelXgenComp(component, column, modelDsl, type) {
     if (!component || !modelDsl || !modelDsl?.xgen) {
         return component;
     }
@@ -145,7 +146,7 @@ function EditPropes(component, column) {
         component.edit.props.itemProps = component.edit.props.itemProps || {};
         component.edit.props.itemProps.tooltip = column.comment;
     }
-    const rules = GetRules(column);
+    const rules = GetRules(column, component);
     if (rules?.length) {
         component.edit.props.itemProps = {
             ...component.edit.props.itemProps,
@@ -160,23 +161,24 @@ function EditPropes(component, column) {
     }
     // 默认值
     if (column.default != null) {
+        component.edit.props.itemProps = component.edit.props.itemProps || {};
         const ismysql = Studio("model.utils.IsMysql");
         const defaultValue = ismysql && column.type === "boolean"
             ? column.default
                 ? 1
                 : 0
             : column.default;
-        component.edit.props.defaultValue = defaultValue;
-        if (["RadioGroup", "Select"].includes(component.edit.type)) {
-            component.edit.props.value = defaultValue;
-        }
-        if (component.view && ["Switch"].includes(component.view.type)) {
-            component.view.props.value = defaultValue;
-        }
+        component.edit.props.itemProps.initialValue = defaultValue;
+        // if (["RadioGroup", "Select"].includes(component.edit.type)) {
+        //   component.edit.props.value = defaultValue;
+        // }
+        // if (component.view && ["Switch"].includes(component.view.type)) {
+        //   component.view.props.value = defaultValue;
+        // }
     }
     return component;
 }
-function GetRules(column) {
+function GetRules(column, component) {
     const validationTypeMap = {
         string: "string",
         integer: "integer",
@@ -213,13 +215,17 @@ function GetRules(column) {
     };
     const rules = [];
     let rule = {};
-    const { unique, nullable, default: columnDefault, type: dbColumnType, } = column;
+    const { index, unique, nullable, default: columnDefault, type: dbColumnType, } = column;
     if (dbColumnType in dbTypeToAntd) {
         const antdType = dbTypeToAntd[dbColumnType];
         if (antdType === "enum" //&&      !["RadioGroup", "Select"].includes(component.edit.type)
         ) {
             rule.type = antdType;
             rule.enum = column.option;
+        }
+        else if (antdType === "boolean" &&
+            ["RadioGroup", "Switch", "Select"].includes(component.type)) {
+            //控件值跟数据库有关,不能使用boolean类型验证
         }
         else if (antdType) {
             rule.type = antdType;
@@ -229,14 +235,19 @@ function GetRules(column) {
             rule.max = column.length;
         }
     }
-    if (!/^id$/i.test(dbColumnType) ||
-        unique ||
-        ((columnDefault === null || columnDefault === undefined) && !nullable)) {
+    if (!/^id$/i.test(dbColumnType) &&
+        (index ||
+            unique ||
+            ((columnDefault === null || columnDefault === undefined) && !nullable))) {
         rule.required = true;
     }
     const validations = column.validations;
-    if (!validations || !validations.length)
+    if (!validations || !validations.length) {
+        if (rule?.type?.length > 0 || rule.required) {
+            rules.push(rule);
+        }
         return rules;
+    }
     validations.forEach((validation) => {
         switch (validation.method) {
             case "typeof":
@@ -270,7 +281,7 @@ function GetRules(column) {
                 break;
         }
     });
-    if (rule.type.length > 0 || rule.required) {
+    if (rule?.type?.length > 0 || rule.required) {
         rules.push(rule);
     }
     return rules;

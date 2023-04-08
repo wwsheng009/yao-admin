@@ -21,7 +21,14 @@
       "type": "string",
       "length": 80,
       "nullable": false,
-      "comment": "数据库表的字段名name"
+      "comment": "数据库表的字段名name",
+      "validations": [
+        {
+          "method": "pattern",
+          "args": ["^[a-zA-Z_][a-zA-Z0-9_]*$"],
+          "message": "只允许数字与字母，下划线，划线"
+        }
+      ]
     },
     {
       "label": "标签",

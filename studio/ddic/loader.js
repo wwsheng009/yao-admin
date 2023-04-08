@@ -22,23 +22,22 @@ function LoadModel(modelDsls) {
 function UpdateTableFromDsl(model, modelDsl) {
     let tableName = Studio("model.file.DotName", modelDsl.table.name);
     model.table_name = tableName.replaceAll(".", "_");
-    model.model_comment = modelDsl.comment;
+    model.comment = modelDsl.comment;
     model.table_comment = modelDsl.table?.comment;
     let dots = tableName.split(".");
     dots.pop();
-    model.namespace = dots.join(".");
     model.name = tableName;
     model.soft_deletes = modelDsl.option?.soft_deletes ? true : false;
     model.timestamps = modelDsl.option?.timestamps ? true : false;
     model.columns = modelDsl.columns.map((item) => UpdateColumnFromDsl(item));
     if (modelDsl.relations) {
-        model.relations = "";
+        model.relations = [];
     }
     let relations = [];
     for (const key in modelDsl.relations) {
         relations.push(UpdateRelationFromDsl(key, modelDsl.relations[key]));
     }
-    model.relations = JSON.stringify(relations);
+    model.relations = relations;
     return model;
 }
 function UpdateColumnFromDsl(modeCol) {
@@ -47,6 +46,7 @@ function UpdateColumnFromDsl(modeCol) {
 function UpdateRelationFromDsl(key, rel) {
     let data = rel;
     data.name = key;
+    data.model = rel.model;
     //must do this in case xgen will dump
     data.query = JSON.stringify(rel.query);
     return data;

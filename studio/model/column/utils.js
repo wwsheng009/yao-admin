@@ -5,18 +5,18 @@
  * @returns 排序后的数据列
  */
 function MakeColumnOrder(columns) {
-    const typeMapping = Studio("model.column.component.GetTypes");
-    let columns1 = [];
+    const typeMapping = Studio("model.column.component.GetDBTypeMap");
+    let columnsBefore = [];
     //json或是textarea控件放在最后
-    let columns2 = [];
+    let columnsAfter = [];
     columns.forEach((column) => {
         if (["TextArea"].includes(typeMapping[column.type]) ||
             column.type === "json") {
-            columns2.push(column);
+            columnsAfter.push(column);
         }
         else {
-            columns1.push(column);
+            columnsBefore.push(column);
         }
     });
-    return columns1.concat(columns2);
+    return columnsBefore.concat(columnsAfter);
 }

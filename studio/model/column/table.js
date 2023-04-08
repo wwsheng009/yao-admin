@@ -155,7 +155,7 @@ function Cast(column, modelDsl) {
         // console.log("castTableColumn: hidden");
         return false;
     }
-    const typeMapping = Studio("model.column.component.GetTypes");
+    const typeMapping = Studio("model.column.component.GetDBTypeMap");
     if (!name) {
         // console.log("castTableColumn: missing name");
         log.Error("castTableColumn: missing name");
@@ -343,5 +343,5 @@ function updateViewSwitchPropes(component, column) {
     return component;
 }
 function updateCompFromModelXgen(component, column, modelDsl) {
-    return Studio("model.column.component.ModelXgen", component, column, modelDsl, "table");
+    return Studio("model.column.component.UpdateModelXgenComp", component, column, modelDsl, "table");
 }

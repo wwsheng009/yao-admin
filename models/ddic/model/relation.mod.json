@@ -14,7 +14,14 @@
       "type": "string",
       "length": 80,
       "nullable": false,
-      "comment": "定义关系名称"
+      "comment": "定义关系名称",
+      "validations": [
+        {
+          "method": "pattern",
+          "args": ["^[a-zA-Z_][a-zA-Z0-9_]*$"],
+          "message": "只允许数字与字母，下划线，划线"
+        }
+      ]
     },
     {
       "label": "关系描述",
@@ -37,7 +44,14 @@
       "type": "string",
       "label": "关联模型",
       "comment": "关联的模型",
-      "nullable": false
+      "nullable": false,
+      "validations": [
+        {
+          "method": "pattern",
+          "args": ["^[a-zA-Z_][a-zA-Z0-9_]*$"],
+          "message": "只允许数字与字母，下划线，划线"
+        }
+      ]
     },
     {
       "name": "foreign",

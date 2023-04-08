@@ -14,7 +14,7 @@ function CreateModelTypes(type = "ddic") {
     CreatTypes(modelDsl);
 }
 function CreatTypes(models) {
-    const typeMapping = getTypes();
+    const typeMapping = getTSTypeMapping();
     const codes = models.map((model) => {
         const tabName = model.table.name;
         let funtionName = Studio("model.file.SlashName", tabName);
@@ -77,7 +77,7 @@ function getTsType(column, typeMapping) {
     }
     return type;
 }
-function getTypes() {
+function getTSTypeMapping() {
     return {
         ID: "number",
         string: "string",

@@ -386,11 +386,12 @@ function Save(payload) {
     SaveRelations(res, payload);
   } catch (error) {
     console.log("Data Save Failed")
-    console.log(error)
     ${Rollback()}
     if(error.message,error.code){
+      console.log("error:",error.code,error.message)
       throw new Exception(error.message,error.code)
     }else{
+      console.log(error)
       throw error
     }
   }

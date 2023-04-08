@@ -173,7 +173,7 @@ function updateReference(formTemplate, modelDsl) {
                 name: modelDsl.relations[rel].label || rel,
                 payload: {
                     Form: {
-                        type: "edit",
+                        type: "view",
                         model: modelDsl.relations[rel].model,
                         id: `{{${modelDsl.relations[rel].foreign}}}`,
                     },
@@ -187,7 +187,7 @@ function updateReference(formTemplate, modelDsl) {
             defaultOpen: false,
             payload: {
                 Form: {
-                    type: "edit",
+                    type: "view",
                     model: referenceContent[0].payload.Form.model,
                     id: `${referenceContent[0].payload.Form.id}`,
                 },
@@ -208,7 +208,7 @@ function updateReference(formTemplate, modelDsl) {
  * @returns
  */
 function Cast(column, modelDsl) {
-    const types = Studio("model.column.component.GetTypes");
+    const types = Studio("model.column.component.GetDBTypeMap");
     const title = column.label || column.name;
     const name = column.name;
     if (!name) {
@@ -331,5 +331,5 @@ function Cast(column, modelDsl) {
     return res;
 }
 function updateFormCompModelXgen(component, column, modelDsl) {
-    return Studio("model.column.component.ModelXgen", component, column, modelDsl, "form");
+    return Studio("model.column.component.UpdateModelXgenComp", component, column, modelDsl, "form");
 }
