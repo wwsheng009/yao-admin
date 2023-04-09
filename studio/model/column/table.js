@@ -46,7 +46,7 @@ function toTable(modelDsl) {
                                 {
                                     payload: {
                                         Form: {
-                                            model: table_dot_name,
+                                            model: table_dot_name + "_view",
                                             type: "view",
                                         },
                                     },
@@ -191,25 +191,25 @@ function Cast(column, modelDsl) {
     if (title.length > 5) {
         width = 250;
     }
+    if (column.name === "product_pic") {
+        console.log("product_pic");
+    }
     // 如果是json的,去看看是不是图片文件
     if (column.type === "json") {
-        component = Studio("model.column.file.IsFile", column, null);
-        if (!component) {
-            //可以再优化下
-            component = {
-                bind: bind,
-                view: {
-                    props: {},
-                    // compute: "scripts.ddic.compute.json.View",
-                    type: "Tooltip",
-                },
-                edit: {
-                    // compute: "scripts.ddic.compute.json.Edit",
-                    props: {},
-                    type: "TextArea",
-                },
-            };
-        }
+        //可以再优化下
+        component = {
+            bind: bind,
+            view: {
+                props: {},
+                // compute: "scripts.ddic.compute.json.View",
+                type: "Tooltip",
+            },
+            edit: {
+                // compute: "scripts.ddic.compute.json.Edit",
+                props: {},
+                type: "TextArea",
+            },
+        };
         // log.Error("castTableColumn: Type %s does not support", column.type);
     }
     else if (column.type === "enum") {
@@ -265,6 +265,7 @@ function Cast(column, modelDsl) {
             component.edit.type = typeMapping[column.type];
         }
     }
+    component = Studio("model.column.file.IsFile", column, component);
     //检查是否下拉框显示
     component = Studio("model.relation.Select", column, modelDsl, component);
     // 如果是下拉的,则增加查询条件

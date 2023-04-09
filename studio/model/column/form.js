@@ -1,5 +1,10 @@
 // import { Studio } from "yao-node-client";
-function toForm(modelDsl) {
+/**
+ * yao studio run model.column.form.toForm
+ * @param modelDsl model dsl
+ * @returns new form dsl
+ */
+function toForm(modelDsl, type = "view") {
     const copiedObject = JSON.parse(JSON.stringify(modelDsl.columns));
     let columns = copiedObject || [];
     const table_dot_name = Studio("model.file.DotName", modelDsl.table.name);
@@ -140,7 +145,12 @@ function toForm(modelDsl) {
     });
     formTemplate.action.bind.option.withs = Studio("model.relation.GetWiths", modelDsl);
     formTemplate = updateReference(formTemplate, modelDsl);
-    formTemplate = Studio("model.relation.List", formTemplate, modelDsl);
+    if (type === "view") {
+        formTemplate = Studio("model.relation.Table", formTemplate, modelDsl);
+    }
+    else {
+        formTemplate = Studio("model.relation.List", formTemplate, modelDsl);
+    }
     formTemplate = mergeFormTemplateFromModel(formTemplate, modelDsl);
     return formTemplate;
 }
@@ -271,19 +281,16 @@ function Cast(column, modelDsl) {
     let width = 8;
     const bind = name;
     if (column.type == "json") {
-        component = Studio("model.column.file.IsFormFile", column, null, modelDsl);
-        if (!component) {
-            component = {
-                bind: bind,
-                edit: {
-                    props: {
-                        language: "json",
-                        height: 200,
-                    },
-                    type: "CodeEditor",
+        component = {
+            bind: bind,
+            edit: {
+                props: {
+                    language: "json",
+                    height: 200,
                 },
-            };
-        }
+                type: "CodeEditor",
+            },
+        };
     }
     else if (column.type == "enum") {
         component = {
@@ -338,13 +345,8 @@ function Cast(column, modelDsl) {
     if (["TextArea"].includes(types[column.type]) || column.type === "json") {
         width = 24;
     }
+    component = Studio("model.column.file.IsFormFile", column, component, modelDsl);
     component = Studio("model.relation.EditSelect", column, modelDsl, component);
-    // component = Studio(
-    //   "model.column.file.IsFormFile",
-    //   column,
-    //   component,
-    //   modelDsl
-    // );
     if (component.is_image) {
         width = 24;
     }

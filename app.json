@@ -4,9 +4,9 @@
   "short": "::Demo",
   "description": "::Another yao application",
   "version": "0.10.3",
-  "adminRoot": "admin",
-  "setup": "scripts.demo.Data",
   "menu": { "process": "flows.app.menu", "args": ["demo"] },
+  "setup": "studio.model.cmd.Setup",
+  "adminRoot": "admin",
   "optional": {
     "hideNotification": true,
     "hideSetting": false,

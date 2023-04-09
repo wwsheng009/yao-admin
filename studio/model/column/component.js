@@ -76,7 +76,7 @@ function HiddenFields(isTable) {
  * @returns
  */
 function FilterFields() {
-    return ["name", "title", "_sn"];
+    return ["name", "title"];
 }
 /**
  * 把模型中的option定义转换成控件select option对象

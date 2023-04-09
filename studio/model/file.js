@@ -1,5 +1,7 @@
 // import { FS } from "yao-node-client";
 /**
+ * 处理模型名称分隔符
+ *
  * yao studio run model.file.DotName table_name
  * yao studio run model.file.DotName /file/name
  * @param {string} pathname
@@ -16,6 +18,8 @@ function DotName(pathname) {
     return newStr;
 }
 /**
+ * 处理路径分隔符
+ *
  * yao studio run model.file.SlashName crm_help
  * @param {string} pathname
  * @returns pathname
@@ -31,6 +35,8 @@ function SlashName(pathname) {
     return newStr;
 }
 /**
+ * 处理数据库表名分隔符
+ *
  * yao studio run model.file.UnderscoreName crm.help
  * @param {string} pathname
  * @returns pathname
@@ -46,9 +52,9 @@ function UnderscoreName(pathname) {
     return newStr;
 }
 /**
+ * 转换成有效的文件名称
+ *
  * yao studio run model.file.FileNameConvert "/models/cms__help.mod.json"
- * yao studio run model.file.FileNameConvert "/models/cms.help.mod.json"
- * yao studio run model.file.FileNameConvert "/models/cms.json"
  * @param {string} filename
  * @returns new filename
  */
@@ -65,41 +71,32 @@ function FileNameConvert(filename) {
 }
 /**
  * 在scripts目录写入脚本内容
- * @param fname 脚本名称
+ *
+ * yao studio run model.file.WriteScript
+ * @param filename 脚本名称
  * @param scripts 脚本内容
  */
-function WriteScript(fname, scripts) {
+function WriteScript(filename, scripts) {
     let fs = new FS("script");
-    if (!fs.Exists(fname)) {
-        const folder = fname.split("/").slice(0, -1).join("/");
+    if (!fs.Exists(filename)) {
+        const folder = filename.split("/").slice(0, -1).join("/");
         if (!fs.Exists(folder)) {
             fs.MkdirAll(folder);
         }
     }
-    fs.WriteFile(fname, scripts);
+    const res = fs.WriteFile(filename, scripts);
+    if (res && res.code && res.message) {
+        console.log(`创建脚本文件失败【${res.code},${res.message}】：${filename}`);
+    }
+    else {
+        console.log(`创建脚本文件成功：${filename}`);
+    }
 }
-// export function FileNameConvert(filename: string) {
-//   let str = filename;
-//   str = str.replace(/_/g, "/");
-//   str = str.replace(/-/g, "/");
-//   str = str.replace(/\\/g, "/");
-//   str = str.replace(/\/\//g, "/");
-//   let arr = str.split(".");
-//   if (arr.length < 3) {
-//     return str;
-//   }
-//   let suffix = arr.slice(-2);
-//   let header = arr.slice(0, -2);
-//   let str1 = header.join("/");
-//   str1 = str1 + "." + suffix.join(".");
-//   return str1;
-// }
 /**
- * write file
- * yao studio run model.file.WriteFile "/models/cms_help.mod.json"
- * yao studio run model.file.WriteFile "/models/cms.help.mod.json"
- * yao studio run model.file.WriteFile "/models/cms.json"
- * @param {string} filename filename
+ * write yao dsl json file
+ *
+ * yao studio run model.file.WriteFile fname data
+ * @param {string} filename json file name
  * @param {object} data
  */
 function WriteFile(filename, data) {
@@ -111,35 +108,28 @@ function WriteFile(filename, data) {
             fs.MkdirAll(folder);
         }
     }
-    fs.WriteFile(filename, JSON.stringify(data));
+    const res = fs.WriteFile(filename, JSON.stringify(data));
+    if (res && res.code && res.message) {
+        console.log(`创建配置文件失败【${res.code},${res.message}】：${filename}`);
+    }
+    else {
+        console.log(`创建配置文件成功：${filename}`);
+    }
 }
-// export function WriteFile(filename: string, data: object) {
-//   let nfilename = FileNameConvert(filename);
-//   let fs = new FS("dsl");
-//   if (!fs.Exists(nfilename)) {
-//     let paths = nfilename.split("/");
-//     paths.pop();
-//     let folder = paths.join("/");
-//     if (!fs.Exists(folder)) {
-//       // console.log("make folder", folder);
-//       fs.MkdirAll(folder);
-//     }
-//   }
-//   // console.log("write file:", nfilename);
-//   fs.WriteFile(filename, JSON.stringify(data));
-// }
 /**
+ * 创建yao dsl 配置文件，如果已经存在，移动到.trash目录
+ *
  * yao studio run model.file.MoveAndWrite
  * @param folder Yao应用目录，相对于Yao App根目录
- * @param file
- * @param data
+ * @param file 文件名
+ * @param dsl dsl定义对象，会自动的转换成json
  */
-function MoveAndWrite(folder, file, data) {
+function MoveAndWrite(folder, file, dsl) {
     Move(folder, file);
-    WriteFile(`/${folder}/` + file, data);
+    WriteFile(folder ? `/${folder}/` + file : file, dsl);
 }
 /**
- * yao studio run model.move.Move
+ * yao studio run model.file.Move
  * 文件复制移动逻辑
  */
 function Move(dir, name) {
@@ -149,9 +139,9 @@ function Move(dir, name) {
     Mkdir(base_dir);
     const new_dir = Math.floor(Date.now() / 1000);
     // models的文件移动到
-    const target_name = dir + "/" + name;
+    const target_name = dir ? dir + "/" + name : name;
     // 如果已经存在
-    if (fs.Exists(dir + "/" + name)) {
+    if (fs.Exists(target_name)) {
         Mkdir(base_dir + "/" + new_dir);
         fs.Copy(target_name, `${base_dir}/${new_dir}/${name}`);
         // 复制完成后,删除文件

@@ -1,19 +1,21 @@
 // import { FS, Studio } from "yao-node-client";
 /**
- * yao studio run model.ts.CreateModelTypes
- * 创建一个ts类型定义文件
+ * 创建命名空间下的模型的ts定义，
+ *
+ * yao studio run model.ts.CreateModelTypes ddic
+ * @param namespace 模型命名空间，通常是models目录下的一个子目录名称
  */
-function CreateModelTypes(type = "ddic") {
-    const files = Studio("model.cmd.GetModelFnameList");
+function CreateModelTypes(namespace = "ddic") {
+    const files = Studio("model.model.GetModelFnameList");
     const fs = new FS("dsl");
     const modelDsl = files
-        .filter((item) => item.startsWith(type))
+        .filter((item) => item.startsWith(namespace))
         .map((file) => {
         return JSON.parse(fs.ReadFile("models/" + file));
     });
-    CreatTSTypes(modelDsl);
+    CreateTSTypes(namespace, modelDsl);
 }
-function CreatTSTypes(models) {
+function CreateTSTypes(namespace = "ddic", models) {
     const typeMapping = getTSTypeMapping();
     const codes = models.map((model) => {
         const tabName = model.table.name;
@@ -53,7 +55,7 @@ ${rels.join("\n")}
   `;
     });
     let sc = new FS("system");
-    sc.WriteFile(`/types.ts`, codes.join("\n"));
+    sc.WriteFile(`/${namespace}_types.ts`, codes.join("\n"));
     //   fs.WriteFile(`/${functionName}.js`, scripts);
 }
 function isOption(column) {
@@ -72,7 +74,8 @@ function getTsType(tabName, column, typeMapping) {
     let type = "any";
     if (column.type === "enum") {
         if (!column.option) {
-            console.log(`column: ${column.name} in ${tabName} type is enum,but no options, is not valid`);
+            console.log(`column: ${column.name} in ${tabName} type is enum,but no options, fallback to string`);
+            type = "string";
         }
         else {
             type = column.option?.map((item) => `"${item}"`).join(" | ");

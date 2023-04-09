@@ -7,3 +7,8 @@
 logs/
 db
 .trash
+forms
+tables
+lists
+!lists/option.list.json
+!lists/validation.list.json
