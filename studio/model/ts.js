@@ -11,9 +11,9 @@ function CreateModelTypes(type = "ddic") {
         .map((file) => {
         return JSON.parse(fs.ReadFile("models/" + file));
     });
-    CreatTypes(modelDsl);
+    CreatTSTypes(modelDsl);
 }
-function CreatTypes(models) {
+function CreatTSTypes(models) {
     const typeMapping = getTSTypeMapping();
     const codes = models.map((model) => {
         const tabName = model.table.name;
@@ -111,5 +111,6 @@ function getTSTypeMapping() {
         boolean: "boolean",
         enum: "Select",
         json: "any[]",
+        JSON: "string", //使用大写的JSON区分小写的json
     };
 }

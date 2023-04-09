@@ -29,7 +29,7 @@ function CreateFromFile() {
     Studio("model.table.Create", modelDsls);
     // 创建菜单
     Studio("model.menu.Create", modelDsls);
-    Studio("model.ts.CreatTypes", modelDsls);
+    Studio("model.ts.CreatTSTypes", modelDsls);
 }
 function CreateMenuFromFile() {
     const files = GetModelFnameList();

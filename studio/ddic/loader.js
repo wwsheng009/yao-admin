@@ -57,7 +57,7 @@ function UpdateColumnFromDsl(model, modelCol) {
         });
         element.validations = modelCol.validations;
         //查找是否存在相同的对象
-        const { data } = Process("models.ddic.element.Paginate", {
+        const { data } = Process("models.ddic.model.element.Paginate", {
             wheres: [{ column: "name", value: element.name }],
             with: {},
         }, 1, 1);
@@ -66,7 +66,7 @@ function UpdateColumnFromDsl(model, modelCol) {
             id,
             ...element,
         };
-        id = Process("models.ddic.element.Save", data1);
+        id = Process("models.ddic.model.element.Save", data1);
         col.element_id = id;
     }
     return col;

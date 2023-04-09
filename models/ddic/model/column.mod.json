@@ -128,7 +128,7 @@
     },
     "element": {
       "type": "hasOne",
-      "model": "ddic.element",
+      "model": "ddic.model.element",
       "key": "id",
       "foreign": "element_id"
     }
@@ -148,7 +148,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 }
@@ -171,7 +178,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 }
@@ -186,7 +200,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 }
@@ -209,7 +230,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 }

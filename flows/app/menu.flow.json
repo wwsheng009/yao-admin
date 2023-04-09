@@ -13,31 +13,9 @@
         "visible_menu": 0
       },
       {
-        "name": "域",
-        "path": "/x/Table/ddic.domain",
+        "name": "表单定义",
+        "path": "/x/Table/ddic.form",
         "children": [
-          {
-            "name": "域",
-            "path": "/x/Table/ddic.domain",
-            "children": [],
-            "icon": "icon-box",
-            "rank": 1,
-            "status": "enabled",
-            "extra": "ddic_domain",
-            "visible_menu": 0,
-            "id": 10
-          },
-          {
-            "name": "数据元素",
-            "path": "/x/Table/ddic.element",
-            "children": [],
-            "icon": "icon-box",
-            "rank": 2,
-            "status": "enabled",
-            "extra": "ddic_element",
-            "visible_menu": 0,
-            "id": 20
-          },
           {
             "name": "表单定义",
             "path": "/x/Table/ddic.form_folder",
@@ -46,40 +24,40 @@
                 "name": "表单定义",
                 "path": "/x/Table/ddic.form",
                 "icon": "icon-box",
-                "rank": 6,
+                "rank": 4,
                 "status": "enabled",
                 "visible_menu": 0,
-                "id": 51
+                "id": 31
               },
               {
                 "name": "表单动作",
                 "path": "/x/Table/ddic.form.action",
                 "children": [],
                 "icon": "icon-box",
-                "rank": 3,
+                "rank": 1,
                 "status": "enabled",
                 "extra": "ddic_form_action",
                 "visible_menu": 0,
-                "id": 30
+                "id": 10
               },
               {
                 "name": "表单字段列表",
                 "path": "/x/Table/ddic.form.field",
                 "children": [],
                 "icon": "icon-box",
-                "rank": 4,
+                "rank": 2,
                 "status": "enabled",
                 "extra": "ddic_form_field",
                 "visible_menu": 0,
-                "id": 40
+                "id": 20
               }
             ],
             "icon": "icon-box",
-            "rank": 5,
+            "rank": 3,
             "status": "enabled",
             "extra": "ddic_form",
             "visible_menu": 0,
-            "id": 50
+            "id": 30
           },
           {
             "name": "业务模型",
@@ -89,10 +67,10 @@
                 "name": "业务模型",
                 "path": "/x/Table/ddic.model",
                 "icon": "icon-box",
-                "rank": 10,
+                "rank": 9,
                 "status": "enabled",
                 "visible_menu": 0,
-                "id": 91
+                "id": 81
               },
               {
                 "name": "模型字段列表",
@@ -102,48 +80,48 @@
                     "name": "模型字段列表",
                     "path": "/x/Table/ddic.model.column",
                     "icon": "icon-box",
-                    "rank": 8,
+                    "rank": 6,
                     "status": "enabled",
                     "visible_menu": 0,
-                    "id": 71
+                    "id": 51
                   },
                   {
-                    "name": "模型字段类型",
+                    "name": "模型数据类型",
                     "path": "/x/Table/ddic.model.column.type",
                     "children": [],
                     "icon": "icon-box",
-                    "rank": 6,
+                    "rank": 4,
                     "status": "enabled",
                     "extra": "ddic_model_column_type",
                     "visible_menu": 0,
-                    "id": 60
+                    "id": 40
                   }
                 ],
                 "icon": "icon-box",
-                "rank": 7,
+                "rank": 5,
                 "status": "enabled",
                 "extra": "ddic_model_column",
                 "visible_menu": 0,
-                "id": 70
+                "id": 50
               },
               {
-                "name": "模型关联关系",
-                "path": "/x/Table/ddic.model.relation",
+                "name": "数据元素",
+                "path": "/x/Table/ddic.model.element",
                 "children": [],
                 "icon": "icon-box",
-                "rank": 8,
+                "rank": 6,
                 "status": "enabled",
-                "extra": "ddic_model_relation",
+                "extra": "ddic_model_element",
                 "visible_menu": 0,
-                "id": 80
+                "id": 60
               }
             ],
             "icon": "icon-box",
-            "rank": 9,
+            "rank": 8,
             "status": "enabled",
             "extra": "ddic_model",
             "visible_menu": 0,
-            "id": 90
+            "id": 80
           },
           {
             "name": "表格定义",
@@ -153,58 +131,58 @@
                 "name": "表格定义",
                 "path": "/x/Table/ddic.table",
                 "icon": "icon-box",
-                "rank": 14,
+                "rank": 13,
                 "status": "enabled",
                 "visible_menu": 0,
-                "id": 131
+                "id": 121
               },
               {
                 "name": "表格动作",
                 "path": "/x/Table/ddic.table.action",
                 "children": [],
                 "icon": "icon-box",
-                "rank": 10,
+                "rank": 9,
                 "status": "enabled",
                 "extra": "ddic_table_action",
                 "visible_menu": 0,
-                "id": 100
+                "id": 90
               },
               {
                 "name": "表格字段列表",
                 "path": "/x/Table/ddic.table.field",
                 "children": [],
                 "icon": "icon-box",
-                "rank": 11,
+                "rank": 10,
                 "status": "enabled",
                 "extra": "ddic_table_field",
                 "visible_menu": 0,
-                "id": 110
+                "id": 100
               },
               {
                 "name": "表格筛选字段列表",
                 "path": "/x/Table/ddic.table.filter",
                 "children": [],
                 "icon": "icon-box",
-                "rank": 12,
+                "rank": 11,
                 "status": "enabled",
                 "extra": "ddic_table_filter",
                 "visible_menu": 0,
-                "id": 120
+                "id": 110
               }
             ],
             "icon": "icon-box",
-            "rank": 13,
+            "rank": 12,
             "status": "enabled",
             "extra": "ddic_table",
             "visible_menu": 0,
-            "id": 130
+            "id": 120
           }
         ],
         "icon": "icon-box",
-        "rank": 1,
+        "rank": 3,
         "status": "enabled",
         "visible_menu": 0,
-        "id": 11
+        "id": 31
       },
       {
         "name": "宠物表",
@@ -215,18 +193,18 @@
             "path": "/x/Table/demo.pet",
             "children": [],
             "icon": "icon-box",
-            "rank": 14,
+            "rank": 13,
             "status": "enabled",
             "extra": "demo_pet",
             "visible_menu": 0,
-            "id": 140
+            "id": 130
           }
         ],
         "icon": "icon-box",
-        "rank": 14,
+        "rank": 13,
         "status": "enabled",
         "visible_menu": 0,
-        "id": 141
+        "id": 131
       }
     ],
     "setting": [

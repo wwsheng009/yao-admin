@@ -1,9 +1,9 @@
 {
   "description": "数据元素",
-  "name": "::Data Element",
+  "name": "::Data Model Element",
   "option": {},
   "table": {
-    "name": "ddic_element",
+    "name": "ddic_model_element",
     "comment": "数据元素"
   },
   "columns": [
@@ -30,7 +30,7 @@
     {
       "label": "数据类型",
       "name": "type",
-      "nullable": true,
+      "nullable": false,
       "type": "string",
       "length": 80,
       "comment": "数据类型定义",
@@ -44,7 +44,7 @@
     },
     {
       "comment": "字段长度，对文本类型字段有效",
-      "label": "字段长度",
+      "label": "长度",
       "name": "length",
       "precision": 10,
       "type": "integer",
@@ -167,7 +167,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 }
@@ -182,7 +189,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 }
@@ -223,7 +237,14 @@
                     "query": {
                       "model": "ddic.model.column.type",
                       "label": "name",
-                      "value": "type"
+                      "value": "type",
+                      "wheres": [
+                        {
+                          "column": "status",
+                          "op": "=",
+                          "value": "enabled"
+                        }
+                      ]
                     }
                   }
                 },

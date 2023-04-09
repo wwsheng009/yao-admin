@@ -56,7 +56,7 @@ function DBModelToYaoModel(model_ddic) {
         });
         let col1 = col;
         if (col.element_id) {
-            col.element = Process("models.ddic.element.Find", col.element_id, {});
+            col.element = Process("models.ddic.model.element.Find", col.element_id, {});
             ["type", "length", "scale", "precision", "comment"].forEach((field) => {
                 if (!col[field] && col.element[field]) {
                     col[field] = col.element[field];

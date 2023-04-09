@@ -15,6 +15,9 @@ function Create(modelDsls) {
     const english = /^[A-Za-z0-9\._-]*$/;
     let insert2 = [];
     for (let i = 0; i < modelDsls.length; i++) {
+        if (modelDsls[i].xgen?.menu?.no_display) {
+            continue;
+        }
         let tableName = modelDsls[i].table.name;
         if (!english.test(tableName)) {
             tableName = modelDsls[i].table.comment;

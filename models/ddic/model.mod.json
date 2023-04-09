@@ -102,7 +102,6 @@
           {
             "title": "生成模型文件",
             "icon": "icon-layers",
-            "showWhenAdd": true,
             "showWhenView": true,
             "action": [
               {

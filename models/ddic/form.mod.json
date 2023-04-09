@@ -68,7 +68,7 @@
       "foreign": "model_id"
     },
     "table": {
-      "label": "表单",
+      "label": "表格",
       "type": "hasOne",
       "model": "ddic.table",
       "key": "id",

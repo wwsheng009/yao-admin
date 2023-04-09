@@ -1,4 +1,147 @@
 {
+  "fields": {
+    "filter": {},
+    "chart": {
+      "ddic.table.field记录数": {
+        "link": "/x/Table/ddic.table.field",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        },
+        "bind": "ddic_table_field"
+      },
+      "表格数量": {
+        "bind": "table_count",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "个"
+          }
+        }
+      },
+      "ddic.model.column.type记录数": {
+        "bind": "ddic_model_column_type",
+        "link": "/x/Table/ddic.model.column.type",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.table.action记录数": {
+        "bind": "ddic_table_action",
+        "link": "/x/Table/ddic.table.action",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.form记录数": {
+        "bind": "ddic_form",
+        "link": "/x/Table/ddic.form",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.model记录数": {
+        "bind": "ddic_model",
+        "link": "/x/Table/ddic.model",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.table.filter记录数": {
+        "bind": "ddic_table_filter",
+        "link": "/x/Table/ddic.table.filter",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "demo.pet记录数": {
+        "bind": "demo_pet",
+        "link": "/x/Table/demo.pet",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "模型数量": {
+        "bind": "model_count",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "个"
+          }
+        }
+      },
+      "ddic.form.action记录数": {
+        "bind": "ddic_form_action",
+        "link": "/x/Table/ddic.form.action",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.model.element记录数": {
+        "bind": "ddic_model_element",
+        "link": "/x/Table/ddic.model.element",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.form.field记录数": {
+        "bind": "ddic_form_field",
+        "link": "/x/Table/ddic.form.field",
+        "view": {
+          "props": {
+            "unit": "条"
+          },
+          "type": "Number"
+        }
+      },
+      "ddic.model.column记录数": {
+        "bind": "ddic_model_column",
+        "link": "/x/Table/ddic.model.column",
+        "view": {
+          "type": "Number",
+          "props": {
+            "unit": "条"
+          }
+        }
+      },
+      "ddic.table记录数": {
+        "view": {
+          "props": {
+            "unit": "条"
+          },
+          "type": "Number"
+        },
+        "bind": "ddic_table",
+        "link": "/x/Table/ddic.table"
+      }
+    }
+  },
   "name": "数据图表",
   "action": {
     "data": {
@@ -24,14 +167,6 @@
           "width": 12
         },
         {
-          "name": "ddic.domain记录数",
-          "width": 6
-        },
-        {
-          "name": "ddic.element记录数",
-          "width": 6
-        },
-        {
           "width": 6,
           "name": "ddic.form.action记录数"
         },
@@ -40,8 +175,8 @@
           "width": 6
         },
         {
-          "width": 6,
-          "name": "ddic.form记录数"
+          "name": "ddic.form记录数",
+          "width": 6
         },
         {
           "name": "ddic.model.column.type记录数",
@@ -52,7 +187,7 @@
           "width": 6
         },
         {
-          "name": "ddic.model.relation记录数",
+          "name": "ddic.model.element记录数",
           "width": 6
         },
         {
@@ -81,168 +216,5 @@
         }
       ]
     }
-  },
-  "fields": {
-    "chart": {
-      "ddic.form记录数": {
-        "bind": "ddic_form",
-        "link": "/x/Table/ddic.form",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.model.column记录数": {
-        "bind": "ddic_model_column",
-        "link": "/x/Table/ddic.model.column",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.table.action记录数": {
-        "bind": "ddic_table_action",
-        "link": "/x/Table/ddic.table.action",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.table记录数": {
-        "bind": "ddic_table",
-        "link": "/x/Table/ddic.table",
-        "view": {
-          "props": {
-            "unit": "条"
-          },
-          "type": "Number"
-        }
-      },
-      "demo.pet记录数": {
-        "bind": "demo_pet",
-        "link": "/x/Table/demo.pet",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.domain记录数": {
-        "link": "/x/Table/ddic.domain",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        },
-        "bind": "ddic_domain"
-      },
-      "ddic.model记录数": {
-        "bind": "ddic_model",
-        "link": "/x/Table/ddic.model",
-        "view": {
-          "props": {
-            "unit": "条"
-          },
-          "type": "Number"
-        }
-      },
-      "ddic.table.field记录数": {
-        "bind": "ddic_table_field",
-        "link": "/x/Table/ddic.table.field",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.table.filter记录数": {
-        "link": "/x/Table/ddic.table.filter",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        },
-        "bind": "ddic_table_filter"
-      },
-      "表格数量": {
-        "bind": "table_count",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "个"
-          }
-        }
-      },
-      "模型数量": {
-        "bind": "model_count",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "个"
-          }
-        }
-      },
-      "ddic.form.action记录数": {
-        "bind": "ddic_form_action",
-        "link": "/x/Table/ddic.form.action",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.model.column.type记录数": {
-        "bind": "ddic_model_column_type",
-        "link": "/x/Table/ddic.model.column.type",
-        "view": {
-          "props": {
-            "unit": "条"
-          },
-          "type": "Number"
-        }
-      },
-      "ddic.model.relation记录数": {
-        "bind": "ddic_model_relation",
-        "link": "/x/Table/ddic.model.relation",
-        "view": {
-          "props": {
-            "unit": "条"
-          },
-          "type": "Number"
-        }
-      },
-      "ddic.element记录数": {
-        "bind": "ddic_element",
-        "link": "/x/Table/ddic.element",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      },
-      "ddic.form.field记录数": {
-        "bind": "ddic_form_field",
-        "link": "/x/Table/ddic.form.field",
-        "view": {
-          "type": "Number",
-          "props": {
-            "unit": "条"
-          }
-        }
-      }
-    },
-    "filter": {}
   }
 }

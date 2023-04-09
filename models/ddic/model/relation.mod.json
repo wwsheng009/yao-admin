@@ -69,12 +69,17 @@
     },
     {
       "name": "query",
-      "type": "json",
+      "type": "JSON",
       "label": "关联条件",
       "comment": "关联条件",
       "nullable": true
     }
   ],
   "relations": {},
-  "option": {}
+  "option": {},
+  "xgen": {
+    "menu": {
+      "no_display": true
+    }
+  }
 }
