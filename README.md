@@ -22,9 +22,19 @@
 
 - 针对一对一关联模型生成 reference/floatcontent 界面定义。
 
-- 生成一对多关联模型的数据保存脚本代码。
+- 生成一对多关联模型的数据保存脚本代码,mysql 支持事务处理。
+
+- 生成多个 hanMany 关联关系读取数据逻辑。
 
 - 根据模型字段的 validations 配置生成界面的控件的 rules，比如正则，必输。
+
+- 图片控件上传默认打开多个上传功能。
+
+- 图片控件上传与下载增强 compute。自动根据字段类型转换。
+
+- 在表单里宽度 24/类型为 json 的控件自动排在最后的 tabs 里。
+
+- 自动生成两种 form 文件，一个是编辑用的，自动嵌套 list 控件，一个是查看用，自动嵌套 table。
 
 - 自带一个模型界面配置工具，可使用 xgen 配置模型字段，并生成模型 DSL 文件。
 
@@ -62,6 +72,8 @@ yao studio run model.cmd.CreateModelsFromDB
 
 为何要基于模型生成 DSL 文件，从数据库生成的模型 DSL 文件中的 label 值并一定是您想要的，可以调整模型的字段的 label 设置后再生成界面配置文件。
 
+建议大家使用这个方式，因为根据数据库创建的模型不一定正确。
+
 ```sh
 # 针对所有模型
 yao studio run model.cmd.CreateFromFile
@@ -80,6 +92,10 @@ yao studio run model.model.CreateOne model
 YAO 官方提供了一个云 cloud 的翻译功能，会把一些数据库表中英文的字段说明翻译成中文。默认情况去掉了这一功能，一个是耗时，二是翻译的内容并不会十分准确。
 
 如果你想使用云 cloud 的翻译功能，请设置环境变量 USE_TRANSLATE=TRUE
+
+### 不支持的功能
+
+- 在 list 不支持 codeediter 控件
 
 ## 测试
 
