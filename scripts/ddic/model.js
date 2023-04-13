@@ -96,3 +96,13 @@ function Delete_columns(id){
 }
 
 
+
+//多对一表数据查找
+function AfterFind(payload){
+  const t = new Query();
+ payload["columns"]= t.Get(
+      {"from":"ddic_model_column","wheres":[{"column":"model_id","op":"=","value":payload.id}],"select":["id","model_id","name","label","index","unique","element_id","type","length","precision","scale","nullable","crypt","default","comment"]},
+  );
+ return payload;
+}
+  

@@ -7,7 +7,10 @@
  * @param component 更新的组件
  * @returns
  */
-function IsFile(column, component) {
+function IsFile(column, component, modelDsl) {
+    if (!["text", "json", "string", "logngtext", "mediumText"].includes(column.type)) {
+        return component;
+    }
     var guard = [
         "img",
         "image",
@@ -27,7 +30,7 @@ function IsFile(column, component) {
     ];
     const name = column.name;
     for (var i in guard) {
-        if (name.indexOf(guard[i]) != -1) {
+        if (name.includes(guard[i])) {
             var component = {
                 bind: name,
                 view: {
@@ -37,11 +40,13 @@ function IsFile(column, component) {
                 },
                 edit: {
                     type: "Upload",
-                    compute: "Upload",
-                    //compute: "scripts.file.image.ImagesEdit",
+                    compute: {
+                        process: "scripts.file.image.ImagesEdit",
+                        args: ["$C(row)", name, modelDsl.table.name],
+                    },
                     props: {
+                        maxCount: 100,
                         filetype: "image",
-                        disabled: true,
                         $api: {
                             process: "fs.system.Upload",
                         },
@@ -62,6 +67,9 @@ function IsFile(column, component) {
  * @returns
  */
 function IsFormFile(column, component, modelDsl) {
+    if (!["text", "json", "string", "logngtext", "mediumText"].includes(column.type)) {
+        return component;
+    }
     var guard = [
         "img",
         "image",
@@ -94,9 +102,10 @@ function IsFormFile(column, component, modelDsl) {
                     type: "Upload",
                     compute: {
                         process: "scripts.file.image.ImagesEdit",
-                        args: ["$C(row)", "$C(type)", name, modelDsl.table.name],
+                        args: ["$C(row)", name, modelDsl.table.name],
                     },
                     props: {
+                        maxCount: 100,
                         filetype: "image",
                         $api: { process: "fs.system.Upload" },
                     },

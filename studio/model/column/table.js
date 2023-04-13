@@ -149,6 +149,7 @@ function Cast(column, modelDsl) {
     // const props = column.props || {};
     let title = column.label || column.name;
     const name = column.name;
+    const ismysql = Studio("model.utils.IsMysql");
     // 不展示隐藏列
     let hidden = Studio("model.column.component.HiddenFields", true);
     if (hidden.indexOf(name) != -1) {
@@ -231,10 +232,12 @@ function Cast(column, modelDsl) {
             },
         };
     }
-    else if (column.type === "boolean") {
+    else if (column.type === "boolean" ||
+        (column.type === "tinyInteger" &&
+            ismysql &&
+            (column.default === 0 || column.default === 1))) {
         let checkedValue = true;
         let unCheckedValue = false;
-        const ismysql = Studio("model.utils.IsMysql");
         if (ismysql) {
             checkedValue = 1;
             unCheckedValue = 0;
@@ -265,7 +268,7 @@ function Cast(column, modelDsl) {
             component.edit.type = typeMapping[column.type];
         }
     }
-    component = Studio("model.column.file.IsFile", column, component);
+    component = Studio("model.column.file.IsFile", column, component, modelDsl);
     //检查是否下拉框显示
     component = Studio("model.relation.Select", column, modelDsl, component);
     // 如果是下拉的,则增加查询条件

@@ -301,6 +301,9 @@ function List(formDsl, modelDsl) {
             width: 24,
         });
     }
+    if (RelList.length === 0) {
+        return formDsl;
+    }
     const tabName = modelDsl.table.name;
     let funtionName = Studio("model.file.SlashName", tabName);
     let modelName = Studio("model.file.DotName", tabName);
@@ -308,6 +311,7 @@ function List(formDsl, modelDsl) {
     //function templates
     const saveDataFunList = RelList.map((rel) => CreateDataSaveCode(rel));
     const deleteDataFunList = RelList.map((rel) => CreateDataDeleteCode(rel));
+    const AfterFind = CreateAfterFind(relations);
     //called code list
     const saveDataCodes = RelList.map((rel) => `Save_${rel.name}(id,payload);`);
     const deleteDataCodes = RelList.map((rel) => `Delete_${rel.name}(id);`);
@@ -316,9 +320,61 @@ function List(formDsl, modelDsl) {
             process: `scripts.${modelName}.Save`,
         };
         formDsl.action["before:delete"] = `scripts.${modelName}.BeforeDelete`;
-        WriteScript(funtionName, modelName, saveDataCodes, deleteDataCodes, saveDataFunList, deleteDataFunList);
+        formDsl.action["after:find"] = `scripts.${modelName}.AfterFind`;
+        WriteScript(funtionName, modelName, saveDataCodes, deleteDataCodes, saveDataFunList, deleteDataFunList, AfterFind);
     }
     return formDsl;
+}
+function CreateAfterFind(relations) {
+    let templates = [];
+    const payload = {
+        id: 0,
+    };
+    for (const rel in relations) {
+        const element = relations[rel];
+        if (element.type !== "hasMany") {
+            continue;
+        }
+        const model = Studio("model.model.GetModel", element.model);
+        if (!model) {
+            console.log(`模型${element.model}不存在！`);
+            continue;
+        }
+        let query = {};
+        if (element.query) {
+            query = element.query;
+        }
+        else {
+        }
+        if (!query.from) {
+            query.from = model.table.name;
+        }
+        // if (!query.limit) {
+        //   query.limit = 100;
+        // }
+        query.wheres = query.wheres || [];
+        if (!query.select) {
+            query.select = [];
+            model.columns.forEach((col) => query.select.push(col.name));
+        }
+        query.wheres.push({
+            column: element.key,
+            op: "=",
+            value: ">>>payload.id<<<",
+        });
+        let str = `payload["${rel}"]= t.Get(
+      ${JSON.stringify(query)},
+  );`.replace(/">>>payload.id<<<"/g, "payload.id");
+        templates.push(str);
+    }
+    return `
+//多对一表数据查找
+function AfterFind(payload){
+  const t = new Query();
+ ${templates.join("\n")}
+ return payload;
+}
+  `;
 }
 function CreateDataDeleteCode(rel) {
     return `
@@ -370,7 +426,7 @@ function Rollback() {
   `
         : "";
 }
-function WriteScript(functionName, modelName, saveDataCodes, deleteDataCodes, saveDataFunctionList, deleteDataFuntionList) {
+function WriteScript(functionName, modelName, saveDataCodes, deleteDataCodes, saveDataFunctionList, deleteDataFuntionList, AfterFind) {
     // let sc = new FS("script");
     let scripts = `
 function Save(payload) {
@@ -412,6 +468,7 @@ ${saveDataFunctionList.join("\n")}
 
 ${deleteDataFuntionList.join("\n")}
 
+${AfterFind}
 `;
     // sc.WriteFile(`/${functionName}.js`, scripts);
     Studio("model.file.WriteScript", `/${functionName}.js`, scripts);

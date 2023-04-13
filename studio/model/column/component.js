@@ -160,7 +160,9 @@ function EditPropes(component, column) {
         };
     }
     // 默认值
-    if (column.default != null) {
+    if (column.default != null &&
+        column.default != "TlVMTA==" &&
+        component.edit.type !== "Upload") {
         component.edit.props.itemProps = component.edit.props.itemProps || {};
         const ismysql = Studio("model.utils.IsMysql");
         const defaultValue = ismysql && column.type === "boolean"
@@ -169,12 +171,6 @@ function EditPropes(component, column) {
                 : 0
             : column.default;
         component.edit.props.itemProps.initialValue = defaultValue;
-        // if (["RadioGroup", "Select"].includes(component.edit.type)) {
-        //   component.edit.props.value = defaultValue;
-        // }
-        // if (component.view && ["Switch"].includes(component.view.type)) {
-        //   component.view.props.value = defaultValue;
-        // }
     }
     return component;
 }
@@ -188,11 +184,11 @@ function GetRules(column, component) {
         bool: "number",
     };
     const dbTypeToAntd = {
-        string: "string",
-        char: "string",
-        text: "string",
-        mediumText: "string",
-        longText: "string",
+        // string: "string",有可能是json
+        // char: "string",
+        // text: "string",
+        // mediumText: "string",
+        // longText: "string",
         date: "date",
         datetime: "date",
         datetimeTz: "date",
@@ -207,11 +203,12 @@ function GetRules(column, component) {
         unsignedSmallInteger: "integer",
         integer: "integer",
         bigInteger: "integer",
-        decimal: "float",
-        unsignedDecimal: "float",
-        float: "float",
+        // decimal: "number", 过于严格
+        // unsignedDecimal: "number",
+        // float: "number",
         boolean: "boolean",
         enum: "enum",
+        image: "array",
     };
     const rules = [];
     let rule = {};
@@ -222,18 +219,21 @@ function GetRules(column, component) {
             rule.type = antdType;
             rule.enum = column.option;
         }
-        else if (antdType) {
+        else if (antdType !== null && antdType !== undefined) {
             rule.type = antdType;
         }
-        if (["string", "number"].includes(antdType) && column.length) {
-            //MAX Length
-            rule.max = column.length;
-        }
     }
+    // if (column.length) {
+    //MAX Length
+    // rule.max = column.length;
+    // }
     if (!/^id$/i.test(dbColumnType) &&
         (index ||
             unique ||
-            ((columnDefault === null || columnDefault === undefined) && !nullable))) {
+            ((columnDefault === null ||
+                columnDefault === undefined ||
+                columnDefault === "TlVMTA==") &&
+                !nullable))) {
         rule.required = true;
     }
     const validations = column.validations;

@@ -96,3 +96,13 @@ function Delete_fields(id){
 }
 
 
+
+//多对一表数据查找
+function AfterFind(payload){
+  const t = new Query();
+ payload["fields"]= t.Get(
+      {"from":"ddic_form_field","wheres":[{"column":"form_id","op":"=","value":payload.id}],"select":["id","form_id","name","bind","edit_type","edit_props","view_type","view_props","description","width","required","option","enable","default","is_dispaly"]},
+  );
+ return payload;
+}
+  

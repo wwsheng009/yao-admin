@@ -157,6 +157,8 @@ function compress(items, level) {
                 if (item.children) {
                     const children = compress(item.children, level + 1);
                     if (children.length === 1) {
+                        delete item.children;
+                        newarray.push(item);
                         newarray = newarray.concat(children);
                         continue;
                     }
@@ -176,51 +178,6 @@ function compress(items, level) {
                 }
                 newarray.push(item);
             }
-        }
-    }
-    return newarray;
-    for (const item of items) {
-        if (item.name === "") {
-            //第一级是左边的显示
-            if (level === 1) {
-                if (item.children && item.children.length > 0) {
-                    const { name, path, icon, rank, status, visible_menu, id } = item.children[0];
-                    item.name = name;
-                    item.path = path;
-                    item.icon = icon;
-                    item.rank = rank;
-                    item.status = status;
-                    item.visible_menu = visible_menu;
-                    item.id = id + 1;
-                }
-                item.children = compress(item.children, level + 1);
-                newarray.push(item);
-                continue;
-            }
-        }
-        if (item.children.length > 0) {
-            // Use if-else statement instead of nesting if statements
-            item.children = compress(item.children, level + 1);
-            const { name, path, icon, rank, status, visible_menu, id } = item;
-            //层级2开始是antd的菜单结构，不能有重复的path。
-            if (level > 1) {
-                item.path += "_folder";
-            }
-            if (name !== "") {
-                item.children.unshift({
-                    name,
-                    path,
-                    icon,
-                    rank: rank + 1,
-                    status,
-                    visible_menu,
-                    id: id + 1,
-                });
-                newarray.push(item);
-            }
-        }
-        else {
-            newarray.push(item);
         }
     }
     return newarray;

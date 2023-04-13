@@ -61,6 +61,7 @@ function mergeListTemplateFromModel(listTemplate, modelDsl) {
  */
 function Cast(column, modelDsl) {
     const types = Studio("model.column.component.GetDBTypeMap");
+    const ismysql = Studio("model.utils.IsMysql");
     const title = column.label || column.name;
     const name = column.name;
     if (!name) {
@@ -109,8 +110,10 @@ function Cast(column, modelDsl) {
             },
         };
     }
-    else if (column.type === "boolean") {
-        const ismysql = Studio("model.utils.IsMysql");
+    else if (column.type === "boolean" ||
+        (column.type === "tinyInteger" &&
+            ismysql &&
+            (column.default === 0 || column.default === 1))) {
         let checkedValue = true;
         let unCheckedValue = false;
         if (ismysql) {
