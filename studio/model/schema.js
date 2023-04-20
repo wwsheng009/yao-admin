@@ -32,7 +32,13 @@ function GetTableName() {
 function Relation() {
     const tableNameList = GetTableName();
     // 不需要的表格白名单
-    const guards = ["xiang_menu", "xiang_user", "xiang_workflow", "pet"];
+    const guards = [
+        "xiang_menu",
+        "xiang_user",
+        "xiang_workflow",
+        "pet",
+        "sqlite_sequence",
+    ];
     const prefixList = TablePrefix(tableNameList);
     if (tableNameList.length > 180) {
         log.Error("Data tables cannot exceed 180!");
