@@ -161,10 +161,10 @@ function Cast(column, modelDsl) {
     //   component,
     //   modelDsl
     // );
-    if (component.is_image) {
+    if (component.is_upload) {
         width = 24;
     }
-    delete component.is_image;
+    delete component.is_upload;
     component = Studio("model.column.component.EditPropes", component, column);
     component = updateListCompFromModelXgen(component, column, modelDsl);
     if (!component.edit?.props?.ddic_hide) {
