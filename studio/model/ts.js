@@ -11,7 +11,7 @@ function CreateModelTypes(namespace = "ddic") {
     const modelDsl = files
         .filter((item) => item.startsWith(namespace))
         .map((file) => {
-        return JSON.parse(fs.ReadFile("models/" + file));
+        return JSON.parse(fs.ReadFile(file));
     });
     CreateTSTypes(namespace, modelDsl);
 }

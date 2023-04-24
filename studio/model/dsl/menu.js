@@ -75,7 +75,7 @@ function Create(modelDsls) {
             ],
         },
     };
-    Studio("model.file.MoveAndWrite", "/flows/app", "menu.flow.json", dsl);
+    Studio("model.file.MoveAndWrite", "flows/app", "menu.flow.json", dsl);
 }
 /**
  * 把菜单列表转换成树状结构
