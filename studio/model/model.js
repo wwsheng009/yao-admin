@@ -8,7 +8,7 @@ function CreateFromFile() {
     const files = GetModelFnameList();
     const fs = new FS("dsl");
     const modelDsls = files.map((file) => {
-        return JSON.parse(fs.ReadFile("models/" + file));
+        return JSON.parse(fs.ReadFile(file));
     });
     // 创建表格与表单dsl
     Studio("model.dsl.form.CreateByModels", modelDsls);
@@ -29,7 +29,7 @@ function CreateMenuFromModels() {
     const files = GetModelFnameList();
     const fs = new FS("dsl");
     const modelDsls = files.map((file) => {
-        return JSON.parse(fs.ReadFile("models/" + file));
+        return JSON.parse(fs.ReadFile(file));
     });
     Studio("model.dsl.menu.Create", modelDsls);
 }
@@ -59,9 +59,7 @@ function GetModel(modelName) {
 function GetModelFnameList() {
     const fs = new FS("dsl");
     const files = fs.ReadDir("models/", true);
-    return files
-        .filter((file) => !fs.IsDir(file) && file.endsWith(".mod.json"))
-        .map((file) => file.replace("/models/", ""));
+    return files.filter((file) => !fs.IsDir(file) && file.endsWith(".mod.json"));
 }
 /**
  * 从模型定义DSL文件中获取模型定义
@@ -73,7 +71,7 @@ function GetModelsFromFile() {
     const files = GetModelFnameList();
     const fs = new FS("dsl");
     return files.map((file) => {
-        return JSON.parse(fs.ReadFile("models/" + file));
+        return JSON.parse(fs.ReadFile(file));
     });
 }
 /**
