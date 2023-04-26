@@ -440,13 +440,13 @@ function Save(payload) {
     }
     SaveRelations(res, payload);
   } catch (error) {
-    console.log("Mode ${modelName} Save Failed")
+    console.log("Mode ${modelName} Save Failed,Payload:",payload)
     ${Rollback()}
     if(error.message,error.code){
       console.log("error:",error.code,error.message)
       throw new Exception(error.message,error.code)
     }else{
-      console.log(error)
+      console.log("system error:",error)
       throw error
     }
   }
