@@ -442,7 +442,7 @@ function Save(payload) {
   } catch (error) {
     console.log("Mode ${modelName} Save Failed,Payload:",payload)
     ${Rollback()}
-    if(error.message,error.code){
+    if(error.message && error.code){
       console.log("error:",error.code,error.message)
       throw new Exception(error.message,error.code)
     }else{
@@ -501,7 +501,7 @@ function Save_${rel.name}(id,payload){
     });
     if (res.code && res.code > 300) {
       console.log('${rel.model}:AfterSave Error:', res);
-      console.log(items)
+      //console.log(items)
       throw new Exception(res.message,res.code)
     }else{
       return id;
