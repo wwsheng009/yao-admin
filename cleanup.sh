@@ -1,7 +1,6 @@
 
 kill -9 $(ps aux | grep 'yao' | awk '{print $2}')
 
-rm -rf logins/*
 rm -rf logs/*
 
 find models/ -not -path "models/" -not -path "models/ddic*"   | xargs rm -rf
