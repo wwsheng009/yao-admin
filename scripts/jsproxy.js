@@ -38,6 +38,7 @@ function Server(payload) {
       case "Studio":
         // @ts-ignore
         __YAO_SU_ROOT = true;
+        __yao_data = { ROOT: true };
         resp.data = Studio(method, ...localParams);
         break;
       case "Query":
