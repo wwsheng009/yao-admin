@@ -43,6 +43,7 @@ function UpdateTableFromDsl(model, modelDsl) {
 }
 function UpdateColumnFromDsl(model, modelCol) {
     let col = modelCol;
+    //save element for column
     if (modelCol.option || modelCol.validations) {
         let element = {
             name: model.name + "_" + modelCol.name,
@@ -88,6 +89,13 @@ function LoadModelFromFile() {
     const modelDsl = files.map((file) => {
         return JSON.parse(fs.ReadFile(file));
     });
+    LoadModel(modelDsl);
+}
+function LoadModelSingleFromFile(model) {
+    let table_name = Studio("model.file.SlashName", model);
+    const file = `models/${table_name}.mod.json`;
+    const fs = new FS("dsl");
+    const modelDsl = [JSON.parse(fs.ReadFile(file))];
     LoadModel(modelDsl);
 }
 function copyObject(target, source) {

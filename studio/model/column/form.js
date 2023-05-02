@@ -30,7 +30,7 @@ function toForm(modelDsl, type = "view") {
             action: [
                 {
                     name: "StudioModel",
-                    type: "Studio.model",
+                    type: "Studio.model.cmd",
                     payload: { method: "CreateOne", args: [table_dot_name] },
                 },
                 {

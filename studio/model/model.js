@@ -101,7 +101,7 @@ function CreateList(modelName) {
     const model = GetModel(modelName);
     if (model) {
         Studio("model.dsl.list.CreateByModel", model);
-        console.log(`处理完成：${modelName}`);
+        console.log(`创建列表完成：${modelName}`);
     }
     else {
         console.log("读取模型失败" + modelName);

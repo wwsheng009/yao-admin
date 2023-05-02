@@ -14,7 +14,6 @@
       "option": ["admin", "staff", "user", "robot"],
       "comment": "账号类型 admin 管理员, staff 员工, user 用户, robot 机器人",
       "default": "user",
-      "index": true,
       "validations": [
         {
           "method": "typeof",
@@ -34,7 +33,6 @@
       "type": "string",
       "length": 50,
       "comment": "邮箱",
-      "index": true,
       "nullable": true,
       "validations": [
         {
@@ -55,7 +53,6 @@
       "type": "string",
       "length": 50,
       "comment": "手机号",
-      "index": true,
       "nullable": true,
       "crypt": "AES",
       "validations": [
@@ -73,7 +70,6 @@
       "length": 256,
       "comment": "登录密码",
       "crypt": "PASSWORD",
-      "index": true,
       "nullable": true,
       "validations": [
         {
@@ -120,7 +116,6 @@
       "length": 256,
       "comment": "操作密码",
       "crypt": "PASSWORD",
-      "index": true,
       "nullable": true,
       "validations": [
         {
@@ -194,7 +189,6 @@
       "comment": "身份证号码",
       "crypt": "AES",
       "nullable": true,
-      "index": true,
       "validations": [
         {
           "method": "typeof",
@@ -215,7 +209,6 @@
       "length": 256,
       "comment": "API Key",
       "nullable": true,
-      "unique": true,
       "validations": [
         {
           "method": "typeof",
@@ -237,7 +230,6 @@
       "nullable": true,
       "crypt": "AES",
       "comment": "API 密钥",
-      "index": true,
       "validations": [
         {
           "method": "typeof",
@@ -265,7 +257,6 @@
       "type": "enum",
       "default": "enabled",
       "option": ["enabled", "disabled"],
-      "index": true,
       "validations": [
         {
           "method": "typeof",
