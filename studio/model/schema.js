@@ -38,6 +38,7 @@ function Relation() {
         "xiang_workflow",
         "pet",
         "sqlite_sequence",
+        "admin_user",
     ];
     const prefixList = TablePrefix(tableNameList);
     if (tableNameList.length > 180) {

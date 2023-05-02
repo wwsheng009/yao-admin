@@ -144,6 +144,8 @@ function Cast(column, modelDsl) {
     }
     else if (column.crypt === "PASSWORD") {
         component.edit.type = "Password";
+        component.view = component.view || {};
+        component.view.compute = "Hide";
     }
     else {
         if (column.type in types) {

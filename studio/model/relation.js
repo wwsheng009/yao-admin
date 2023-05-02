@@ -358,7 +358,7 @@ function CreateAfterFind(relations) {
             model.columns.forEach((col) => query.select.push(col.name));
         }
         query.wheres.push({
-            column: element.key,
+            field: element.key,
             op: "=",
             value: ">>>payload.id<<<",
         });

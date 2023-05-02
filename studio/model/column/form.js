@@ -285,6 +285,7 @@ function Cast(column, modelDsl) {
         component = {
             bind: bind,
             edit: {
+                // compute: "scripts.ddic.compute.json.Edit",
                 props: {
                     language: "json",
                     height: 200,
@@ -339,6 +340,8 @@ function Cast(column, modelDsl) {
     }
     else if (column.crypt === "PASSWORD") {
         component.edit.type = "Password";
+        component.view = component.view || {};
+        component.view.compute = "Hide";
     }
     else {
         if (column.type in types) {
@@ -361,6 +364,10 @@ function Cast(column, modelDsl) {
             name: title,
             width: width,
         });
+    }
+    if (component.edit?.type === "CodeEditor") {
+        component.view = component.view || {};
+        component.view.compute = "scripts.ddic.compute.json.View";
     }
     res.fields.push({
         name: title,

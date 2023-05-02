@@ -42,16 +42,7 @@ function HiddenFields(isTable) {
     let hidden = [];
     if (isTable) {
         // Table页面不展示的字段列表
-        hidden = [
-            "secret",
-            "password",
-            "del",
-            "delete",
-            "deleted",
-            "deleted_at",
-            "pwd",
-            "deleted",
-        ];
+        hidden = ["del", "delete", "deleted", "deleted_at", "pwd", "deleted"];
     }
     else {
         // Form页面不展示的字段列表
@@ -65,8 +56,6 @@ function HiddenFields(isTable) {
             "id",
             "ID",
             "update_time",
-            "password",
-            "pwd",
         ];
     }
     return hidden;
@@ -230,14 +219,14 @@ function GetRules(column, component) {
     if (!/^id$/i.test(dbColumnType) &&
         (index ||
             unique ||
-            ((columnDefault === null ||
-                columnDefault === undefined ||
-                columnDefault === "TlVMTA==") &&
-                !nullable))) {
+            (!nullable &&
+                (columnDefault === null ||
+                    columnDefault === undefined ||
+                    columnDefault === "TlVMTA==")))) {
         rule.required = true;
     }
     const validations = column.validations;
-    if (validations && !validations.length) {
+    if (validations && validations.length) {
         validations.forEach((validation) => {
             switch (validation.method) {
                 case "typeof":
