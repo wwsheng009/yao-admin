@@ -112,7 +112,7 @@ function Select(column, modelDsl, component) {
     // const title = column.label;
     const name = column.name;
     const bind = `${name}`;
-    const relation = modelDsl.relations;
+    const relation = modelDsl.relations || {};
     for (const rel in relation) {
         if (relation[rel].type == "hasOne" &&
             column.name == relation[rel]["foreign"]) {
@@ -173,7 +173,7 @@ function EditSelect(column, modelDsl, component) {
     const props = column.props || {};
     const name = column.name;
     const bind = `${name}`;
-    const relation = modelDsl.relations;
+    const relation = modelDsl.relations || {};
     for (const rel in relation) {
         if (relation[rel].type === "hasOne" &&
             column.name == relation[rel]["foreign"]) {
@@ -208,7 +208,7 @@ function EditSelect(column, modelDsl, component) {
 //  * @param modelDsl
 //  */
 function GetWiths(modelDsl) {
-    const relations = modelDsl.relations;
+    const relations = modelDsl.relations || {};
     let withs = {};
     for (const rel in relations) {
         withs[rel] = {};
@@ -228,7 +228,7 @@ function GetWiths(modelDsl) {
  * 把hasMany变成表单中的Table
  */
 function Table(formDsl, modelDsl) {
-    const relations = modelDsl.relations;
+    const relations = modelDsl.relations || {};
     for (const rel in relations) {
         // console.log(`translate.translate:${i}`);
         if (relations[rel].type != "hasMany") {
@@ -265,7 +265,7 @@ function Table(formDsl, modelDsl) {
  * 把hasMany变成表单中的List
  */
 function List(formDsl, modelDsl) {
-    const relations = modelDsl.relations;
+    const relations = modelDsl.relations || {};
     let RelList = [];
     // let tabs: YaoForm.SectionDSL[] = [];
     for (const rel in relations) {

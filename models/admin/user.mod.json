@@ -318,19 +318,5 @@
       "extra": { "sex": "女" }
     }
   ],
-  "indexes": [
-    {
-      "comment": "类型邮箱唯一",
-      "name": "type_email_unique",
-      "columns": ["type", "email"],
-      "type": "unique"
-    },
-    {
-      "comment": "类型手机号唯一",
-      "name": "type_mobile_unique",
-      "columns": ["type", "mobile"],
-      "type": "unique"
-    }
-  ],
   "option": { "timestamps": true, "soft_deletes": true }
 }

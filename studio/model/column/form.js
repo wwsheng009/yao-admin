@@ -196,7 +196,7 @@ function mergeFormTemplateFromModel(formTemplate, modelDsl) {
     return formTemplate;
 }
 function updateReference(formTemplate, modelDsl) {
-    const hasCount = Object.values(modelDsl.relations).filter((rel) => rel.type === "hasOne").length;
+    const hasCount = Object.values(modelDsl.relations || { type: "" }).filter((rel) => rel.type === "hasOne").length;
     if (hasCount === 0) {
         return formTemplate; // no need to modify the form if there are no 'hasOne' relations
     }
@@ -210,7 +210,7 @@ function updateReference(formTemplate, modelDsl) {
         },
     });
     const referenceContent = [];
-    for (const rel in modelDsl.relations) {
+    for (const rel in modelDsl.relations || {}) {
         if (modelDsl.relations[rel].type === "hasOne") {
             referenceContent.push({
                 name: modelDsl.relations[rel].label || rel,
